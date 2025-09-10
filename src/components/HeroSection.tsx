@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import heroImage from '@/assets/hero-image.jpg';
-import coregabLogo from '@/assets/coregab-logo.png';
+import coregabLogo from '@/assets/coregab-logo-transparent.png';
 import { User, Briefcase, Settings as SettingsIcon, ShoppingBag } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -17,7 +17,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
             <img 
               src={coregabLogo} 
               alt="COREGAB" 
-              className="h-16 w-auto object-contain"
+              className="h-20 w-auto object-contain"
             />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">

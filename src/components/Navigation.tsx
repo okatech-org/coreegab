@@ -5,7 +5,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import coregabLogo from '@/assets/coregab-logo-horizontal.png';
+import coregabLogo from '@/assets/coregab-logo-horizontal-transparent.png';
 
 interface NavigationProps {
   onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
@@ -20,7 +20,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
           <img 
             src={coregabLogo} 
             alt="COREGAB" 
-            className="h-8 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
         </Link>
         

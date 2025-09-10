@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import coregabLogo from '@/assets/coregab-logo.png';
+import coregabLogo from '@/assets/coregab-logo-transparent.png';
 import { 
   Home, 
   Users, 
@@ -71,7 +71,7 @@ export function AppSidebar() {
             <img 
               src={coregabLogo} 
               alt="COREGAB" 
-              className="w-8 h-8 object-contain"
+              className="w-10 h-10 object-contain"
             />
             {!collapsed && (
               <span className="text-sidebar-foreground font-bold text-xl">COREGAB</span>
