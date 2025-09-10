@@ -30,35 +30,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
           </div>
         </div>
 
-        {/* Features highlight */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <Package className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Import Simplifié</h3>
-            <p className="text-muted-foreground">
-              Catalogue complet de produits coréens avec processus d'import optimisé
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">IA Commerciale</h3>
-            <p className="text-muted-foreground">
-              Assistant intelligent pour vos besoins commerciaux et recommandations
-            </p>
-          </div>
-
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Calcul Précis</h3>
-            <p className="text-muted-foreground">
-              Estimation en temps réel des coûts d'import et frais douaniers
+        {/* Hero image or visual element */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-semibold mb-4">
+              Votre partenaire de confiance pour l'import coréen
+            </h3>
+            <p className="text-muted-foreground text-lg">
+              Découvrez nos services complets dans la navigation pour commencer votre aventure d'import.
             </p>
           </div>
         </div>
