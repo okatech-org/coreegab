@@ -11,6 +11,7 @@ import Boutique from "./pages/Boutique";
 import AdminImport from "./pages/AdminImport";
 import PhoneAuth from "./pages/PhoneAuth";
 import NotFound from "./pages/NotFound";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,8 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {/* Widget de chat disponible sur toutes les pages */}
+        <ChatbotWidget />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
