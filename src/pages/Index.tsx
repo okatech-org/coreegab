@@ -46,30 +46,32 @@ const Index = () => {
       <div className="min-h-screen w-full">
         {/* Mobile Header */}
         <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-          <div className="flex items-center justify-between p-4">
-            <SidebarTrigger className="lg:hidden" />
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">C</span>
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-3">
+              <SidebarTrigger className="p-2 hover:bg-muted rounded-md" />
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-lg">C</span>
+                </div>
+                <span className="text-foreground font-bold text-lg">COREGAB</span>
               </div>
-              <span className="text-foreground font-bold text-xl">COREGAB</span>
             </div>
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <CurrencySwitcher />
               <LanguageSwitcher />
-              <ThemeToggle />
             </div>
           </div>
         </header>
 
         <div className="flex min-h-screen">
           <AppSidebar />
-          <div className="flex-1 lg:pl-0">
+          <div className="flex-1">
             {/* Desktop Navigation */}
             <div className="hidden lg:block">
               <Navigation />
             </div>
-            <main className="pt-20 lg:pt-0">
+            <main className="pt-16 lg:pt-0">
               <HeroSection />
               <PriceCalculator />
               <CategoriesSection />

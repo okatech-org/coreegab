@@ -62,15 +62,15 @@ export function AppSidebar() {
       : "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground";
 
   return (
-    <Sidebar className={`${collapsed ? "w-14" : "w-60"} sidebar-nav`} collapsible="icon">
-      <SidebarContent className="p-4">
+    <Sidebar className={`${collapsed ? "w-14" : "w-60"} sidebar-nav`} collapsible="icon" side="left">
+      <SidebarContent className="p-2 lg:p-4">
         {/* Logo */}
-        <div className="mb-8 px-2">
+        <div className="mb-6 lg:mb-8 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-sidebar-foreground rounded-lg flex items-center justify-center">
-              <span className="text-sidebar-background font-bold text-lg">C</span>
+            <div className="w-7 h-7 lg:w-8 lg:h-8 bg-sidebar-foreground rounded-lg flex items-center justify-center">
+              <span className="text-sidebar-background font-bold text-base lg:text-lg">C</span>
             </div>
-            {!collapsed && <span className="text-sidebar-foreground font-bold text-xl">COREGAB</span>}
+            {!collapsed && <span className="text-sidebar-foreground font-bold text-lg lg:text-xl">COREGAB</span>}
           </div>
         </div>
 
