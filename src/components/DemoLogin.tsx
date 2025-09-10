@@ -6,7 +6,7 @@ import { User, Crown, Briefcase } from 'lucide-react';
 import { demoAccounts } from '@/data/mockData';
 
 interface DemoLoginProps {
-  onDemoLogin: (role: 'client' | 'commercial' | 'admin') => void;
+  onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
 }
 
 const roleConfig = {
@@ -98,11 +98,11 @@ export default function DemoLogin({ onDemoLogin }: DemoLoginProps) {
                     className="w-full mt-4"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDemoLogin(role as 'client' | 'commercial' | 'admin');
+                      window.location.href = '/auth';
                     }}
                     variant={selectedRole === role ? "default" : "outline"}
                   >
-                    Accéder au Dashboard {config.title}
+                    Se connecter comme {config.title}
                   </Button>
                 </CardContent>
               </Card>
@@ -113,9 +113,9 @@ export default function DemoLogin({ onDemoLogin }: DemoLoginProps) {
         <div className="text-center mt-12">
           <Card className="max-w-2xl mx-auto bg-muted/50">
             <CardContent className="p-6">
-              <h3 className="font-semibold text-lg mb-2">Mode Démonstration</h3>
+              <h3 className="font-semibold text-lg mb-2">Accès Démo</h3>
               <p className="text-muted-foreground text-sm mb-4">
-                Tous les comptes sont préconfigurés avec des données de test. 
+                Tous les comptes démo sont disponibles sur la page de connexion. 
                 Explorez librement toutes les fonctionnalités sans inscription.
               </p>
               <div className="flex justify-center gap-4 text-xs text-muted-foreground">

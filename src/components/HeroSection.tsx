@@ -4,7 +4,7 @@ import heroImage from '@/assets/hero-image.jpg';
 import { User, Briefcase, Settings as SettingsIcon } from 'lucide-react';
 
 interface HeroSectionProps {
-  onDemoLogin: (role: 'client' | 'commercial' | 'admin') => void;
+  onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
@@ -23,36 +23,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
               <Button
-                onClick={() => onDemoLogin('client')}
-                variant="hero"
                 size="xl"
                 className="flex items-center gap-2"
+                onClick={() => window.location.href = '/auth'}
               >
                 <User className="w-5 h-5" />
-                Accès Client Démo
+                Se connecter
               </Button>
               <Button
-                onClick={() => onDemoLogin('commercial')}
-                variant="secondary"
+                variant="outline"
                 size="xl"
                 className="flex items-center gap-2"
+                onClick={() => window.location.href = '/boutique'}
               >
                 <Briefcase className="w-5 h-5" />
-                Accès Commercial
-              </Button>
-              <Button
-                onClick={() => onDemoLogin('admin')}
-                variant="accent"
-                size="xl"
-                className="flex items-center gap-2"
-              >
-                <SettingsIcon className="w-5 h-5" />
-                Accès Admin
+                Découvrir la boutique
               </Button>
             </div>
             
             <div className="text-sm text-muted-foreground">
-              ✨ Démo gratuite - Aucune inscription requise
+              ✨ Accès démo disponible sur la page de connexion
             </div>
           </div>
           

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 interface NavigationProps {
-  onDemoLogin: (role: 'client' | 'commercial' | 'admin') => void;
+  onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
@@ -36,27 +36,6 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
                 Connexion
               </Button>
             </Link>
-            <Button
-              onClick={() => onDemoLogin('client')}
-              variant="default"
-              size="sm"
-            >
-              Démo Client
-            </Button>
-            <Button
-              onClick={() => onDemoLogin('commercial')}
-              variant="secondary"
-              size="sm"
-            >
-              Démo Commercial
-            </Button>
-            <Button
-              onClick={() => onDemoLogin('admin')}
-              variant="accent"
-              size="sm"
-            >
-              Démo Admin
-            </Button>
           </div>
         </div>
       </div>

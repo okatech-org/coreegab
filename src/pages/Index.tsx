@@ -36,11 +36,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation onDemoLogin={handleDemoLogin} />
-      <HeroSection onDemoLogin={handleDemoLogin} />
+      <Navigation />
+      <HeroSection />
       <PriceCalculator />
       <CategoriesSection />
-      <DemoLogin onDemoLogin={handleDemoLogin} />
+      <DemoLogin />
       <ProcessTimeline />
       <Footer />
     </div>

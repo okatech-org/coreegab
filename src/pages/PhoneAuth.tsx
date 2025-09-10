@@ -216,6 +216,63 @@ export default function PhoneAuth() {
                     <div>• <span className="font-mono">111111</span> - Accès Administrateur</div>
                   </div>
                 </div>
+
+                {/* Accès rapide démo */}
+                <div className="space-y-2">
+                  <p className="text-xs text-center text-muted-foreground">
+                    Ou connectez-vous directement avec un compte démo :
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'client');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès client activé",
+                        });
+                        navigate('/client-dashboard');
+                      }}
+                      className="text-xs"
+                    >
+                      👤 Client
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'commercial');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès commercial activé",
+                        });
+                        navigate('/commercial-dashboard');
+                      }}
+                      className="text-xs"
+                    >
+                      💼 Commercial
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'admin');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès admin activé",
+                        });
+                        navigate('/admin-dashboard');
+                      }}
+                      className="text-xs"
+                    >
+                      ⚙️ Admin
+                    </Button>
+                  </div>
+                </div>
               </>
             )}
           </CardContent>
