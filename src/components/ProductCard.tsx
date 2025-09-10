@@ -16,7 +16,7 @@ export default function ProductCard({
   const finalPrice = calculateFinalPrice ? calculateFinalPrice(product) : product.price_krw;
   
   return (
-    <Card className="card-elevated">
+    <Card className="card-elevated bg-card border border-border">
       <CardContent className="p-4">
         {product.image_url && (
           <img 
@@ -25,7 +25,7 @@ export default function ProductCard({
             className="w-full h-48 object-cover rounded-lg mb-4" 
           />
         )}
-        <h3 className="font-semibold text-lg mb-2 text-card-foreground">
+        <h3 className="font-semibold text-lg mb-2 text-foreground">
           {product.name}
         </h3>
         {product.description && (

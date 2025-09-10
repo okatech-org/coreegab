@@ -60,7 +60,7 @@ export default function FilterPanel({ onFiltersChange }: FilterPanelProps) {
   const activeFiltersCount = selectedBrands.length + selectedCategories.length + (availability !== 'all' ? 1 : 0);
 
   return (
-    <Card className="sticky top-4">
+    <Card className="sticky top-4 bg-card border border-border">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="flex items-center gap-2">
           <Filter className="w-4 h-4" />

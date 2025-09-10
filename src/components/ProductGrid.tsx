@@ -65,7 +65,7 @@ export default function ProductGrid({ searchQuery, filters }: ProductGridProps) 
           </p>
           
           {/* View mode toggle */}
-          <div className="flex border rounded-lg p-1">
+          <div className="flex border border-border rounded-lg p-1 bg-muted/50">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
@@ -118,10 +118,10 @@ export default function ProductGrid({ searchQuery, filters }: ProductGridProps) 
       {/* Empty state */}
       {filteredProducts.length === 0 && (
         <div className="text-center py-12">
-          <div className="w-24 h-24 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+          <div className="w-24 h-24 mx-auto mb-4 bg-muted/50 border border-border rounded-full flex items-center justify-center">
             <Grid className="w-8 h-8 text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-medium mb-2">Aucun produit trouvé</h3>
+          <h3 className="text-lg font-medium mb-2 text-foreground">Aucun produit trouvé</h3>
           <p className="text-muted-foreground">
             Essayez d'ajuster vos filtres ou votre recherche
           </p>

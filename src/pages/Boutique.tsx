@@ -10,7 +10,10 @@ import ProductCard from '@/components/ProductCard';
 import FilterPanel from '@/components/FilterPanel';
 import ProductGrid from '@/components/ProductGrid';
 import AISearchBar from '@/components/AISearchBar';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { AppSidebar } from '@/components/AppSidebar';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 // Icônes pour les segments
 const segmentIcons = {
@@ -56,115 +59,126 @@ export default function Boutique() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      {/* Header avec recherche IA */}
-      <header className="bg-white shadow-sm sticky top-0 z-40 border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold gradient-text">COREGAB Shop</h1>
-            
-            {/* Search Bar */}
-            <AISearchBar 
-              onSearch={handleSearch}
-              placeholder="🤖 Recherche IA : 'téléphone Samsung récent' ou 'voiture familiale économique'"
-            />
-            
-            {/* Cart Icon */}
-            <Button variant="outline" size="sm" className="relative">
-              <ShoppingCart className="w-4 h-4" />
-              {cartItems.length > 0 && (
-                <Badge className="absolute -top-2 -right-2 px-1 min-w-[1.25rem] h-5">
-                  {cartItems.length}
-                </Badge>
-              )}
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Navigation par segments */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-6 overflow-x-auto">
-            {/* Segment "Tous" */}
-            <button
-              onClick={() => setActiveSegment('all')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                activeSegment === 'all' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted hover:bg-muted/80'
-              }`}
-            >
-              <span>🛍️</span>
-              <div className="text-left">
-                <div>Tous les produits</div>
-                <div className="text-xs opacity-75">{mockProducts.length} produits</div>
+    <SidebarProvider>
+      <div className="min-h-screen w-full flex bg-background">
+        <AppSidebar />
+        <div className="flex-1">
+          {/* Header avec recherche IA */}
+          <header className="bg-card shadow-lg sticky top-0 z-40 border-b border-border">
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger className="mr-2" />
+                <h1 className="text-2xl font-bold gradient-text">COREGAB Shop</h1>
+                
+                {/* Search Bar */}
+                <AISearchBar 
+                  onSearch={handleSearch}
+                  placeholder="🤖 Recherche IA : 'téléphone Samsung récent' ou 'voiture familiale économique'"
+                />
+                
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  {/* Cart Icon */}
+                  <Button variant="outline" size="sm" className="relative border-border hover:bg-muted">
+                    <ShoppingCart className="w-4 h-4" />
+                    {cartItems.length > 0 && (
+                      <Badge className="absolute -top-2 -right-2 px-1 min-w-[1.25rem] h-5 bg-primary text-primary-foreground">
+                        {cartItems.length}
+                      </Badge>
+                    )}
+                  </Button>
+                </div>
               </div>
-            </button>
+            </div>
+          </header>
 
-            {/* Segments principaux */}
-            {segmentStats.map((segment) => {
-              const IconComponent = segmentIcons[segment.id as keyof typeof segmentIcons];
-              return (
-                <button
-                  key={segment.id}
-                  onClick={() => setActiveSegment(segment.id as keyof typeof boutiqueSegments)}
-                  className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                    activeSegment === segment.id 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted hover:bg-muted/80'
-                  }`}
-                >
-                  <span className="text-xl">{segment.icon}</span>
-                  <div className="text-left">
-                    <div>{segment.name}</div>
-                    <div className="text-xs opacity-75">
-                      {segment.inStockProducts}/{segment.totalProducts} en stock
+          <main>
+            {/* Navigation par segments */}
+            <div className="bg-card border-b border-border">
+              <div className="container mx-auto px-6 py-4">
+                <div className="flex items-center gap-6 overflow-x-auto">
+                  {/* Segment "Tous" */}
+                  <button
+                    onClick={() => setActiveSegment('all')}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
+                      activeSegment === 'all' 
+                        ? 'bg-primary text-primary-foreground shadow-lg' 
+                        : 'bg-muted hover:bg-muted/80 text-foreground hover:shadow-md'
+                    }`}
+                  >
+                    <span>🛍️</span>
+                    <div className="text-left">
+                      <div>Tous les produits</div>
+                      <div className="text-xs opacity-75">{mockProducts.length} produits</div>
                     </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+                  </button>
 
-      {/* Contenu principal */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-8">
-          {/* Sidebar Filtres */}
-          <aside className="w-64 hidden lg:block">
-            <FilterPanel onFiltersChange={handleFiltersChange} />
-          </aside>
-          
-          {/* Zone principale */}
-          <main className="flex-1">
-            {/* Stats et tri */}
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold mb-1">
-                  {activeSegment === 'all' 
-                    ? 'Tous les produits' 
-                    : boutiqueSegments[activeSegment].name
-                  }
-                </h2>
-                <p className="text-muted-foreground">
-                  <span className="font-semibold">{getFilteredProducts().filter(p => p.in_stock).length}</span> produits disponibles immédiatement
-                </p>
+                  {/* Segments principaux */}
+                  {segmentStats.map((segment) => {
+                    const IconComponent = segmentIcons[segment.id as keyof typeof segmentIcons];
+                    return (
+                      <button
+                        key={segment.id}
+                        onClick={() => setActiveSegment(segment.id as keyof typeof boutiqueSegments)}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
+                          activeSegment === segment.id 
+                            ? 'bg-primary text-primary-foreground shadow-lg' 
+                            : 'bg-muted hover:bg-muted/80 text-foreground hover:shadow-md'
+                        }`}
+                      >
+                        <span className="text-xl">{segment.icon}</span>
+                        <div className="text-left">
+                          <div>{segment.name}</div>
+                          <div className="text-xs opacity-75">
+                            {segment.inStockProducts}/{segment.totalProducts} en stock
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            {/* Grille de produits */}
-            <ProductGrid 
-              searchQuery={searchQuery}
-              filters={{
-                segment: activeSegment,
-                products: getFilteredProducts()
-              }}
-            />
+            {/* Contenu principal */}
+            <div className="container mx-auto px-6 py-8">
+              <div className="flex gap-8">
+                {/* Sidebar Filtres */}
+                <aside className="w-64 hidden lg:block">
+                  <FilterPanel onFiltersChange={handleFiltersChange} />
+                </aside>
+                
+                {/* Zone principale */}
+                <div className="flex-1">
+                  {/* Stats et tri */}
+                  <div className="flex justify-between items-center mb-6">
+                    <div>
+                      <h2 className="text-xl font-semibold mb-1 text-foreground">
+                        {activeSegment === 'all' 
+                          ? 'Tous les produits' 
+                          : boutiqueSegments[activeSegment].name
+                        }
+                      </h2>
+                      <p className="text-muted-foreground">
+                        <span className="font-semibold">{getFilteredProducts().filter(p => p.in_stock).length}</span> produits disponibles immédiatement
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Grille de produits */}
+                  <ProductGrid 
+                    searchQuery={searchQuery}
+                    filters={{
+                      segment: activeSegment,
+                      products: getFilteredProducts()
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </main>
         </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
