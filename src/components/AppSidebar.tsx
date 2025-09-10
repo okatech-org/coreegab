@@ -54,32 +54,32 @@ export function AppSidebar() {
   const isActive = (path: string) => currentPath === path;
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-sidebar-accent text-sidebar-primary font-medium" 
-      : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground";
+      ? "bg-sidebar-accent text-sidebar-primary font-medium border-l-2 border-sidebar-primary" 
+      : "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground";
 
   return (
     <Sidebar className={`${collapsed ? "w-14" : "w-60"} sidebar-nav`} collapsible="icon">
       <SidebarContent className="p-4">
         {/* Logo */}
         <div className="mb-8 px-2">
-          <div className="openart-logo">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">C</span>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-sidebar-foreground rounded-lg flex items-center justify-center">
+              <span className="text-sidebar-background font-bold text-lg">C</span>
             </div>
-            {!collapsed && <span>COREGAB</span>}
+            {!collapsed && <span className="text-sidebar-foreground font-bold text-xl">COREGAB</span>}
           </div>
         </div>
 
         {/* Main Navigation */}
         <SidebarGroup className="mb-6">
-          <SidebarGroupLabel className="text-sidebar-foreground text-sm font-medium mb-3">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
             {!collapsed && "Navigation"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="rounded-lg">
                     <NavLink 
                       to={item.url} 
                       end 
@@ -97,14 +97,14 @@ export function AppSidebar() {
 
         {/* Demo Accounts */}
         <SidebarGroup className="mb-6">
-          <SidebarGroupLabel className="text-sidebar-foreground text-sm font-medium mb-3">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
             {!collapsed && "Comptes Démo"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {demoItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="rounded-lg">
                     <NavLink 
                       to={item.url} 
                       className={getNavCls}
@@ -121,14 +121,14 @@ export function AppSidebar() {
 
         {/* Quick Starts */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground text-sm font-medium mb-3">
+          <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
             {!collapsed && "Quick starts"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {quickStarts.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="rounded-lg">
                     <NavLink 
                       to={item.url} 
                       className={getNavCls}
