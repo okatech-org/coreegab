@@ -8,6 +8,65 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Dark modern background like OpenArt */
+    --background: 217 19% 13%;
+    --background-alt: 217 19% 11%;
+    --foreground: 0 0% 100%;
+
+    --card: 217 19% 15%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 217 19% 15%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Blue primary color like OpenArt Image card */
+    --primary: 213 94% 68%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 213 94% 60%;
+
+    /* Yellow accent color like OpenArt Storytelling card */
+    --secondary: 45 93% 57%;
+    --secondary-foreground: 0 0% 0%;
+    --secondary-hover: 45 93% 50%;
+
+    /* Green for success states */
+    --accent: 158 64% 52%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 158 64% 45%;
+
+    --muted: 217 19% 20%;
+    --muted-foreground: 217 10% 65%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 19% 25%;
+    --input: 217 19% 20%;
+    --ring: 213 94% 68%;
+
+    /* COREGAB Design System - OpenArt inspired */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-card-blue: linear-gradient(135deg, hsl(213 94% 68%), hsl(213 94% 58%));
+    --gradient-card-yellow: linear-gradient(135deg, hsl(45 93% 57%), hsl(45 93% 47%));
+    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.3);
+    --shadow-card-hover: 0 16px 40px -8px hsl(0 0% 0% / 0.4);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 217 19% 11%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 213 94% 68%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 19% 17%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 217 19% 20%;
+    --sidebar-ring: 213 94% 68%;
+  }
+
+  .light {
+    /* Light mode variant */
     --background: 0 0% 100%;
     --background-alt: 210 20% 98%;
     --foreground: 215 25% 27%;
@@ -18,17 +77,14 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    --primary: 221 83% 53%;
+    --primary: 213 94% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 221 83% 45%;
 
-    --secondary: 142 76% 36%;
-    --secondary-foreground: 0 0% 100%;
-    --secondary-hover: 142 76% 30%;
+    --secondary: 45 93% 57%;
+    --secondary-foreground: 0 0% 0%;
 
-    --accent: 32 95% 44%;
+    --accent: 158 64% 52%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 32 95% 38%;
 
     --muted: 210 20% 98%;
     --muted-foreground: 215 16% 47%;
@@ -38,70 +94,16 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 221 83% 53%;
-
-    /* COREGAB Design System */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
-    --shadow-card: 0 10px 30px -10px hsl(var(--primary) / 0.1);
-    --shadow-card-hover: 0 20px 40px -10px hsl(var(--primary) / 0.15);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --radius: 0.5rem;
+    --ring: 213 94% 60%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 213 94% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 213 94% 60%;
   }
 }
 
@@ -122,11 +124,13 @@ All colors MUST be HSL.
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    filter: brightness(1.1);
   }
 
   .card-elevated {
     box-shadow: var(--shadow-card);
     transition: var(--transition-smooth);
+    border: 1px solid hsl(var(--border));
   }
 
   .card-elevated:hover {
@@ -134,10 +138,43 @@ All colors MUST be HSL.
     transform: translateY(-2px);
   }
 
+  .card-feature {
+    background: var(--gradient-card-blue);
+    border-radius: var(--radius);
+    padding: 2rem;
+    color: white;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+  }
+
+  .card-feature.yellow {
+    background: var(--gradient-card-yellow);
+    color: black;
+  }
+
+  .card-feature:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .sidebar-nav {
+    background: hsl(var(--sidebar-background));
+    border-right: 1px solid hsl(var(--sidebar-border));
+  }
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .openart-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }

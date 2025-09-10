@@ -5,6 +5,8 @@ import { PriceCalculator } from '@/components/PriceCalculator';
 import { CategoriesSection } from '@/components/CategoriesSection';
 import { ProcessTimeline } from '@/components/ProcessTimeline';
 import { Footer } from '@/components/Footer';
+import { AppSidebar } from '@/components/AppSidebar';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 import { useToast } from '@/hooks/use-toast';
 
@@ -35,15 +37,21 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      <HeroSection />
-      <PriceCalculator />
-      <CategoriesSection />
-      
-      <ProcessTimeline />
-      <Footer />
-    </div>
+    <SidebarProvider>
+      <div className="min-h-screen w-full flex bg-background">
+        <AppSidebar />
+        <div className="flex-1">
+          <Navigation />
+          <main>
+            <HeroSection />
+            <PriceCalculator />
+            <CategoriesSection />
+            <ProcessTimeline />
+            <Footer />
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
