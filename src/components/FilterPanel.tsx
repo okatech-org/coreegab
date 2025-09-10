@@ -27,11 +27,11 @@ export default function FilterPanel({ onFiltersChange }: FilterPanelProps) {
   ];
 
   const categories = [
-    { id: 'smartphones', name: 'Smartphones', count: 52 },
-    { id: 'electronics', name: 'Électronique', count: 74 },
-    { id: 'appliances', name: 'Électroménager', count: 36 },
-    { id: 'vehicles', name: 'Véhicules', count: 28 },
-    { id: 'parts', name: 'Pièces détachées', count: 58 }
+    { id: 'smartphones', name: 'Smartphones', count: 5 },
+    { id: 'electronics', name: 'Électronique', count: 5 },
+    { id: 'appliances', name: 'Électroménager', count: 5 },
+    { id: 'vehicles', name: 'Véhicules', count: 5 },
+    { id: 'parts', name: 'Pièces détachées', count: 5 }
   ];
 
   const handleBrandChange = (brandId: string, checked: boolean) => {

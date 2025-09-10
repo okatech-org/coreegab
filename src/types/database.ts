@@ -1,7 +1,7 @@
 export interface Product {
   id: string;
   name: string;
-  category: 'vehicles' | 'electronics' | 'appliances' | 'parts';
+  category: 'vehicles' | 'electronics' | 'appliances' | 'parts' | 'smartphones';
   price_krw: number;
   weight: number;
   image_url?: string;

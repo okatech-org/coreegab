@@ -7,7 +7,10 @@ import { Grid, List, ChevronDown } from 'lucide-react';
 
 interface ProductGridProps {
   searchQuery?: string;
-  filters?: any;
+  filters?: {
+    segment?: string;
+    products?: any[];
+  };
 }
 
 export default function ProductGrid({ searchQuery, filters }: ProductGridProps) {
@@ -17,7 +20,7 @@ export default function ProductGrid({ searchQuery, filters }: ProductGridProps) 
   const itemsPerPage = 12;
 
   // Filter and sort products
-  let filteredProducts = mockProducts;
+  let filteredProducts = filters?.products || mockProducts;
 
   if (searchQuery) {
     filteredProducts = filteredProducts.filter(product =>
