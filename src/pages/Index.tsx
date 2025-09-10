@@ -49,13 +49,13 @@ const Index = () => {
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-3">
               <SidebarTrigger className="p-2 hover:bg-muted rounded-md" />
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <img 
                   src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
                   alt="COREGAB Logo" 
-                  className="w-8 h-8"
+                  className="w-11 h-11"
                 />
-                <span className="text-foreground font-bold text-lg">COREGAB</span>
+                <span className="text-foreground font-bold text-2xl">COREGAB</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
