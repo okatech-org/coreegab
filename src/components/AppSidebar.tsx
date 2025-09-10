@@ -67,10 +67,18 @@ export function AppSidebar() {
         {/* Logo */}
         <div className="mb-6 lg:mb-8 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 lg:w-8 lg:h-8 bg-sidebar-foreground rounded-lg flex items-center justify-center">
-              <span className="text-sidebar-background font-bold text-base lg:text-lg">C</span>
-            </div>
-            {!collapsed && <span className="text-sidebar-foreground font-bold text-lg lg:text-xl">COREGAB</span>}
+            <img 
+              src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
+              alt="COREGAB Logo" 
+              className="w-7 h-7 lg:w-8 lg:h-8"
+            />
+            {!collapsed && (
+              <img 
+                src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
+                alt="COREGAB" 
+                className="h-6 lg:h-7 w-auto"
+              />
+            )}
           </div>
         </div>
 

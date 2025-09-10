@@ -50,10 +50,16 @@ const Index = () => {
             <div className="flex items-center gap-3">
               <SidebarTrigger className="p-2 hover:bg-muted rounded-md" />
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">C</span>
-                </div>
-                <span className="text-foreground font-bold text-lg">COREGAB</span>
+                <img 
+                  src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
+                  alt="COREGAB Logo" 
+                  className="w-8 h-8"
+                />
+                <img 
+                  src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
+                  alt="COREGAB" 
+                  className="h-6 w-auto"
+                />
               </div>
             </div>
             <div className="flex items-center gap-2">

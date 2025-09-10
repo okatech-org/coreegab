@@ -15,11 +15,17 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
   return (
     <nav className="bg-background/95 backdrop-blur-sm shadow-lg sticky top-0 z-40 border-b border-border">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="openart-logo">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">C</span>
-          </div>
-          COREGAB
+        <Link to="/" className="openart-logo flex items-center gap-3">
+          <img 
+            src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
+            alt="COREGAB Logo" 
+            className="w-8 h-8"
+          />
+          <img 
+            src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
+            alt="COREGAB" 
+            className="h-7 w-auto"
+          />
         </Link>
         
         <div className="flex items-center gap-8">
