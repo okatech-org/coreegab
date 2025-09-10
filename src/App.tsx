@@ -5,11 +5,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { NotificationProvider } from "@/components/NotificationSystem";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import ClientDashboard from "./pages/ClientDashboard";
 import CommercialDashboard from "./pages/CommercialDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Boutique from "./pages/Boutique";
+import Checkout from "./pages/Checkout";
 import AdminImport from "./pages/AdminImport";
 import PhoneAuth from "./pages/PhoneAuth";
 import NotFound from "./pages/NotFound";
@@ -21,34 +26,88 @@ import ChatbotWidget from "./components/ChatbotWidget";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <CurrencyProvider>
-      <LanguageProvider>
-        <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<PhoneAuth />} />
-          <Route path="/client-dashboard" element={<ClientDashboard />} />
-          <Route path="/commercial-dashboard" element={<CommercialDashboard />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/boutique" element={<Boutique />} />
-          <Route path="/calculator" element={<Calculator />} />
-          <Route path="/search" element={<AISearch />} />
-          <Route path="/chat" element={<CommercialChat />} />
-          <Route path="/admin/import" element={<AdminImport />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        {/* Widget de chat disponible sur toutes les pages */}
-        <ChatbotWidget />
-      </BrowserRouter>
-    </TooltipProvider>
-    </LanguageProvider>
-    </CurrencyProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <NotificationProvider>
+          <CurrencyProvider>
+            <LanguageProvider>
+              <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<PhoneAuth />} />
+            <Route path="/boutique" element={<Boutique />} />
+            <Route path="/calculator" element={<Calculator />} />
+            <Route path="/search" element={<AISearch />} />
+            
+            {/* Route de checkout protégée */}
+            <Route 
+              path="/checkout" 
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Routes protégées par rôle */}
+            <Route 
+              path="/client-dashboard" 
+              element={
+                <ProtectedRoute requiredRole="client">
+                  <ClientDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/commercial-dashboard" 
+              element={
+                <ProtectedRoute requiredRole="commercial">
+                  <CommercialDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin-dashboard" 
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/chat" 
+              element={
+                <ProtectedRoute>
+                  <CommercialChat />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/import" 
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <AdminImport />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          {/* Widget de chat disponible sur toutes les pages */}
+          <ChatbotWidget />
+        </BrowserRouter>
+        </TooltipProvider>
+        </LanguageProvider>
+        </CurrencyProvider>
+        </NotificationProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

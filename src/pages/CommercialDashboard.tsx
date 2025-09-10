@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TrendingUp, Users, DollarSign, Calendar, Bell } from 'lucide-react';
 import { AppSidebar } from '@/components/AppSidebar';
-import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -248,7 +247,6 @@ export default function CommercialDashboard() {
       <div className="min-h-screen w-full flex bg-background">
         <AppSidebar />
         <div className="flex-1">
-          <Navigation />
           <main className="p-6">
             <div className="mb-6">
               <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.commercial.title')}</h1>

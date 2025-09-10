@@ -67,6 +67,8 @@ const translations = {
       home: "Accueil",
       shop: "Boutique",
       calculator: "Calcul Prix",
+      services: "Services",
+      contact: "Contact",
       search: "Recherche IA",
       chat: "Chat Commercial",
       client: "Client",
@@ -114,21 +116,36 @@ const translations = {
         welcome: "Bienvenue sur votre espace client",
         orders: "Mes Commandes",
         profile: "Mon Profil",
-        support: "Support"
+        support: "Support",
+        catalog: "Catalogue",
+        cart: "Mon Panier",
+        navigation: "Navigation"
       },
       commercial: {
         title: "Tableau de Bord Commercial",
         welcome: "Bienvenue sur votre espace commercial",
         leads: "Prospects",
         clients: "Clients",
-        revenue: "Chiffre d'affaires"
+        revenue: "Chiffre d'affaires",
+        overview: "Vue d'ensemble",
+        newOrder: "Nouvelle Commande",
+        myClients: "Mes Clients",
+        dailyOrders: "Commandes du Jour",
+        commission: "Calculateur Commission",
+        calendar: "Calendrier RDV",
+        navigation: "Navigation Commercial"
       },
       admin: {
         title: "Tableau de Bord Admin",
         welcome: "Bienvenue sur votre espace administrateur",
         users: "Utilisateurs",
         analytics: "Analytiques",
-        settings: "Paramètres"
+        settings: "Paramètres",
+        overview: "Vue d'ensemble",
+        productManagement: "Gestion Produits",
+        userManagement: "Gestion Utilisateurs",
+        allOrders: "Toutes les Commandes",
+        navigation: "Navigation Admin"
       }
     },
     common: {
@@ -161,6 +178,8 @@ const translations = {
       home: "홈",
       shop: "쇼핑",
       calculator: "가격 계산기",
+      services: "서비스",
+      contact: "연락처",
       search: "AI 검색",
       chat: "상업 채팅",
       client: "고객",
@@ -208,21 +227,36 @@ const translations = {
         welcome: "고객 공간에 오신 것을 환영합니다",
         orders: "내 주문",
         profile: "내 프로필",
-        support: "지원"
+        support: "지원",
+        catalog: "카탈로그",
+        cart: "내 장바구니",
+        navigation: "내비게이션"
       },
       commercial: {
         title: "상업 대시보드",
         welcome: "상업 공간에 오신 것을 환영합니다",
         leads: "리드",
         clients: "고객",
-        revenue: "수익"
+        revenue: "수익",
+        overview: "개요",
+        newOrder: "새 주문",
+        myClients: "내 고객",
+        dailyOrders: "당일 주문",
+        commission: "수수료 계산기",
+        calendar: "약속 캘린더",
+        navigation: "상업 내비게이션"
       },
       admin: {
         title: "관리자 대시보드",
         welcome: "관리자 공간에 오신 것을 환영합니다",
         users: "사용자",
         analytics: "분석",
-        settings: "설정"
+        settings: "설정",
+        overview: "개요",
+        productManagement: "제품 관리",
+        userManagement: "사용자 관리",
+        allOrders: "모든 주문",
+        navigation: "관리자 내비게이션"
       }
     },
     common: {
@@ -255,6 +289,8 @@ const translations = {
       home: "Home",
       shop: "Shop",
       calculator: "Price Calculator",
+      services: "Services",
+      contact: "Contact",
       search: "AI Search",
       chat: "Commercial Chat",
       client: "Client",
@@ -302,21 +338,36 @@ const translations = {
         welcome: "Welcome to your client space",
         orders: "My Orders",
         profile: "My Profile",
-        support: "Support"
+        support: "Support",
+        catalog: "Catalog",
+        cart: "My Cart",
+        navigation: "Navigation"
       },
       commercial: {
         title: "Commercial Dashboard",
         welcome: "Welcome to your commercial space",
         leads: "Leads",
         clients: "Clients",
-        revenue: "Revenue"
+        revenue: "Revenue",
+        overview: "Overview",
+        newOrder: "New Order",
+        myClients: "My Clients",
+        dailyOrders: "Daily Orders",
+        commission: "Commission Calculator",
+        calendar: "Appointments Calendar",
+        navigation: "Commercial Navigation"
       },
       admin: {
         title: "Admin Dashboard",
         welcome: "Welcome to your administrator space",
         users: "Users",
         analytics: "Analytics",
-        settings: "Settings"
+        settings: "Settings",
+        overview: "Overview",
+        productManagement: "Product Management",
+        userManagement: "User Management",
+        allOrders: "All Orders",
+        navigation: "Admin Navigation"
       }
     },
     common: {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { PriceCalculator } from '@/components/PriceCalculator';
 import { CategoriesSection } from '@/components/CategoriesSection';
@@ -14,11 +13,22 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { CurrencySwitcher } from '@/components/CurrencySwitcher';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { PWAInstallButton } from '@/components/PWAInstallButton';
+import { Button } from '@/components/ui/button';
+import { User, LogIn, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@/hooks/use-toast';
+import { SEO } from '@/components/SEO';
+import { MobileNavigation } from '@/components/mobile/MobileNavigation';
+import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
+import { cn } from '@/lib/utils';
 
 const Index = () => {
   const { toast } = useToast();
+  const { user, profile, signOut } = useAuth();
+  const navigate = useNavigate();
+  const mobile = useMobileOptimizations();
 
   const handleDemoLogin = (role: 'client' | 'commercial' | 'admin') => {
     // Store demo session
@@ -44,8 +54,10 @@ const Index = () => {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full">
+    <>
+      <SEO />
+      <SidebarProvider>
+        <div className="min-h-screen w-full">
         {/* Mobile Header */}
         <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
           <div className="flex items-center justify-between px-4 py-3">
@@ -65,18 +77,53 @@ const Index = () => {
               <ThemeToggle />
               <CurrencySwitcher />
               <LanguageSwitcher />
+              
+              {/* Indicateur de connexion */}
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const dashboardRoutes = {
+                        client: '/client-dashboard',
+                        commercial: '/commercial-dashboard',
+                        admin: '/admin-dashboard',
+                      };
+                      navigate(dashboardRoutes[profile?.role || 'client']);
+                    }}
+                  >
+                    <User className="h-4 w-4 mr-1" />
+                    {profile?.name || 'Mon compte'}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => signOut()}
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/auth')}
+                >
+                  <LogIn className="h-4 w-4 mr-1" />
+                  Se connecter
+                </Button>
+              )}
             </div>
           </div>
         </header>
 
         <div className="flex min-h-screen">
-          <AppSidebar />
+          {!mobile.isMobile && <AppSidebar />}
           <div className="flex-1">
-            {/* Desktop Navigation */}
-            <div className="hidden lg:block">
-              <Navigation />
-            </div>
-            <main className="pt-16 lg:pt-0">
+            <main className={cn(
+              mobile.isMobile ? 'pt-16 pb-20' : 'pt-16 lg:pt-0'
+            )}>
               <HeroSection />
               <PriceCalculator />
               <CategoriesSection />
@@ -88,10 +135,14 @@ const Index = () => {
           </div>
         </div>
         
+        {/* Navigation mobile */}
+        {mobile.isMobile && <MobileNavigation />}
+        
         {/* PWA Install Prompt */}
         <PWAInstallPrompt />
       </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </>
   );
 };
 

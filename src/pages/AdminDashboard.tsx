@@ -2,387 +2,393 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { BarChart3, Users, ShoppingBag, Package, TrendingUp, Bell, Settings } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Users, 
+  Package, 
+  TrendingUp, 
+  DollarSign, 
+  BarChart3,
+  Settings,
+  Download,
+  Upload,
+  Bell,
+  MessageSquare,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Loader2
+} from 'lucide-react';
 import { AppSidebar } from '@/components/AppSidebar';
-import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { ProductManagement } from '@/components/admin/ProductManagement';
+import { useAllOrders, useOrderStats } from '@/hooks/useOrders';
+import { useProducts } from '@/hooks/useProducts';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
-
-const mockUsers = [
-  { id: 1, name: 'Jean Dupont', email: 'jean@email.com', role: 'Client', status: 'Actif', orders: 5 },
-  { id: 2, name: 'Marie Claire', email: 'marie@email.com', role: 'Commercial', status: 'Actif', sales: 15 },
-  { id: 3, name: 'Pierre Martin', email: 'pierre@email.com', role: 'Client', status: 'Inactif', orders: 2 }
-];
-
-const mockProducts = [
-  { id: 1, name: 'Samsung Galaxy S24', category: 'Électronique', stock: 15, price: 1200000 },
-  { id: 2, name: 'Hyundai Tucson 2024', category: 'Véhicules', stock: 3, price: 25000000 },
-  { id: 3, name: 'LG Réfrigérateur', category: 'Électroménager', stock: 8, price: 800000 }
-];
-
-const mockAllOrders = [
-  { id: 'CMD001', client: 'Jean Dupont', commercial: 'Marie Claire', products: 2, total: 1200000, status: 'En attente', date: '2024-01-15' },
-  { id: 'CMD002', client: 'Pierre Martin', commercial: 'Marie Claire', products: 1, total: 800000, status: 'En transit', date: '2024-01-14' },
-  { id: 'CMD003', client: 'Jean Dupont', commercial: 'Marie Claire', products: 3, total: 150000, status: 'Livré', date: '2024-01-13' }
-];
+import { SEO } from '@/components/SEO';
+import { MobileNavigation } from '@/components/mobile/MobileNavigation';
+import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
+import { StatsGridSkeleton, OrderListSkeleton } from '@/components/SkeletonLoaders';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
-  const [activeView, setActiveView] = useState('overview');
-  const [exchangeRate, setExchangeRate] = useState('0.45');
-  const [transportRate, setTransportRate] = useState('1500');
-  const { t } = useLanguage();
-  const { exchangeRates, setExchangeRates } = useCurrency();
-  
-  const totalRevenue = 45000000; // Mock data
-  const ordersInProgress = mockAllOrders.filter(order => order.status !== 'Livré').length;
-  const totalUsers = mockUsers.length;
-  const totalProducts = mockProducts.length;
+  const [activeTab, setActiveTab] = useState('overview');
+  const { profile } = useAuth();
+  const { formatPrice } = useCurrency();
+  const mobile = useMobileOptimizations();
 
-  const getStatusColor = (status: string) => {
+  // Hooks pour les données
+  const { data: ordersResult, isLoading: ordersLoading } = useAllOrders({ limit: 10 });
+  const { data: productsResult, isLoading: productsLoading } = useProducts({ limit: 5 });
+  const { data: statsResult, isLoading: statsLoading } = useOrderStats();
+
+  // Extraire les données
+  const orders = ordersResult?.data || [];
+  const products = productsResult?.data || [];
+  const stats = statsResult?.data || {
+    total: 0,
+    pending: 0,
+    confirmed: 0,
+    shipping: 0,
+    delivered: 0,
+    totalValue: 0,
+    avgOrderValue: 0
+  };
+
+  // Calculs pour le dashboard
+  const totalUsers = 150; // Vous pourriez récupérer cela de Supabase
+  const totalRevenue = stats.totalValue;
+  const growthRate = 12.5; // Pourcentage de croissance
+
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'En attente': return 'bg-yellow-500';
-      case 'En transit': return 'bg-blue-500';
-      case 'Livré': return 'bg-green-500';
-      case 'Actif': return 'bg-green-500';
-      case 'Inactif': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'pending': return <Clock className="w-4 h-4" />;
+      case 'confirmed': return <CheckCircle className="w-4 h-4" />;
+      case 'shipping': return <Package className="w-4 h-4" />;
+      case 'delivered': return <CheckCircle className="w-4 h-4" />;
+      default: return <AlertTriangle className="w-4 h-4" />;
     }
   };
 
-  const renderContent = () => {
-    switch (activeView) {
-      case 'overview':
-        return (
-          <div className="space-y-6">
-            <div className="grid md:grid-cols-4 gap-6">
-              <Card className="card-elevated bg-card border border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Chiffre d'affaires total</p>
-                      <p className="text-2xl font-bold text-primary">
-                        {totalRevenue.toLocaleString()} FCFA
-                      </p>
-                    </div>
-                    <TrendingUp className="w-8 h-8 text-primary" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="card-elevated bg-card border border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Commandes en cours</p>
-                      <p className="text-2xl font-bold text-accent">
-                        {ordersInProgress}
-                      </p>
-                    </div>
-                    <ShoppingBag className="w-8 h-8 text-accent" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="card-elevated bg-card border border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Utilisateurs</p>
-                      <p className="text-2xl font-bold text-secondary">
-                        {totalUsers}
-                      </p>
-                    </div>
-                    <Users className="w-8 h-8 text-secondary" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="card-elevated bg-card border border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Produits en stock</p>
-                      <p className="text-2xl font-bold text-primary">
-                        {totalProducts}
-                      </p>
-                    </div>
-                    <Package className="w-8 h-8 text-primary" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              <Card className="card-elevated bg-card border border-border">
-                <CardHeader>
-                  <CardTitle>Dernières Commandes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {mockAllOrders.slice(0, 3).map(order => (
-                      <div key={order.id} className="flex justify-between items-center p-3 bg-muted rounded-lg">
-                        <div>
-                          <h4 className="font-semibold">{order.id}</h4>
-                          <p className="text-sm text-muted-foreground">{order.client}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold">{order.total.toLocaleString()} FCFA</p>
-                          <Badge className={getStatusColor(order.status)}>
-                            {order.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="card-elevated bg-card border border-border">
-                <CardHeader>
-                  <CardTitle>Performance des Commerciaux</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
-                      <div>
-                        <h4 className="font-semibold">Marie Claire</h4>
-                        <p className="text-sm text-muted-foreground">Commercial</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold">15 ventes</p>
-                        <p className="text-sm text-secondary">Ce mois</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        );
-
-      case 'users':
-        return (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-foreground">Gestion Utilisateurs</h2>
-              <Button variant="default">Ajouter Utilisateur</Button>
-            </div>
-            <div className="space-y-4">
-              {mockUsers.map(user => (
-                <Card key={user.id} className="card-elevated bg-card border border-border">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold text-lg">{user.name}</h3>
-                        <p className="text-muted-foreground">{user.email}</p>
-                        <Badge variant="secondary">{user.role}</Badge>
-                      </div>
-                      <div className="text-right space-y-2">
-                        <Badge className={getStatusColor(user.status)}>
-                          {user.status}
-                        </Badge>
-                        <p className="text-sm">
-                          {user.orders ? `${user.orders} commandes` : `${user.sales} ventes`}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'products':
-        return (
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-foreground">Gestion Produits</h2>
-              <Button variant="default">Ajouter Produit</Button>
-            </div>
-            <div className="space-y-4">
-              {mockProducts.map(product => (
-                <Card key={product.id} className="card-elevated bg-card border border-border">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold text-lg">{product.name}</h3>
-                        <p className="text-muted-foreground">{product.category}</p>
-                        <p className="font-bold text-primary">
-                          {product.price.toLocaleString()} FCFA
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant={product.stock > 10 ? 'default' : 'destructive'}>
-                          Stock: {product.stock}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'orders':
-        return (
-          <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Toutes les Commandes</h2>
-            <div className="space-y-4">
-              {mockAllOrders.map(order => (
-                <Card key={order.id} className="card-elevated bg-card border border-border">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-semibold text-lg">{order.id}</h3>
-                        <p className="text-muted-foreground">Client: {order.client}</p>
-                        <p className="text-sm">Commercial: {order.commercial}</p>
-                        <p className="text-sm">Date: {order.date}</p>
-                      </div>
-                      <div className="text-right space-y-2">
-                        <p className="font-bold text-lg">{order.total.toLocaleString()} FCFA</p>
-                        <p className="text-sm">{order.products} produits</p>
-                        <Badge className={getStatusColor(order.status)}>
-                          {order.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'settings':
-        return (
-          <div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Paramètres Système</h2>
-            <div className="space-y-6 max-w-2xl">
-              <Card className="card-elevated bg-card border border-border">
-                <CardHeader>
-                  <CardTitle>Taux de Change</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <Label>Taux XAF vers KRW</Label>
-                    <Input
-                      type="number"
-                      step="0.001"
-                      value={exchangeRates.KRW}
-                      onChange={(e) => setExchangeRates({
-                        ...exchangeRates,
-                        KRW: parseFloat(e.target.value) || 0
-                      })}
-                    />
-                    <p className="text-sm text-muted-foreground mt-1">
-                      1 XAF = {exchangeRates.KRW} KRW
-                    </p>
-                  </div>
-                  <div>
-                    <Label>Taux XAF vers EUR</Label>
-                    <Input
-                      type="number"
-                      step="0.0001"
-                      value={exchangeRates.EUR}
-                      onChange={(e) => setExchangeRates({
-                        ...exchangeRates,
-                        EUR: parseFloat(e.target.value) || 0
-                      })}
-                    />
-                    <p className="text-sm text-muted-foreground mt-1">
-                      1 XAF = {exchangeRates.EUR} EUR
-                    </p>
-                  </div>
-                  <Button onClick={() => {
-                    localStorage.setItem('exchangeRates', JSON.stringify(exchangeRates));
-                  }}>
-                    Mettre à jour les taux
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="card-elevated bg-card border border-border">
-                <CardHeader>
-                  <CardTitle>Transport</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <Label>Prix par kg (FCFA)</Label>
-                    <Input
-                      type="number"
-                      value={transportRate}
-                      onChange={(e) => setTransportRate(e.target.value)}
-                    />
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Transport: {transportRate} FCFA/kg + 50,000 FCFA de base
-                    </p>
-                  </div>
-                  <Button>Mettre à jour les tarifs</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        );
-
-      default:
-        return <div>Fonctionnalité en cours de développement</div>;
-    }
+  const statusLabels = {
+    pending: 'En attente',
+    confirmed: 'Confirmée',
+    shipping: 'En transit',
+    delivered: 'Livrée'
   };
 
-  return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full flex bg-background">
-        <AppSidebar />
-        <div className="flex-1">
-          <Navigation />
-          <main className="p-6">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.admin.title')}</h1>
-              <p className="text-muted-foreground">{t('dashboard.admin.welcome')}</p>
-            </div>
-            
-            <div className="flex gap-4 mb-6 flex-wrap">
-              <Button 
-                variant={activeView === 'overview' ? 'default' : 'outline'}
-                onClick={() => setActiveView('overview')}
-              >
-                Vue d'ensemble
-              </Button>
-              <Button 
-                variant={activeView === 'users' ? 'default' : 'outline'}
-                onClick={() => setActiveView('users')}
-              >
-                {t('dashboard.admin.users')}
-              </Button>
-              <Button 
-                variant={activeView === 'products' ? 'default' : 'outline'}
-                onClick={() => setActiveView('products')}
-              >
-                Produits
-              </Button>
-              <Button 
-                variant={activeView === 'orders' ? 'default' : 'outline'}
-                onClick={() => setActiveView('orders')}
-              >
-                Commandes
-              </Button>
-              <Button 
-                variant={activeView === 'settings' ? 'default' : 'outline'}
-                onClick={() => setActiveView('settings')}
-              >
-                {t('dashboard.admin.settings')}
-              </Button>
-            </div>
+  // Vue d'ensemble
+  const renderOverview = () => (
+    <div className="space-y-6">
+      {/* Bienvenue */}
+      <div className="bg-gradient-to-r from-purple-500 to-blue-600 text-white p-6 rounded-lg">
+        <h2 className="text-2xl font-bold mb-2">
+          Bienvenue, {profile?.name} !
+        </h2>
+        <p className="text-purple-100">
+          Tableau de bord administrateur COREGAB
+        </p>
+      </div>
 
-            {renderContent()}
-          </main>
+      {/* Statistiques principales */}
+      {statsLoading ? (
+        <StatsGridSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total commandes</p>
+                  <p className="text-2xl font-bold">{stats.total}</p>
+                  <p className="text-xs text-green-600">+{growthRate}% ce mois</p>
+                </div>
+                <Package className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Revenus totaux</p>
+                  <p className="text-2xl font-bold">{formatPrice(totalRevenue, 'XAF')}</p>
+                  <p className="text-xs text-green-600">+8.2% ce mois</p>
+                </div>
+                <DollarSign className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Utilisateurs</p>
+                  <p className="text-2xl font-bold">{totalUsers}</p>
+                  <p className="text-xs text-green-600">+15 nouveaux</p>
+                </div>
+                <Users className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Produits actifs</p>
+                  <p className="text-2xl font-bold">{products.length}</p>
+                  <p className="text-xs text-blue-600">Catalogue complet</p>
+                </div>
+                <BarChart3 className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Commandes récentes */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Commandes récentes</CardTitle>
+          <Button variant="outline" size="sm" onClick={() => setActiveTab('orders')}>
+            Voir toutes
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {ordersLoading ? (
+            <OrderListSkeleton count={5} />
+          ) : orders.length === 0 ? (
+            <div className="text-center p-8">
+              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">Aucune commande pour le moment</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {orders.slice(0, 5).map((order: any) => (
+                <div key={order.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    {getStatusIcon(order.status)}
+                    <div>
+                      <p className="font-semibold">#{order.id.slice(0, 8)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {order.profiles?.name || 'Client'} • {order.products?.name || 'Produit'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant="secondary">
+                      {statusLabels[order.status as keyof typeof statusLabels]}
+                    </Badge>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {formatPrice(order.final_price_xaf, 'XAF')}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Actions rapides */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Button variant="outline" onClick={() => setActiveTab('products')}>
+          <Package className="w-4 h-4 mr-2" />
+          Gérer produits
+        </Button>
+        <Button variant="outline" onClick={() => setActiveTab('orders')}>
+          <TrendingUp className="w-4 h-4 mr-2" />
+          Voir commandes
+        </Button>
+        <Button variant="outline">
+          <Download className="w-4 h-4 mr-2" />
+          Exporter données
+        </Button>
+        <Button variant="outline">
+          <Settings className="w-4 h-4 mr-2" />
+          Paramètres
+        </Button>
+      </div>
+    </div>
+  );
+
+  // Vue des commandes
+  const renderOrders = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">Gestion des commandes</h2>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm">
+            <Download className="w-4 h-4 mr-2" />
+            Exporter
+          </Button>
+          <Button variant="outline" size="sm">
+            <Bell className="w-4 h-4 mr-2" />
+            Notifications
+          </Button>
         </div>
       </div>
-    </SidebarProvider>
+
+      {/* Statistiques des commandes */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-sm text-muted-foreground">En attente</p>
+            <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-sm text-muted-foreground">Confirmées</p>
+            <p className="text-2xl font-bold text-blue-600">{stats.confirmed}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-sm text-muted-foreground">En transit</p>
+            <p className="text-2xl font-bold text-purple-600">{stats.shipping}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-sm text-muted-foreground">Livrées</p>
+            <p className="text-2xl font-bold text-green-600">{stats.delivered}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Liste des commandes */}
+      {ordersLoading ? (
+        <OrderListSkeleton />
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order: any) => (
+            <Card key={order.id}>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    {getStatusIcon(order.status)}
+                    <div>
+                      <h3 className="font-semibold">#{order.id.slice(0, 8)}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {order.profiles?.name} • {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge variant="secondary">
+                    {statusLabels[order.status as keyof typeof statusLabels]}
+                  </Badge>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
+                      <Package className="w-6 h-6 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{order.products?.name || 'Produit'}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Quantité: {order.quantity} • {order.products?.category}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <p className="font-bold">{formatPrice(order.final_price_xaf, 'XAF')}</p>
+                    <div className="flex gap-1 mt-2">
+                      <Button size="sm" variant="outline">
+                        Voir détails
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      <SEO
+        title="Dashboard Administrateur - COREGAB"
+        description="Interface d'administration pour la gestion de la plateforme COREGAB"
+        noIndex={true}
+      />
+      
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          {!mobile.isMobile && <AppSidebar />}
+          
+          <div className="flex-1">
+            {/* Header */}
+            <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <div className="flex h-14 items-center justify-between px-4">
+                <div className="flex items-center gap-4">
+                  <SidebarTrigger className="lg:hidden" />
+                  <h1 className="text-xl font-semibold">Dashboard Admin</h1>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm">
+                    <Bell className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Contenu */}
+            <div className={cn(
+              'p-4 lg:p-6',
+              mobile.isMobile && 'pb-20' // Espace pour la navigation mobile
+            )}>
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className={cn(
+                  'grid w-full',
+                  mobile.isMobile ? 'grid-cols-2' : 'grid-cols-4'
+                )}>
+                  <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
+                  <TabsTrigger value="orders">Commandes</TabsTrigger>
+                  {!mobile.isMobile && <TabsTrigger value="products">Produits</TabsTrigger>}
+                  {!mobile.isMobile && <TabsTrigger value="analytics">Analytics</TabsTrigger>}
+                </TabsList>
+
+                <TabsContent value="overview" className="space-y-6">
+                  {renderOverview()}
+                </TabsContent>
+
+                <TabsContent value="orders">
+                  {renderOrders()}
+                </TabsContent>
+
+                <TabsContent value="products">
+                  <ProductManagement />
+                </TabsContent>
+
+                <TabsContent value="analytics" className="space-y-6">
+                  <div className="text-center p-8">
+                    <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">Analytics avancés</h3>
+                    <p className="text-muted-foreground">
+                      Fonctionnalité en cours de développement
+                    </p>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+        
+        {mobile.isMobile && <MobileNavigation />}
+      </SidebarProvider>
+    </>
   );
 }

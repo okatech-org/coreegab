@@ -1,365 +1,73 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { useToast } from '@/components/ui/use-toast';
-import { ArrowLeft, Phone, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { LoginForm } from '@/components/auth/LoginForm';
+import { SignupForm } from '@/components/auth/SignupForm';
+import { useAuth } from '@/contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 export default function PhoneAuth() {
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
+  const { user, profile, loading } = useAuth();
 
-  const handleSendOtp = async () => {
-    if (!phoneNumber || phoneNumber.length < 8) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez saisir un numéro de téléphone valide",
-        variant: "destructive"
-      });
-      return;
-    }
+  // Afficher un loader pendant le chargement
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+          <p className="text-muted-foreground">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
 
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setStep('otp');
-      toast({
-        title: "Code envoyé",
-        description: `Un code de vérification a été envoyé au ${phoneNumber}`,
-      });
-    }, 1500);
-  };
+  // Rediriger si l'utilisateur est déjà connecté
+  if (user && profile) {
+    const dashboardRoutes = {
+      client: '/client-dashboard',
+      commercial: '/commercial-dashboard',
+      admin: '/admin-dashboard',
+    };
+    
+    return <Navigate to={dashboardRoutes[profile.role]} replace />;
+  }
 
-  const handleVerifyOtp = async () => {
-    if (otpCode.length !== 6) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez saisir le code à 6 chiffres",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Demo logic: different codes redirect to different dashboards
-      if (otpCode === '123456') {
-        localStorage.setItem('userRole', 'client');
-        localStorage.setItem('isAuthenticated', 'true');
-        toast({
-          title: "Connexion réussie",
-          description: "Bienvenue dans votre espace client",
-        });
-        navigate('/client-dashboard');
-      } else if (otpCode === '654321') {
-        localStorage.setItem('userRole', 'commercial');
-        localStorage.setItem('isAuthenticated', 'true');
-        toast({
-          title: "Connexion réussie",
-          description: "Bienvenue dans votre espace commercial",
-        });
-        navigate('/commercial-dashboard');
-      } else if (otpCode === '111111') {
-        localStorage.setItem('userRole', 'admin');
-        localStorage.setItem('isAuthenticated', 'true');
-        toast({
-          title: "Connexion réussie",
-          description: "Bienvenue dans votre espace administrateur",
-        });
-        navigate('/admin-dashboard');
-      } else {
-        toast({
-          title: "Code incorrect",
-          description: "Le code de vérification est invalide. Codes démo: 123456 (client), 654321 (commercial), 111111 (admin)",
-          variant: "destructive"
-        });
-      }
-    }, 1000);
-  };
-
-  const resendCode = () => {
-    toast({
-      title: "Code renvoyé",
-      description: `Un nouveau code a été envoyé au ${phoneNumber}`,
-    });
+  const toggleMode = () => {
+    setMode(mode === 'login' ? 'signup' : 'login');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-orange-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
-            COREGAB
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Connectez-vous à votre compte
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <img 
+              src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
+              alt="COREGAB Logo" 
+              className="w-12 h-12"
+            />
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              COREGAB
+            </h1>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300">
+            Votre plateforme d'import depuis la Corée du Sud
           </p>
         </div>
 
-        <Card className="shadow-lg border-0">
-          <CardHeader className="text-center space-y-1">
-            <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              {step === 'phone' ? (
-                <Phone className="w-6 h-6 text-blue-600" />
-              ) : (
-                <Shield className="w-6 h-6 text-blue-600" />
-              )}
-            </div>
-            <CardTitle className="text-xl">
-              {step === 'phone' ? 'Numéro de téléphone' : 'Code de vérification'}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {step === 'phone' 
-                ? 'Entrez votre numéro pour recevoir un code de vérification'
-                : `Code envoyé au ${phoneNumber}`
-              }
-            </p>
-          </CardHeader>
+        {mode === 'login' ? (
+          <LoginForm onToggleMode={toggleMode} />
+        ) : (
+          <SignupForm onToggleMode={toggleMode} />
+        )}
 
-          <CardContent className="space-y-4">
-            {step === 'phone' ? (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Numéro de téléphone</Label>
-                  <div className="flex">
-                    <div className="flex items-center px-3 border border-r-0 rounded-l-md bg-muted text-sm">
-                      +241
-                    </div>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="XX XX XX XX"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="rounded-l-none"
-                      maxLength={10}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Format: 06 12 34 56 78 ou 07 12 34 56 78
-                  </p>
-                </div>
-
-                <Button 
-                  onClick={handleSendOtp} 
-                  className="w-full" 
-                  disabled={isLoading}
-                >
-                  {isLoading ? 'Envoi en cours...' : 'Recevoir le code'}
-                </Button>
-
-                {/* Section Démo - visible dès la première étape */}
-                <div className="space-y-3 pt-4 border-t">
-                  <div className="text-center">
-                    <p className="text-sm font-medium text-muted-foreground mb-3">
-                      💡 Mode Démonstration
-                    </p>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      Testez la plateforme avec des comptes pré-configurés
-                    </p>
-                  </div>
-                  
-                  <div className="grid grid-cols-3 gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'client');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès client activé",
-                        });
-                        navigate('/client-dashboard');
-                      }}
-                      className="text-xs flex flex-col h-auto py-3"
-                    >
-                      <span className="text-lg mb-1">👤</span>
-                      <span>Client</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'commercial');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès commercial activé",
-                        });
-                        navigate('/commercial-dashboard');
-                      }}
-                      className="text-xs flex flex-col h-auto py-3"
-                    >
-                      <span className="text-lg mb-1">💼</span>
-                      <span>Commercial</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'admin');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès admin activé",
-                        });
-                        navigate('/admin-dashboard');
-                      }}
-                      className="text-xs flex flex-col h-auto py-3"
-                    >
-                      <span className="text-lg mb-1">⚙️</span>
-                      <span>Admin</span>
-                    </Button>
-                  </div>
-
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <p className="text-xs font-medium text-blue-900 mb-1">Comptes de démonstration :</p>
-                    <div className="text-xs text-blue-800 space-y-1">
-                      <div>• <strong>Client</strong> - jean.dupont@email.com</div>
-                      <div>• <strong>Commercial</strong> - marie.martin@coregab.com</div>
-                      <div>• <strong>Admin</strong> - admin@coregab.com</div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="otp">Code de vérification</Label>
-                  <div className="flex justify-center">
-                    <InputOTP
-                      value={otpCode}
-                      onChange={(value) => setOtpCode(value)}
-                      maxLength={6}
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </div>
-                  <div className="text-center">
-                    <button 
-                      onClick={resendCode}
-                      className="text-sm text-blue-600 hover:underline"
-                    >
-                      Renvoyer le code
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Button 
-                    onClick={handleVerifyOtp} 
-                    className="w-full" 
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Vérification...' : 'Se connecter'}
-                  </Button>
-                  
-                  <Button 
-                    variant="ghost" 
-                    onClick={() => setStep('phone')}
-                    className="w-full"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Retour
-                  </Button>
-                </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <p className="text-xs font-medium text-blue-900 mb-1">Codes de démonstration :</p>
-                  <div className="text-xs text-blue-800 space-y-1">
-                    <div>• <span className="font-mono">123456</span> - Accès Client</div>
-                    <div>• <span className="font-mono">654321</span> - Accès Commercial</div>
-                    <div>• <span className="font-mono">111111</span> - Accès Administrateur</div>
-                  </div>
-                </div>
-
-                {/* Accès rapide démo */}
-                <div className="space-y-2">
-                  <p className="text-xs text-center text-muted-foreground">
-                    Ou connectez-vous directement avec un compte démo :
-                  </p>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'client');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès client activé",
-                        });
-                        navigate('/client-dashboard');
-                      }}
-                      className="text-xs"
-                    >
-                      👤 Client
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'commercial');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès commercial activé",
-                        });
-                        navigate('/commercial-dashboard');
-                      }}
-                      className="text-xs"
-                    >
-                      💼 Commercial
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        localStorage.setItem('userRole', 'admin');
-                        localStorage.setItem('isAuthenticated', 'true');
-                        toast({
-                          title: "Connexion démo",
-                          description: "Accès admin activé",
-                        });
-                        navigate('/admin-dashboard');
-                      }}
-                      className="text-xs"
-                    >
-                      ⚙️ Admin
-                    </Button>
-                  </div>
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        <div className="text-center mt-6">
-          <button
-            onClick={() => navigate('/')}
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            ← Retour à l'accueil
-          </button>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            En vous connectant, vous acceptez nos{' '}
+            <a href="#" className="underline hover:text-primary">
+              conditions d'utilisation
+            </a>
+          </p>
         </div>
       </div>
     </div>

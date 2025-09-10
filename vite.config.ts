@@ -15,4 +15,31 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Séparer les grosses librairies
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
+          'supabase-vendor': ['@supabase/supabase-js'],
+          'query-vendor': ['@tanstack/react-query'],
+          // Séparer les pages
+          'admin-pages': [
+            './src/pages/AdminDashboard.tsx',
+            './src/pages/AdminImport.tsx',
+          ],
+          'dashboard-pages': [
+            './src/pages/ClientDashboard.tsx',
+            './src/pages/CommercialDashboard.tsx',
+          ],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+    sourcemap: false, // Désactiver les sourcemaps en production
+  },
+  esbuild: {
+    drop: mode === 'production' ? ['console', 'debugger'] : [], // Supprimer console.log en production
+  },
 }));

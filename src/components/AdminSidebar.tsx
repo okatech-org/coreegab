@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -10,16 +11,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { BarChart3, Package, Users, ShoppingBag, Settings, TrendingUp } from 'lucide-react';
+import { BarChart3, Package, Users, ShoppingBag, Settings, TrendingUp, Home } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const navigationItems = [
-  { id: 'overview', title: 'Vue d\'ensemble', icon: BarChart3 },
-  { id: 'analytics', title: 'Analytiques', icon: TrendingUp },
-  { id: 'products', title: 'Gestion Produits', icon: Package },
-  { id: 'users', title: 'Gestion Utilisateurs', icon: Users },
-  { id: 'orders', title: 'Toutes les Commandes', icon: ShoppingBag },
-  { id: 'settings', title: 'Paramètres', icon: Settings },
-];
 
 interface AdminSidebarProps {
   activeView: string;
@@ -28,12 +22,26 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ activeView, onViewChange }: AdminSidebarProps) {
   const { state } = useSidebar();
+  const { t } = useLanguage();
+
+  const navigationItems = [
+    { id: 'overview', title: t('dashboard.admin.overview'), icon: BarChart3 },
+    { id: 'analytics', title: t('dashboard.admin.analytics'), icon: TrendingUp },
+    { id: 'products', title: t('dashboard.admin.productManagement'), icon: Package },
+    { id: 'users', title: t('dashboard.admin.userManagement'), icon: Users },
+    { id: 'orders', title: t('dashboard.admin.allOrders'), icon: ShoppingBag },
+    { id: 'settings', title: t('dashboard.admin.settings'), icon: Settings },
+  ];
+
+  const mainNavItems = [
+    { id: 'home', title: t('sidebar.home'), icon: Home, href: '/' },
+  ];
 
   return (
     <Sidebar className={state === "collapsed" ? "w-14" : "w-60"} collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation Admin</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('dashboard.admin.navigation')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => (

@@ -36,12 +36,15 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
             <Link to="/boutique" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
               {t('nav.shop')}
             </Link>
-            <Link to="#services" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
+            <Link to="/calculator" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
+              {t('nav.calculator')}
+            </Link>
+            <a href="/#services" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
               {t('nav.services')}
-            </Link>
-            <Link to="#contact" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
+            </a>
+            <a href="/#contact" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
               {t('nav.contact')}
-            </Link>
+            </a>
           </div>
           
           <div className="flex gap-3">

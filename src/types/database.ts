@@ -15,7 +15,7 @@ export interface Order {
   id: string;
   client_id: string;
   commercial_id?: string;
-  products: any; // JSONB
+  products: Record<string, unknown>; // JSONB
   supplier_price: number;
   transport_cost: number;
   customs_cost: number;

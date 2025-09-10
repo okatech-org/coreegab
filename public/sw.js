@@ -1,6 +1,6 @@
-const CACHE_NAME = 'coregab-v1.0.0';
-const STATIC_CACHE = 'coregab-static-v1';
-const DYNAMIC_CACHE = 'coregab-dynamic-v1';
+const CACHE_NAME = 'coregab-v1.0.1-dev';
+const STATIC_CACHE = 'coregab-static-v1-dev';
+const DYNAMIC_CACHE = 'coregab-dynamic-v1-dev';
 
 // Ressources critiques à mettre en cache
 const STATIC_RESOURCES = [
@@ -55,14 +55,12 @@ self.addEventListener('activate', (event) => {
   
   event.waitUntil(
     Promise.all([
-      // Nettoyer les anciens caches
+      // DÉVELOPPEMENT : Vider TOUS les caches pour éviter les problèmes
       caches.keys().then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-              console.log('[SW] Deleting old cache:', cacheName);
-              return caches.delete(cacheName);
-            }
+            console.log('[SW] Deleting cache:', cacheName);
+            return caches.delete(cacheName);
           })
         );
       }),
@@ -73,36 +71,30 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Stratégie de gestion des requêtes
+// Stratégie de gestion des requêtes - DÉSACTIVÉ POUR LE DÉVELOPPEMENT
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
   
-  // Ignorer les requêtes non-HTTP
-  if (!request.url.startsWith('http')) {
-    return;
-  }
-  
-  // Stratégie pour les ressources statiques
-  if (STATIC_RESOURCES.some(resource => request.url.includes(resource))) {
-    event.respondWith(cacheFirst(request, STATIC_CACHE));
-    return;
-  }
-  
-  // Stratégie pour les pages/routes
-  if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request, DYNAMIC_CACHE));
-    return;
-  }
-  
-  // Stratégie pour les API et autres ressources
-  if (url.origin === location.origin) {
-    event.respondWith(networkFirst(request, DYNAMIC_CACHE));
-    return;
-  }
-  
-  // Stratégie pour les ressources externes (fonts, CDN, etc.)
-  event.respondWith(cacheFirst(request, STATIC_CACHE));
+  // MODE DÉVELOPPEMENT : Toujours aller chercher sur le réseau
+  // Cela permet de voir immédiatement les modifications
+  event.respondWith(
+    fetch(request)
+      .then(response => {
+        console.log('[SW] Fetching from network:', request.url);
+        return response;
+      })
+      .catch(error => {
+        console.error('[SW] Network request failed:', error);
+        // En cas d'échec réseau, essayer le cache comme fallback
+        return caches.match(request).then(cached => {
+          if (cached) {
+            console.log('[SW] Fallback to cache:', request.url);
+            return cached;
+          }
+          return new Response('Network error', { status: 503 });
+        });
+      })
+  );
 });
 
 // Stratégie Cache First (pour les ressources statiques)

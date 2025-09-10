@@ -13,7 +13,9 @@ import {
   Menu,
   ShoppingBag,
   CreditCard,
-  MessageSquare
+  MessageSquare,
+  Settings,
+  Phone
 } from 'lucide-react';
 
 import {
@@ -42,6 +44,8 @@ export function AppSidebar() {
     { title: t('sidebar.home'), url: "/", icon: Home },
     { title: t('sidebar.shop'), url: "/boutique", icon: ShoppingBag },
     { title: t('sidebar.calculator'), url: "/calculator", icon: CreditCard },
+    { title: t('sidebar.services'), url: "/#services", icon: Settings },
+    { title: t('sidebar.contact'), url: "/#contact", icon: Phone },
   ];
 
   const demoItems = [
@@ -56,28 +60,27 @@ export function AppSidebar() {
   ];
 
   const isActive = (path: string) => currentPath === path;
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive 
-      ? "bg-sidebar-accent text-sidebar-primary font-medium border-l-2 border-sidebar-primary" 
-      : "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground";
+  const getNavCls = ({ isActive }: { isActive: boolean }) => {
+    if (isActive) {
+      return "bg-sidebar-accent text-sidebar-primary font-medium border-l-2 border-sidebar-primary";
+    } else {
+      return "text-sidebar-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground";
+    }
+  };
 
   return (
     <Sidebar className={`${collapsed ? "w-14" : "w-60"} sidebar-nav`} collapsible="icon" side="left">
       <SidebarContent className="p-2 lg:p-4">
         {/* Logo */}
         <div className="mb-6 lg:mb-8 px-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
               alt="COREGAB Logo" 
-              className="w-7 h-7 lg:w-8 lg:h-8"
+              className="w-8 h-8 lg:w-10 lg:h-10"
             />
             {!collapsed && (
-              <img 
-                src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
-                alt="COREGAB" 
-                className="h-6 lg:h-7 w-auto"
-              />
+              <span className="text-foreground font-bold text-xl lg:text-2xl">COREGAB</span>
             )}
           </div>
         </div>
@@ -92,14 +95,24 @@ export function AppSidebar() {
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="rounded-lg">
-                    <NavLink 
-                      to={item.url} 
-                      end 
-                      className={getNavCls}
-                    >
-                      <item.icon className="w-5 h-5 mr-3" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
+                    {item.url.includes('#') ? (
+                      <a 
+                        href={item.url}
+                        className={`${getNavCls({ isActive: isActive("/") })} flex items-center`}
+                      >
+                        <item.icon className="w-5 h-5 mr-3" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </a>
+                    ) : (
+                      <NavLink 
+                        to={item.url} 
+                        end 
+                        className={getNavCls}
+                      >
+                        <item.icon className="w-5 h-5 mr-3" />
+                        {!collapsed && <span>{item.title}</span>}
+                      </NavLink>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
