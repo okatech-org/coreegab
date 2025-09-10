@@ -158,6 +158,81 @@ export default function PhoneAuth() {
                 >
                   {isLoading ? 'Envoi en cours...' : 'Recevoir le code'}
                 </Button>
+
+                {/* Section Démo - visible dès la première étape */}
+                <div className="space-y-3 pt-4 border-t">
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-muted-foreground mb-3">
+                      💡 Mode Démonstration
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Testez la plateforme avec des comptes pré-configurés
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'client');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès client activé",
+                        });
+                        navigate('/client-dashboard');
+                      }}
+                      className="text-xs flex flex-col h-auto py-3"
+                    >
+                      <span className="text-lg mb-1">👤</span>
+                      <span>Client</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'commercial');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès commercial activé",
+                        });
+                        navigate('/commercial-dashboard');
+                      }}
+                      className="text-xs flex flex-col h-auto py-3"
+                    >
+                      <span className="text-lg mb-1">💼</span>
+                      <span>Commercial</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'admin');
+                        localStorage.setItem('isAuthenticated', 'true');
+                        toast({
+                          title: "Connexion démo",
+                          description: "Accès admin activé",
+                        });
+                        navigate('/admin-dashboard');
+                      }}
+                      className="text-xs flex flex-col h-auto py-3"
+                    >
+                      <span className="text-lg mb-1">⚙️</span>
+                      <span>Admin</span>
+                    </Button>
+                  </div>
+
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p className="text-xs font-medium text-blue-900 mb-1">Comptes de démonstration :</p>
+                    <div className="text-xs text-blue-800 space-y-1">
+                      <div>• <strong>Client</strong> - jean.dupont@email.com</div>
+                      <div>• <strong>Commercial</strong> - marie.martin@coregab.com</div>
+                      <div>• <strong>Admin</strong> - admin@coregab.com</div>
+                    </div>
+                  </div>
+                </div>
               </>
             ) : (
               <>
