@@ -8,6 +8,8 @@ import { Calculator, TrendingUp, DollarSign, Truck, Building } from 'lucide-reac
 import { AppSidebar } from '@/components/AppSidebar';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface PriceBreakdown {
   supplierPrice: number;
@@ -22,16 +24,19 @@ export default function CalculatorPage() {
   const [category, setCategory] = useState<string>('');
   const [weight, setWeight] = useState<string>('');
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
+  const { t } = useLanguage();
+  const { formatPrice, currency, exchangeRates } = useCurrency();
 
   const calculatePrice = () => {
     const krwValue = parseFloat(priceKRW) || 0;
     const weightValue = parseFloat(weight) || 0;
     
-    // Exchange rate: 1 KRW = 0.45 FCFA
-    const exchangeRate = 0.45;
+    // Convert from KRW to XAF using current exchange rates
+    // Since XAF is base currency, we need to convert KRW to XAF
+    const krwToXafRate = 1 / exchangeRates.KRW; // Inverse rate since XAF is base
     
-    // Calculations
-    const supplierPrice = krwValue * exchangeRate;
+    // Calculations in XAF
+    const supplierPrice = krwValue * krwToXafRate;
     const transportPrice = 50000 + (weightValue * 1500); // Base + price per kg
     const customsRate = category === 'vehicles' ? 0.30 : 0.20;
     const customsPrice = supplierPrice * customsRate;
@@ -47,14 +52,7 @@ export default function CalculatorPage() {
     });
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XAF',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(price);
-  };
+  // Remove the local formatPrice function since we use the one from context
 
   return (
     <SidebarProvider>
@@ -69,7 +67,7 @@ export default function CalculatorPage() {
                   <SidebarTrigger />
                   <div className="flex items-center gap-2">
                     <Calculator className="w-6 h-6 text-primary" />
-                    <h1 className="text-xl font-bold text-foreground">Calculateur de Prix</h1>
+                    <h1 className="text-xl font-bold text-foreground">{t('calculator.title')}</h1>
                   </div>
                 </div>
                 <ThemeToggle />
@@ -161,14 +159,14 @@ export default function CalculatorPage() {
                                 <Building className="w-4 h-4 text-muted-foreground" />
                                 <span className="text-muted-foreground">Prix Fournisseur:</span>
                               </div>
-                              <span className="font-semibold text-foreground">{formatPrice(breakdown.supplierPrice)}</span>
+                              <span className="font-semibold text-foreground">{formatPrice(breakdown.supplierPrice, 'XAF')}</span>
                             </div>
                             <div className="flex items-center justify-between py-2 border-b border-border">
                               <div className="flex items-center gap-2">
                                 <Truck className="w-4 h-4 text-muted-foreground" />
                                 <span className="text-muted-foreground">Transport:</span>
                               </div>
-                              <span className="font-semibold text-foreground">{formatPrice(breakdown.transportPrice)}</span>
+                              <span className="font-semibold text-foreground">{formatPrice(breakdown.transportPrice, 'XAF')}</span>
                             </div>
                           </div>
                           <div className="space-y-3">
@@ -177,20 +175,27 @@ export default function CalculatorPage() {
                                 <DollarSign className="w-4 h-4 text-muted-foreground" />
                                 <span className="text-muted-foreground">Douanes:</span>
                               </div>
-                              <span className="font-semibold text-foreground">{formatPrice(breakdown.customsPrice)}</span>
+                              <span className="font-semibold text-foreground">{formatPrice(breakdown.customsPrice, 'XAF')}</span>
                             </div>
                             <div className="flex items-center justify-between py-2 border-b border-border">
                               <div className="flex items-center gap-2">
                                 <TrendingUp className="w-4 h-4 text-muted-foreground" />
                                 <span className="text-muted-foreground">Notre Marge (35%):</span>
                               </div>
-                              <span className="font-semibold text-foreground">{formatPrice(breakdown.marginPrice)}</span>
+                              <span className="font-semibold text-foreground">{formatPrice(breakdown.marginPrice, 'XAF')}</span>
                             </div>
                           </div>
                         </div>
                         <div className="flex justify-between items-center py-4 text-xl font-bold text-primary border-t-2 border-primary/20 bg-primary/5 rounded-lg px-4">
                           <span>PRIX FINAL:</span>
-                          <span>{formatPrice(breakdown.finalPrice)}</span>
+                          <div className="text-right">
+                            <div>{formatPrice(breakdown.finalPrice, 'XAF')}</div>
+                            {currency !== 'XAF' && (
+                              <div className="text-sm text-muted-foreground">
+                                {formatPrice(breakdown.finalPrice, 'XAF', 'XAF')}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -205,7 +210,7 @@ export default function CalculatorPage() {
                     <Building className="w-12 h-12 text-primary mx-auto mb-4" />
                     <h3 className="font-semibold text-foreground mb-2">Prix Fournisseur</h3>
                     <p className="text-sm text-muted-foreground">
-                      Prix du produit en Corée converti en FCFA (taux: 1 KRW = 0.45 FCFA)
+                      Prix du produit en Corée converti selon le taux de change actuel: 1 KRW = {(1/exchangeRates.KRW).toFixed(3)} XAF
                     </p>
                   </CardContent>
                 </Card>

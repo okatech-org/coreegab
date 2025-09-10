@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { CurrencySwitcher } from './CurrencySwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NavigationProps {
@@ -38,6 +39,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
           </div>
           
           <div className="flex gap-3">
+            <CurrencySwitcher />
             <LanguageSwitcher />
             <ThemeToggle />
             <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-primary hover:text-primary-foreground">

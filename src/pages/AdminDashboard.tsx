@@ -9,6 +9,7 @@ import { AppSidebar } from '@/components/AppSidebar';
 import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 const mockUsers = [
   { id: 1, name: 'Jean Dupont', email: 'jean@email.com', role: 'Client', status: 'Actif', orders: 5 },
@@ -33,6 +34,7 @@ export default function AdminDashboard() {
   const [exchangeRate, setExchangeRate] = useState('0.45');
   const [transportRate, setTransportRate] = useState('1500');
   const { t } = useLanguage();
+  const { exchangeRates, setExchangeRates } = useCurrency();
   
   const totalRevenue = 45000000; // Mock data
   const ordersInProgress = mockAllOrders.filter(order => order.status !== 'Livré').length;
@@ -267,18 +269,40 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label>Taux KRW vers FCFA</Label>
+                    <Label>Taux XAF vers KRW</Label>
                     <Input
                       type="number"
-                      step="0.01"
-                      value={exchangeRate}
-                      onChange={(e) => setExchangeRate(e.target.value)}
+                      step="0.001"
+                      value={exchangeRates.KRW}
+                      onChange={(e) => setExchangeRates({
+                        ...exchangeRates,
+                        KRW: parseFloat(e.target.value) || 0
+                      })}
                     />
                     <p className="text-sm text-muted-foreground mt-1">
-                      1 KRW = {exchangeRate} FCFA
+                      1 XAF = {exchangeRates.KRW} KRW
                     </p>
                   </div>
-                  <Button>Mettre à jour le taux</Button>
+                  <div>
+                    <Label>Taux XAF vers EUR</Label>
+                    <Input
+                      type="number"
+                      step="0.0001"
+                      value={exchangeRates.EUR}
+                      onChange={(e) => setExchangeRates({
+                        ...exchangeRates,
+                        EUR: parseFloat(e.target.value) || 0
+                      })}
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">
+                      1 XAF = {exchangeRates.EUR} EUR
+                    </p>
+                  </div>
+                  <Button onClick={() => {
+                    localStorage.setItem('exchangeRates', JSON.stringify(exchangeRates));
+                  }}>
+                    Mettre à jour les taux
+                  </Button>
                 </CardContent>
               </Card>
 

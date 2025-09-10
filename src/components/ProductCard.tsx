@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Product } from "@/types/database";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +14,13 @@ export default function ProductCard({
   onOrder, 
   calculateFinalPrice 
 }: ProductCardProps) {
-  const finalPrice = calculateFinalPrice ? calculateFinalPrice(product) : product.price_krw;
+  const { formatPrice, currency } = useCurrency();
+  
+  // Use the calculateFinalPrice function if provided, otherwise use the base price
+  const basePrice = calculateFinalPrice ? calculateFinalPrice(product) : product.price_krw;
+  
+  // Format the price in the current currency
+  const displayPrice = formatPrice(basePrice, 'XAF');
   
   return (
     <Card className="card-elevated bg-card border border-border">
@@ -34,9 +41,16 @@ export default function ProductCard({
           </p>
         )}
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-primary">
-            {finalPrice.toLocaleString()} FCFA
-          </span>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-primary">
+              {displayPrice}
+            </span>
+            {currency !== 'XAF' && (
+              <span className="text-sm text-muted-foreground">
+                {formatPrice(basePrice, 'XAF', 'XAF')}
+              </span>
+            )}
+          </div>
           <Button 
             variant="default"
             size="sm"
