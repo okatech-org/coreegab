@@ -50,7 +50,7 @@ export const CategoriesSection = () => {
             return (
               <Card 
                 key={category.id} 
-                className="card-elevated bg-background border-none cursor-pointer group"
+                className="card-elevated bg-card border border-border cursor-pointer group"
               >
                 <CardContent className="p-6 text-center">
                   <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
@@ -76,7 +76,7 @@ export const CategoriesSection = () => {
           <h3 className="text-2xl font-bold mb-8 text-foreground">Produits Populaires</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockProducts.slice(0, 4).map((product) => (
-              <Card key={product.id} className="card-elevated">
+              <Card key={product.id} className="card-elevated bg-card border border-border">
                 <CardContent className="p-4">
                   <img 
                     src={product.image_url || '/placeholder.svg'} 

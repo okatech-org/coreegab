@@ -34,7 +34,7 @@ const steps = [
 
 export const ProcessTimeline = () => {
   return (
-    <section className="py-16 px-4 bg-white">
+    <section className="py-16 px-4 bg-muted/20">
       <div className="container mx-auto">
         <h3 className="text-3xl font-bold text-center mb-12 text-foreground">
           Comment ça marche ?
@@ -53,7 +53,7 @@ export const ProcessTimeline = () => {
                   <div className={`w-16 h-16 mx-auto mb-4 rounded-full ${step.color} flex items-center justify-center shadow-lg`}>
                     <IconComponent className="w-8 h-8 text-white" />
                   </div>
-                  <div className="bg-background p-4 rounded-xl card-elevated">
+                  <div className="bg-card border border-border p-4 rounded-xl card-elevated">
                     <h4 className="text-lg font-semibold mb-2 text-foreground">
                       {step.id}. {step.title}
                     </h4>

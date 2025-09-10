@@ -53,14 +53,14 @@ export const PriceCalculator = () => {
   };
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section className="py-16 px-4 bg-background">
       <div className="container mx-auto max-w-4xl">
         <h3 className="text-3xl font-bold text-center mb-8 text-foreground">
           Calculateur de Prix Instantané
         </h3>
-        <Card className="card-elevated bg-muted border-none">
+        <Card className="card-elevated bg-card border border-border">
           <CardHeader>
-            <CardTitle className="text-xl text-center">
+            <CardTitle className="text-xl text-center text-card-foreground">
               Obtenez votre devis en temps réel
             </CardTitle>
           </CardHeader>
@@ -117,7 +117,7 @@ export const PriceCalculator = () => {
             </div>
             
             {breakdown && (
-              <Card className="bg-background border-2 border-primary/20">
+              <Card className="bg-card border border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-lg">Détail du Prix:</CardTitle>
                 </CardHeader>
