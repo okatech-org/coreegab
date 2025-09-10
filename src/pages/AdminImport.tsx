@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Upload, FileText, Zap, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AdminSidebar } from '@/components/AdminSidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function AdminImport() {
   const [importMethod, setImportMethod] = useState('manual');
@@ -65,18 +66,23 @@ export default function AdminImport() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <div className="flex">
+    <SidebarProvider>
+      <div className="min-h-screen bg-muted/30 flex w-full">
         <AdminSidebar activeView="import" onViewChange={(view) => console.log(view)} />
         
-        <main className="flex-1 p-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Import de Produits</h1>
-              <p className="text-muted-foreground">
-                Ajoutez des produits à votre catalogue via différentes méthodes
-              </p>
-            </div>
+        <div className="flex-1">
+          <header className="h-12 flex items-center border-b bg-background">
+            <SidebarTrigger className="ml-4" />
+            <h1 className="ml-4 text-lg font-semibold">Import de Produits</h1>
+          </header>
+          <main className="p-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold mb-2">Import de Produits</h2>
+                <p className="text-muted-foreground">
+                  Ajoutez des produits à votre catalogue via différentes méthodes
+                </p>
+              </div>
 
             <Tabs value={importMethod} onValueChange={setImportMethod} className="space-y-6">
               <TabsList className="grid w-full grid-cols-3">
@@ -327,5 +333,6 @@ export default function AdminImport() {
         </main>
       </div>
     </div>
+  </SidebarProvider>
   );
 }
