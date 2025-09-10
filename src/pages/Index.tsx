@@ -4,6 +4,8 @@ import { HeroSection } from '@/components/HeroSection';
 import { PriceCalculator } from '@/components/PriceCalculator';
 import { CategoriesSection } from '@/components/CategoriesSection';
 import { ProcessTimeline } from '@/components/ProcessTimeline';
+import { ServicesSection } from '@/components/ServicesSection';
+import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { AppSidebar } from '@/components/AppSidebar';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -47,6 +49,8 @@ const Index = () => {
             <PriceCalculator />
             <CategoriesSection />
             <ProcessTimeline />
+            <ServicesSection />
+            <ContactSection />
             <Footer />
           </main>
         </div>

@@ -23,11 +23,10 @@ export const CurrencySwitcher = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
           <DollarSign className="h-4 w-4" />
-          <span className="hidden sm:inline">{currencies[currency].flag}</span>
-          <span className="text-xs">{currencies[currency].symbol}</span>
+          <span className="text-xs">{currencies[currency].name}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="end" className="min-w-[150px] bg-popover border border-border z-50">
         {Object.entries(currencies).map(([code, { name, symbol, flag }]) => (
           <DropdownMenuItem
             key={code}

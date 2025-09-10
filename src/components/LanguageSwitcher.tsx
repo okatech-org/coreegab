@@ -23,10 +23,10 @@ export const LanguageSwitcher = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
           <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{languages[language].flag}</span>
+          <span className="hidden sm:inline">{languages[language].name}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="end" className="min-w-[150px] bg-popover border border-border z-50">
         {Object.entries(languages).map(([code, { name, flag }]) => (
           <DropdownMenuItem
             key={code}
