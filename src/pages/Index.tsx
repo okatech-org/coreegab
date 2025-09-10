@@ -5,6 +5,7 @@ import { PriceCalculator } from '@/components/PriceCalculator';
 import { CategoriesSection } from '@/components/CategoriesSection';
 import { ProcessTimeline } from '@/components/ProcessTimeline';
 import { Footer } from '@/components/Footer';
+import DemoLogin from '@/components/DemoLogin';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -39,6 +40,7 @@ const Index = () => {
       <HeroSection onDemoLogin={handleDemoLogin} />
       <PriceCalculator />
       <CategoriesSection />
+      <DemoLogin onDemoLogin={handleDemoLogin} />
       <ProcessTimeline />
       <Footer />
     </div>

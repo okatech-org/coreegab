@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { ShoppingCart, Package, User, MessageCircle, Grid3X3 } from 'lucide-react';
+import { ShoppingCart, Package, User, MessageCircle, Grid3X3, Home } from 'lucide-react';
 
 const navigationItems = [
   { id: 'catalog', title: 'Catalogue', icon: Grid3X3 },
@@ -19,6 +19,10 @@ const navigationItems = [
   { id: 'orders', title: 'Mes Commandes', icon: Package },
   { id: 'profile', title: 'Mon Profil', icon: User },
   { id: 'support', title: 'Support', icon: MessageCircle },
+];
+
+const mainNavItems = [
+  { id: 'home', title: 'Accueil', icon: Home, href: '/' },
 ];
 
 interface ClientSidebarProps {
@@ -33,7 +37,25 @@ export function ClientSidebar({ activeView, onViewChange }: ClientSidebarProps) 
     <Sidebar className={state === "collapsed" ? "w-14" : "w-60"} collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation Client</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {mainNavItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton asChild>
+                    <NavLink to={item.href} className="cursor-pointer hover:bg-muted/50">
+                      <item.icon className="w-4 h-4" />
+                      {state !== "collapsed" && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => (

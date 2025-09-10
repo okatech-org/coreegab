@@ -6,26 +6,19 @@ import { Input } from '@/components/ui/input';
 import { ShoppingCart, Package, User, MessageCircle, Search, Bell } from 'lucide-react';
 import { ClientSidebar } from '@/components/ClientSidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import ProductCard from '@/components/ProductCard';
+import OrderStatus from '@/components/OrderStatus';
+import { mockProducts, mockOrders, calculateFinalPrice } from '@/data/mockData';
+import { Product } from '@/types/database';
 
-const mockProducts = [
-  { id: 1, name: 'Samsung Galaxy S24', price: 1200000, category: 'electronics', image: '📱', stock: 15 },
-  { id: 2, name: 'Hyundai Tucson 2024', price: 25000000, category: 'vehicles', image: '🚗', stock: 3 },
-  { id: 3, name: 'LG Réfrigérateur', price: 800000, category: 'appliances', image: '❄️', stock: 8 },
-  { id: 4, name: 'Pièces Hyundai', price: 150000, category: 'parts', image: '⚙️', stock: 25 }
-];
-
-const mockOrders = [
-  { id: 'CMD001', date: '2024-01-15', status: 'En attente', total: 1200000, items: 2 },
-  { id: 'CMD002', date: '2024-01-10', status: 'En transit', total: 800000, items: 1 },
-  { id: 'CMD003', date: '2024-01-05', status: 'Livré', total: 150000, items: 3 }
-];
+// Using real mock data from mockData.ts
 
 export default function ClientDashboard() {
   const [activeView, setActiveView] = useState('catalog');
   const [searchTerm, setSearchTerm] = useState('');
-  const [cart, setCart] = useState<typeof mockProducts>([]);
+  const [cart, setCart] = useState<Product[]>([]);
 
-  const addToCart = (product: typeof mockProducts[0]) => {
+  const addToCart = (product: Product) => {
     setCart(prev => [...prev, product]);
   };
 
@@ -61,26 +54,12 @@ export default function ClientDashboard() {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map(product => (
-                <Card key={product.id} className="card-elevated">
-                  <CardContent className="p-6">
-                    <div className="text-4xl mb-4 text-center">{product.image}</div>
-                    <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                    <p className="text-2xl font-bold text-primary mb-4">
-                      {product.price.toLocaleString()} FCFA
-                    </p>
-                    <div className="flex justify-between items-center mb-4">
-                      <Badge variant="secondary">Stock: {product.stock}</Badge>
-                      <Badge>{product.category}</Badge>
-                    </div>
-                    <Button 
-                      onClick={() => addToCart(product)}
-                      className="w-full"
-                      variant="default"
-                    >
-                      Ajouter au panier
-                    </Button>
-                  </CardContent>
-                </Card>
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onOrder={addToCart}
+                  calculateFinalPrice={calculateFinalPrice}
+                />
               ))}
             </div>
           </div>
@@ -91,21 +70,21 @@ export default function ClientDashboard() {
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Mes Commandes</h2>
             <div className="space-y-4">
-              {mockOrders.map(order => (
+              {mockOrders.slice(0, 3).map(order => (
                 <Card key={order.id} className="card-elevated">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
                         <h3 className="font-semibold text-lg">{order.id}</h3>
-                        <p className="text-muted-foreground">{order.date}</p>
+                        <p className="text-muted-foreground">{order.created_at.split('T')[0]}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-lg">{order.total.toLocaleString()} FCFA</p>
-                        <p className="text-sm text-muted-foreground">{order.items} articles</p>
+                        <p className="font-bold text-lg">{order.total_price.toLocaleString()} FCFA</p>
+                        <p className="text-sm text-muted-foreground">
+                          {Array.isArray(order.products) ? order.products.length : 1} articles
+                        </p>
                       </div>
-                      <Badge className={getStatusColor(order.status)}>
-                        {order.status}
-                      </Badge>
+                      <OrderStatus status={order.status} />
                     </div>
                   </CardContent>
                 </Card>
@@ -129,20 +108,24 @@ export default function ClientDashboard() {
                   <Card key={index} className="card-elevated">
                     <CardContent className="p-4 flex justify-between items-center">
                       <div className="flex items-center gap-4">
-                        <span className="text-2xl">{item.image}</span>
+                        <img 
+                          src={item.image_url || '/placeholder.svg'} 
+                          alt={item.name}
+                          className="w-12 h-12 object-cover rounded-lg"
+                        />
                         <div>
                           <h3 className="font-semibold">{item.name}</h3>
                           <p className="text-muted-foreground">{item.category}</p>
                         </div>
                       </div>
-                      <p className="font-bold text-lg">{item.price.toLocaleString()} FCFA</p>
+                      <p className="font-bold text-lg">{calculateFinalPrice(item).toLocaleString()} FCFA</p>
                     </CardContent>
                   </Card>
                 ))}
                 <Card className="bg-primary text-primary-foreground">
                   <CardContent className="p-6 text-center">
                     <p className="text-xl font-bold mb-4">
-                      Total: {cart.reduce((sum, item) => sum + item.price, 0).toLocaleString()} FCFA
+                      Total: {cart.reduce((sum, item) => sum + calculateFinalPrice(item), 0).toLocaleString()} FCFA
                     </p>
                     <Button variant="secondary" size="lg">
                       Finaliser la commande
