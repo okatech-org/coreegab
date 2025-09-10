@@ -12,6 +12,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { CurrencySwitcher } from '@/components/CurrencySwitcher';
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
+import { PWAInstallButton } from '@/components/PWAInstallButton';
 
 import { useToast } from '@/hooks/use-toast';
 
@@ -59,6 +61,7 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <PWAInstallButton variant="ghost" size="sm" />
               <ThemeToggle />
               <CurrencySwitcher />
               <LanguageSwitcher />
@@ -84,6 +87,9 @@ const Index = () => {
             </main>
           </div>
         </div>
+        
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
       </div>
     </SidebarProvider>
   );
