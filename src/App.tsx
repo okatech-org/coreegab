@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import ClientDashboard from "./pages/ClientDashboard";
 import CommercialDashboard from "./pages/CommercialDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Boutique from "./pages/Boutique";
+import AdminImport from "./pages/AdminImport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/commercial-dashboard" element={<CommercialDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/boutique" element={<Boutique />} />
+          <Route path="/admin/import" element={<AdminImport />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
