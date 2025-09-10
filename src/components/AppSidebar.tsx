@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   Home, 
   Users, 
@@ -28,28 +29,31 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const mainItems = [
-  { title: "Accueil", url: "/", icon: Home },
-  { title: "Boutique", url: "/boutique", icon: ShoppingBag },
-  { title: "Calcul Prix", url: "/calculator", icon: CreditCard },
-];
-
-const demoItems = [
-  { title: "Client", url: "/client-dashboard", icon: Users },
-  { title: "Commercial", url: "/commercial-dashboard", icon: MessageSquare },
-  { title: "Admin", url: "/admin-dashboard", icon: Box },
-];
-
-const quickStarts = [
-  { title: "Recherche IA", url: "/search", icon: Zap },
-  { title: "Chat Commercial", url: "/chat", icon: MessageSquare },
-];
+// Moved to component to use translations
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
   const currentPath = location.pathname;
+  const { t } = useLanguage();
+
+  const mainItems = [
+    { title: t('sidebar.home'), url: "/", icon: Home },
+    { title: t('sidebar.shop'), url: "/boutique", icon: ShoppingBag },
+    { title: t('sidebar.calculator'), url: "/calculator", icon: CreditCard },
+  ];
+
+  const demoItems = [
+    { title: t('sidebar.client'), url: "/client-dashboard", icon: Users },
+    { title: t('sidebar.commercial'), url: "/commercial-dashboard", icon: MessageSquare },
+    { title: t('sidebar.admin'), url: "/admin-dashboard", icon: Box },
+  ];
+
+  const quickStarts = [
+    { title: t('sidebar.search'), url: "/search", icon: Zap },
+    { title: t('sidebar.chat'), url: "/chat", icon: MessageSquare },
+  ];
 
   const isActive = (path: string) => currentPath === path;
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
@@ -73,7 +77,7 @@ export function AppSidebar() {
         {/* Main Navigation */}
         <SidebarGroup className="mb-6">
           <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
-            {!collapsed && "Navigation"}
+            {!collapsed && t('sidebar.main')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
@@ -98,7 +102,7 @@ export function AppSidebar() {
         {/* Demo Accounts */}
         <SidebarGroup className="mb-6">
           <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
-            {!collapsed && "Comptes Démo"}
+            {!collapsed && t('sidebar.demo')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
@@ -122,7 +126,7 @@ export function AppSidebar() {
         {/* Quick Starts */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-sidebar-foreground/70 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
-            {!collapsed && "Quick starts"}
+            {!collapsed && t('sidebar.quickStart')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">

@@ -2,12 +2,15 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface NavigationProps {
   onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
+  const { t } = useLanguage();
   return (
     <nav className="bg-background/95 backdrop-blur-sm shadow-lg fixed w-full z-50 border-b border-border">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -21,27 +24,28 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
         <div className="hidden md:flex items-center gap-8">
           <div className="flex gap-6">
             <Link to="/" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
-              Accueil
+              {t('nav.home')}
             </Link>
             <Link to="/boutique" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
-              Boutique
+              {t('nav.shop')}
             </Link>
             <Link to="#services" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
-              Services
+              {t('nav.services')}
             </Link>
             <Link to="#contact" className="text-foreground hover:text-primary transition-colors text-sm font-medium">
-              Contact
+              {t('nav.contact')}
             </Link>
           </div>
           
           <div className="flex gap-3">
+            <LanguageSwitcher />
             <ThemeToggle />
             <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-primary hover:text-primary-foreground">
-              Upgrade
+              {t('nav.upgrade')}
             </Button>
             <Link to="/auth">
               <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary-hover">
-                Se connecter
+                {t('nav.login')}
               </Button>
             </Link>
           </div>
