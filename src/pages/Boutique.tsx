@@ -66,20 +66,17 @@ export default function Boutique() {
           {/* Header principal avec recherche IA */}
           <header className="bg-card shadow-lg sticky top-0 z-40 border-b border-border">
             <div className="container mx-auto px-4 lg:px-6">
-              {/* Première ligne - Logo, Recherche, Actions */}
-              <div className="flex items-center justify-between py-3 lg:py-4 gap-3">
+              {/* Ligne unique - Recherche et Actions */}
+              <div className="flex items-center justify-between py-2 lg:py-3 gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <SidebarTrigger className="lg:hidden" />
-                  <h1 className="text-xl lg:text-2xl font-bold gradient-text whitespace-nowrap">
-                    COREGAB Shop
-                  </h1>
                 </div>
                 
                 {/* Barre de recherche - masquée sur mobile, visible sur desktop */}
-                <div className="hidden md:flex flex-1 max-w-2xl mx-4">
+                <div className="hidden md:flex flex-1 max-w-2xl">
                   <AISearchBar 
                     onSearch={handleSearch}
-                    placeholder="🤖 Recherche IA : 'téléphone Samsung récent' ou 'voiture familiale économique'"
+                    placeholder="Recherche IA : téléphone Samsung récent, voiture familiale économique..."
                   />
                 </div>
                 
@@ -97,57 +94,54 @@ export default function Boutique() {
                 </div>
               </div>
               
-              {/* Deuxième ligne mobile - Recherche visible uniquement sur mobile */}
-              <div className="md:hidden pb-3">
+              {/* Ligne mobile - Recherche visible uniquement sur mobile */}
+              <div className="md:hidden pb-2">
                 <AISearchBar 
                   onSearch={handleSearch}
-                  placeholder="🔍 Rechercher des produits..."
+                  placeholder="Rechercher des produits..."
                 />
               </div>
             </div>
           </header>
 
           <main>
-            {/* Navigation par segments - Responsive */}
+            {/* Navigation par segments - Responsive et Compact */}
             <div className="bg-card border-b border-border">
               <div className="container mx-auto px-4 lg:px-6">
-                {/* Desktop: Navigation horizontale */}
-                <div className="hidden lg:flex items-center gap-4 py-4 overflow-x-auto">
-                  <div className="flex items-center gap-4 min-w-max">
+                {/* Desktop: Navigation horizontale compacte */}
+                <div className="hidden lg:flex items-center gap-3 py-3 overflow-x-auto">
+                  <div className="flex items-center gap-3 min-w-max">
                     {/* Segment "Tous" */}
                     <button
                       onClick={() => setActiveSegment('all')}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
                         activeSegment === 'all' 
-                          ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
-                          : 'bg-muted hover:bg-muted/80 text-foreground hover:shadow-md'
+                          ? 'bg-primary text-primary-foreground shadow-md' 
+                          : 'bg-muted hover:bg-muted/80 text-foreground'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">🛍️</span>
                         <div className="text-left">
-                          <div className="font-semibold">Tous les produits</div>
+                          <div className="font-semibold text-sm">Tous les produits</div>
                           <div className="text-xs opacity-75">{mockProducts.length} produits</div>
                         </div>
                       </div>
                   </button>
                     {/* Segments principaux */}
                     {segmentStats.map((segment) => {
-                      const IconComponent = segmentIcons[segment.id as keyof typeof segmentIcons];
                       return (
                         <button
                           key={segment.id}
                           onClick={() => setActiveSegment(segment.id as keyof typeof boutiqueSegments)}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
+                          className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium whitespace-nowrap transition-all ${
                             activeSegment === segment.id 
-                              ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
-                              : 'bg-muted hover:bg-muted/80 text-foreground hover:shadow-md'
+                              ? 'bg-primary text-primary-foreground shadow-md' 
+                              : 'bg-muted hover:bg-muted/80 text-foreground'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <span className="text-xl">{segment.icon}</span>
+                          <div className="flex items-center gap-2">
                             <div className="text-left">
-                              <div className="font-semibold">{segment.name}</div>
+                              <div className="font-semibold text-sm">{segment.name}</div>
                               <div className="text-xs opacity-75">
                                 {segment.inStockProducts}/{segment.totalProducts} en stock
                               </div>
@@ -159,19 +153,18 @@ export default function Boutique() {
                   </div>
                 </div>
                 
-                {/* Mobile: Navigation en grille */}
-                <div className="lg:hidden py-4">
-                  <div className="grid grid-cols-2 gap-3">
+                {/* Mobile: Navigation en grille compacte */}
+                <div className="lg:hidden py-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {/* Segment "Tous" - Mobile */}
                     <button
                       onClick={() => setActiveSegment('all')}
-                      className={`flex flex-col items-center gap-2 px-3 py-4 rounded-xl font-medium transition-all ${
+                      className={`flex flex-col items-center gap-1 px-2 py-3 rounded-lg font-medium transition-all ${
                         activeSegment === 'all' 
-                          ? 'bg-primary text-primary-foreground shadow-lg' 
+                          ? 'bg-primary text-primary-foreground shadow-md' 
                           : 'bg-muted hover:bg-muted/80 text-foreground'
                       }`}
                     >
-                      <span className="text-2xl">🛍️</span>
                       <div className="text-center">
                         <div className="text-sm font-semibold">Tous</div>
                         <div className="text-xs opacity-75">{mockProducts.length}</div>
@@ -183,13 +176,12 @@ export default function Boutique() {
                       <button
                         key={segment.id}
                         onClick={() => setActiveSegment(segment.id as keyof typeof boutiqueSegments)}
-                        className={`flex flex-col items-center gap-2 px-3 py-4 rounded-xl font-medium transition-all ${
+                        className={`flex flex-col items-center gap-1 px-2 py-3 rounded-lg font-medium transition-all ${
                           activeSegment === segment.id 
-                            ? 'bg-primary text-primary-foreground shadow-lg' 
+                            ? 'bg-primary text-primary-foreground shadow-md' 
                             : 'bg-muted hover:bg-muted/80 text-foreground'
                         }`}
                       >
-                        <span className="text-2xl">{segment.icon}</span>
                         <div className="text-center">
                           <div className="text-sm font-semibold">{segment.name}</div>
                           <div className="text-xs opacity-75">
@@ -204,8 +196,8 @@ export default function Boutique() {
             </div>
 
             {/* Contenu principal */}
-            <div className="container mx-auto px-4 lg:px-6 py-6 lg:py-8">
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-6">
+              <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
                 {/* Sidebar Filtres - Masquée sur mobile */}
                 <aside className="w-72 hidden xl:block">
                   <FilterPanel onFiltersChange={handleFiltersChange} />
@@ -214,15 +206,15 @@ export default function Boutique() {
                 {/* Zone principale */}
                 <div className="flex-1">
                   {/* En-tête de section avec bouton filtres mobile */}
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                     <div className="flex-1">
-                      <h2 className="text-xl lg:text-2xl font-semibold mb-1 text-foreground">
+                      <h2 className="text-lg lg:text-xl font-semibold mb-1 text-foreground">
                         {activeSegment === 'all' 
                           ? 'Tous les produits' 
                           : boutiqueSegments[activeSegment].name
                         }
                       </h2>
-                      <p className="text-sm lg:text-base text-muted-foreground">
+                      <p className="text-sm text-muted-foreground">
                         <span className="font-semibold">{getFilteredProducts().filter(p => p.in_stock).length}</span> produits disponibles immédiatement
                       </p>
                     </div>
