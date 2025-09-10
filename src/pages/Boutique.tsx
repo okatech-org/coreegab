@@ -5,8 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, ShoppingCart, Sparkles } from 'lucide-react';
-import { mockProducts } from '@/data/mockData';
+import { mockProducts, calculateFinalPrice } from '@/data/mockData';
 import ProductCard from '@/components/ProductCard';
+import FilterPanel from '@/components/FilterPanel';
+import ProductGrid from '@/components/ProductGrid';
+import AISearchBar from '@/components/AISearchBar';
 import { useToast } from '@/components/ui/use-toast';
 
 const categories = [

@@ -9,6 +9,7 @@ import CommercialDashboard from "./pages/CommercialDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Boutique from "./pages/Boutique";
 import AdminImport from "./pages/AdminImport";
+import PhoneAuth from "./pages/PhoneAuth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<PhoneAuth />} />
           <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/commercial-dashboard" element={<CommercialDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />

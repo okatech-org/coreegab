@@ -31,6 +31,11 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
           </div>
           
           <div className="flex gap-2">
+            <Link to="/auth">
+              <Button variant="outline" size="sm">
+                Connexion
+              </Button>
+            </Link>
             <Button
               onClick={() => onDemoLogin('client')}
               variant="default"
