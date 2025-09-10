@@ -92,45 +92,51 @@ export const MobileOptimizedLayout: React.FC<MobileOptimizedLayoutProps> = ({
       )}
 
       {/* Informations de débogage (développement uniquement) */}
-      {showDeviceInfo && process.env.NODE_ENV === 'development' && (
-        <Card className="fixed bottom-4 right-4 z-40 w-64">
-          <CardContent className="p-3 text-xs space-y-1">
-            <div className="flex items-center gap-2 mb-2">
+      {showDeviceInfo && import.meta.env.DEV && (
+        <Card className="fixed bottom-16 left-2 right-2 sm:left-4 sm:right-auto sm:bottom-4 z-40 w-auto sm:w-60 max-w-[calc(100vw-1rem)] sm:max-w-none">
+          <CardContent className="p-2 text-[10px] sm:text-xs space-y-1">
+            <div className="flex items-center gap-1 mb-1">
               {mobile.isMobile && <Smartphone className="w-3 h-3" />}
               {mobile.isTablet && <Tablet className="w-3 h-3" />}
               {mobile.isDesktop && <Monitor className="w-3 h-3" />}
-              <span className="font-semibold">Device Info</span>
+              <span className="font-semibold text-[10px] sm:text-xs">Device Info</span>
             </div>
             
-            <div className="grid grid-cols-2 gap-1">
-              <span>Taille:</span>
-              <Badge variant="outline" className="text-xs">{mobile.screenSize}</Badge>
-              
-              <span>Orientation:</span>
-              <Badge variant="outline" className="text-xs">{mobile.orientation}</Badge>
-              
-              <span>Touch:</span>
-              <Badge variant={mobile.touchSupport ? "default" : "secondary"} className="text-xs">
-                {mobile.touchSupport ? 'Oui' : 'Non'}
-              </Badge>
-              
-              <span>Platform:</span>
-              <Badge variant="outline" className="text-xs">
-                {mobile.isIOS ? 'iOS' : mobile.isAndroid ? 'Android' : 'Other'}
-              </Badge>
-              
-              <span>Réseau:</span>
-              <Badge variant={isOnline ? "default" : "destructive"} className="text-xs">
-                {isOnline ? connectionType : 'Offline'}
-              </Badge>
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <span>Taille:</span>
+                <Badge variant="outline" className="text-[9px] px-1 py-0">{mobile.screenSize}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Orientation:</span>
+                <Badge variant="outline" className="text-[9px] px-1 py-0">{mobile.orientation}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Touch:</span>
+                <Badge variant={mobile.touchSupport ? "default" : "secondary"} className="text-[9px] px-1 py-0">
+                  {mobile.touchSupport ? 'Oui' : 'Non'}
+                </Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Platform:</span>
+                <Badge variant="outline" className="text-[9px] px-1 py-0">
+                  {mobile.isIOS ? 'iOS' : mobile.isAndroid ? 'Android' : 'Other'}
+                </Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Réseau:</span>
+                <Badge variant={isOnline ? "default" : "destructive"} className="text-[9px] px-1 py-0">
+                  {connectionType}
+                </Badge>
+              </div>
             </div>
             
-            <div className="text-xs text-muted-foreground mt-2">
+            <div className="text-[9px] text-muted-foreground mt-1 text-center">
               {mobile.viewportWidth}x{mobile.viewportHeight}
             </div>
             
             {gesture.type && (
-              <div className="text-xs text-blue-600">
+              <div className="text-[9px] text-blue-600 text-center">
                 Geste: {gesture.type} {gesture.direction}
               </div>
             )}

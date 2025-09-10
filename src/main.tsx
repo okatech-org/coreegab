@@ -8,7 +8,7 @@ import { MobileOptimizedLayout } from '@/components/MobileOptimizedLayout';
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
     <PWAProvider>
-      <MobileOptimizedLayout showDeviceInfo={process.env.NODE_ENV === 'development'}>
+      <MobileOptimizedLayout showDeviceInfo={false}>
         <App />
       </MobileOptimizedLayout>
     </PWAProvider>

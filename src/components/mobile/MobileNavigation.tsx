@@ -14,76 +14,118 @@ import {
   Bell,
   ShoppingCart,
   Package,
-  Settings
+  Settings,
+  Sun,
+  DollarSign,
+  Globe
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
 import { useCart } from '@/hooks/useCart';
 import { useNotifications } from '@/components/NotificationSystem';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { CurrencySwitcher } from '@/components/CurrencySwitcher';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { cn } from '@/lib/utils';
 
 export const MobileNavigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, profile } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const mobile = useMobileOptimizations();
   const { getCartCount } = useCart();
   const { unreadCount } = useNotifications();
   const location = useLocation();
 
-  // Navigation principale pour mobile
-  const mainNavItems = [
-    { to: '/', icon: Home, label: 'Accueil' },
-    { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-    { to: '/calculator', icon: Calculator, label: 'Calculateur' },
-    { to: '/search', icon: Search, label: 'Recherche' },
-  ];
+  // Navigation principale selon le statut de connexion et le rôle
+  const getMainNavItems = () => {
+    if (!user) {
+      // Utilisateur non connecté: Accueil, Boutique, Recherche, Calculateur, Menu
+      return [
+        { to: '/', icon: Home, label: 'Accueil' },
+        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
+        { to: '/search', icon: Search, label: 'Recherche' },
+        { to: '/calculator', icon: Calculator, label: 'Calculateur' },
+      ];
+    }
+    
+    if (profile?.role === 'client') {
+      // Client connecté: Boutique, Recherche, Panier, Profil, Menu
+      return [
+        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
+        { to: '/search', icon: Search, label: 'Recherche' },
+        { to: '/boutique?view=cart', icon: ShoppingCart, label: 'Panier', badge: getCartCount() > 0 ? getCartCount() : undefined },
+        { 
+          to: '/client-dashboard', 
+          icon: User, 
+          label: 'Profil',
+          badge: unreadCount > 0 ? unreadCount : undefined
+        },
+      ];
+    }
+    
+    if (profile?.role === 'admin') {
+      // Admin: Dashboard, Boutique, Produits, Utilisateurs, Menu
+      return [
+        { to: '/admin-dashboard', icon: Settings, label: 'Dashboard' },
+        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
+        { to: '/admin-import', icon: Package, label: 'Produits' },
+        { to: '/admin-dashboard', icon: User, label: 'Utilisateurs' },
+      ];
+    }
+    
+    if (profile?.role === 'commercial') {
+      // Commercial: Dashboard, Chat, Boutique, Commandes, Menu
+      return [
+        { to: '/commercial-dashboard', icon: MessageCircle, label: 'Dashboard' },
+        { to: '/commercial-chat', icon: MessageCircle, label: 'Chat' },
+        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
+        { to: '/orders', icon: Package, label: 'Commandes' },
+      ];
+    }
+    
+    // Par défaut (client)
+    return [
+      { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
+      { to: '/search', icon: Search, label: 'Recherche' },
+      { to: '/boutique', icon: ShoppingCart, label: 'Panier' },
+      { to: '/client-dashboard', icon: User, label: 'Profil' },
+    ];
+  };
 
-  // Navigation utilisateur
-  const userNavItems = user ? [
-    { 
-      to: profile?.role === 'admin' ? '/admin-dashboard' : 
-          profile?.role === 'commercial' ? '/commercial-dashboard' : 
-          '/client-dashboard', 
-      icon: User, 
-      label: 'Mon compte' 
-    },
-    { to: '/chat', icon: MessageCircle, label: 'Support' },
-  ] : [
-    { to: '/auth', icon: User, label: 'Se connecter' },
-  ];
+  const mainNavItems = getMainNavItems();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  // Barre de navigation fixe en bas (mobile)
+  // Barre de navigation fixe en bas (mobile) - ULTRA COMPACTE
   const BottomTabBar = () => (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border lg:hidden">
-      <div className="flex items-center justify-around py-2 px-4 max-w-md mx-auto">
-        {mainNavItems.map((item) => {
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border lg:hidden w-full max-w-full">
+      <div className="flex items-center justify-between py-1 px-1 w-full max-w-full">
+        {mainNavItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.to);
           
           return (
             <NavLink
-              key={item.to}
+              key={`${item.to}-${index}`}
               to={item.to}
               className={cn(
-                'flex flex-col items-center gap-1 p-2 rounded-lg min-w-[60px] transition-colors',
+                'flex flex-col items-center gap-0 p-1 rounded-md flex-1 max-w-[20%] transition-colors',
                 active 
                   ? 'text-primary bg-primary/10' 
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <div className="relative">
-                <Icon className="w-5 h-5" />
-                {item.to === '/boutique' && getCartCount() > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-4 w-4 p-0 text-xs rounded-full">
-                    {getCartCount()}
+                <Icon className="w-4 h-4" />
+                {item.badge && (
+                  <Badge className="absolute -top-1 -right-1 h-2 w-2 p-0 text-[8px] rounded-full flex items-center justify-center min-w-[8px]">
+                    {item.badge > 9 ? '9+' : item.badge}
                   </Badge>
                 )}
               </div>
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-[8px] font-medium leading-tight mt-0.5">{item.label}</span>
             </NavLink>
           );
         })}
@@ -91,18 +133,18 @@ export const MobileNavigation: React.FC = () => {
         {/* Menu burger pour plus d'options */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="sm" className="flex flex-col gap-1 p-2 min-w-[60px]">
+            <Button variant="ghost" size="sm" className="flex flex-col gap-0 p-1 flex-1 max-w-[20%]">
               <div className="relative">
-                <Menu className="w-5 h-5" />
+                <Menu className="w-4 h-4" />
                 {(unreadCount > 0 || !user) && (
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />
+                  <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-destructive rounded-full" />
                 )}
               </div>
-              <span className="text-xs font-medium">Menu</span>
+              <span className="text-[8px] font-medium leading-tight mt-0.5">Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[70vh]">
-            <div className="space-y-6 pt-4">
+          <SheetContent side="bottom" className="h-[70vh] max-w-full">
+            <div className="space-y-6 pt-4 max-w-full">
               <div className="text-center">
                 <h3 className="text-lg font-semibold">Menu COREGAB</h3>
                 {user && (
@@ -112,69 +154,225 @@ export const MobileNavigation: React.FC = () => {
                 )}
               </div>
 
-              {/* Navigation utilisateur */}
-              <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                  Compte
-                </h4>
-                {userNavItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
+              {/* Contenu selon le statut utilisateur */}
+              {!user ? (
+                // Utilisateur non connecté: Services, Contact, Paramètres
+                <>
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Informations
+                    </h4>
+                    
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setTimeout(() => {
+                          document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                    >
+                      <Settings className="w-5 h-5" />
+                      <span>Services</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setTimeout(() => {
+                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span>Contact</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Paramètres
+                    </h4>
+                    
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3">
+                        <DollarSign className="w-5 h-5" />
+                        <span>Devise</span>
+                      </div>
+                      <CurrencySwitcher />
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3">
+                        <Globe className="w-5 h-5" />
+                        <span>Langue</span>
+                      </div>
+                      <LanguageSwitcher />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Compte
+                    </h4>
                     <NavLink
-                      key={item.to}
-                      to={item.to}
+                      to="/auth"
                       onClick={() => setIsMenuOpen(false)}
                       className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
                     >
-                      <Icon className="w-5 h-5" />
-                      <span>{item.label}</span>
-                      {item.to.includes('dashboard') && unreadCount > 0 && (
-                        <Badge variant="destructive" className="ml-auto">
-                          {unreadCount}
-                        </Badge>
-                      )}
+                      <User className="w-5 h-5" />
+                      <span>Se connecter</span>
                     </NavLink>
-                  );
-                })}
-              </div>
+                  </div>
+                </>
+              ) : (
+                // Utilisateur connecté: Contenu adapté selon le rôle
+                <>
+                  {/* Navigation additionnelle selon le rôle */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Navigation
+                    </h4>
+                    
+                    {profile?.role === 'client' && (
+                      <>
+                        <NavLink
+                          to="/"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Home className="w-5 h-5" />
+                          <span>Accueil</span>
+                        </NavLink>
+                        <NavLink
+                          to="/calculator"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Calculator className="w-5 h-5" />
+                          <span>Calculateur</span>
+                        </NavLink>
+                        <NavLink
+                          to="/orders"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Package className="w-5 h-5" />
+                          <span>Mes commandes</span>
+                        </NavLink>
+                      </>
+                    )}
+                    
+                    {profile?.role === 'admin' && (
+                      <>
+                        <NavLink
+                          to="/"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Home className="w-5 h-5" />
+                          <span>Accueil</span>
+                        </NavLink>
+                        <NavLink
+                          to="/calculator"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Calculator className="w-5 h-5" />
+                          <span>Calculateur</span>
+                        </NavLink>
+                      </>
+                    )}
+                    
+                    {profile?.role === 'commercial' && (
+                      <>
+                        <NavLink
+                          to="/"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Home className="w-5 h-5" />
+                          <span>Accueil</span>
+                        </NavLink>
+                        <NavLink
+                          to="/calculator"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Calculator className="w-5 h-5" />
+                          <span>Calculateur</span>
+                        </NavLink>
+                      </>
+                    )}
 
-              {/* Actions rapides */}
-              <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                  Actions rapides
-                </h4>
-                
-                <NavLink
-                  to="/boutique"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  <span>Mon panier</span>
-                  {getCartCount() > 0 && (
-                    <Badge className="ml-auto">{getCartCount()}</Badge>
-                  )}
-                </NavLink>
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setTimeout(() => {
+                          document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                    >
+                      <Settings className="w-5 h-5" />
+                      <span>Services</span>
+                    </button>
 
-                {user && (
-                  <NavLink
-                    to="/orders"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                  >
-                    <Package className="w-5 h-5" />
-                    <span>Mes commandes</span>
-                  </NavLink>
-                )}
-              </div>
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setTimeout(() => {
+                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span>Contact</span>
+                    </button>
+                  </div>
 
-              {/* Informations de l'appareil (dev) */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="text-xs text-muted-foreground p-3 bg-muted rounded-lg">
-                  <p>📱 {mobile.screenSize} • {mobile.orientation}</p>
-                  <p>🌐 {mobile.isOnline ? 'En ligne' : 'Hors ligne'}</p>
-                  <p>📏 {mobile.viewportWidth}x{mobile.viewportHeight}</p>
-                </div>
+                  {/* Paramètres */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Paramètres
+                    </h4>
+                    
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3">
+                        <DollarSign className="w-5 h-5" />
+                        <span>Devise</span>
+                      </div>
+                      <CurrencySwitcher />
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted transition-colors">
+                      <div className="flex items-center gap-3">
+                        <Globe className="w-5 h-5" />
+                        <span>Langue</span>
+                      </div>
+                      <LanguageSwitcher />
+                    </div>
+                  </div>
+
+                  {/* Compte utilisateur */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Mon compte
+                    </h4>
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        signOut();
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                    >
+                      <User className="w-5 h-5" />
+                      <span>Se déconnecter</span>
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           </SheetContent>
@@ -196,7 +394,7 @@ export const useMobileNavigation = () => {
   
   // Calculer la hauteur de contenu disponible
   const contentHeight = mobile.isMobile 
-    ? `calc(100vh - ${mobile.safeAreaTop + mobile.safeAreaBottom + 120}px)` // 120px pour header + bottom nav
+    ? `calc(100vh - ${mobile.safeAreaTop + mobile.safeAreaBottom + 60}px)` // 60px pour bottom nav compacte
     : '100vh';
 
   return {

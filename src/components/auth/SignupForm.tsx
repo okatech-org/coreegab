@@ -58,7 +58,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto auth-card border-0">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Créer un compte</CardTitle>
         <p className="text-sm text-muted-foreground text-center">
@@ -75,7 +75,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
                 id="name"
                 type="text"
                 placeholder="Votre nom complet"
-                className="pl-10"
+                className="pl-10 auth-input"
                 {...register('name')}
               />
             </div>
@@ -92,7 +92,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
                 id="email"
                 type="email"
                 placeholder="votre@email.com"
-                className="pl-10"
+                className="pl-10 auth-input"
                 {...register('email')}
               />
             </div>
@@ -125,7 +125,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
-                className="pl-10 pr-10"
+                className="pl-10 pr-10 auth-input"
                 {...register('password')}
               />
               <button
@@ -149,7 +149,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
                 id="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="••••••••"
-                className="pl-10 pr-10"
+                className="pl-10 pr-10 auth-input"
                 {...register('confirmPassword')}
               />
               <button

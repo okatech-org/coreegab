@@ -6,6 +6,73 @@
 All colors MUST be HSL.
 */
 
+/* Global responsive fixes */
+html, body, #root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent horizontal scroll on all elements */
+* {
+  max-width: 100%;
+}
+
+/* Ensure images don't overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive typography and spacing */
+@media (max-width: 480px) {
+  /* Extra small mobile */
+  body {
+    font-size: 14px;
+  }
+  
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Mobile large / Tablet small */
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet */
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  /* Desktop */
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1441px) {
+  /* Large desktop */
+  body {
+    font-size: 18px;
+  }
+}
+
 @layer base {
   :root {
     /* Dark mode (default) - True black/gray theme like characterforge-imagix */
@@ -183,5 +250,111 @@ All colors MUST be HSL.
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+
+  /* Animations pour la page d'authentification */
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  /* Amélioration des formulaires d'auth */
+  .auth-card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .auth-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Amélioration des inputs sur fond d'image */
+  .auth-card .auth-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  .auth-card .auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .dark .auth-card .auth-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+
+  .dark .auth-card .auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Amélioration du texte sur fond d'image */
+  .auth-card .text-foreground {
+    color: white !important;
+  }
+
+  .auth-card .text-muted-foreground {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .auth-card label {
+    color: white !important;
+    font-weight: 500;
+  }
+
+  .auth-card .text-destructive {
+    color: #ef4444 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Effets de focus améliorés pour les inputs */
+  .auth-card .auth-input:focus {
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+    border-color: rgb(96, 165, 250);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark .auth-card .auth-input:focus {
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+    border-color: rgb(96, 165, 250);
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Amélioration des boutons sur fond d'image */
+  .auth-card .bg-primary {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+
+  .auth-card .bg-primary:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
   }
 }

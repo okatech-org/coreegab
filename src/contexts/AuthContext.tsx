@@ -21,6 +21,7 @@ interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, name: string, role?: UserRole) => Promise<{ error: AuthError | null }>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signInDemo: (role: UserRole) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: AuthError | null }>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
   isAdmin: boolean;
@@ -48,6 +49,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  // Vérifier les sessions démo
+  const checkDemoSession = () => {
+    const isDemo = localStorage.getItem('isDemo') === 'true';
+    const userRole = localStorage.getItem('userRole') as UserRole;
+    
+    if (isDemo && userRole) {
+      const demoProfile: Profile = {
+        id: 'demo-user',
+        email: `demo-${userRole}@coregab.com`,
+        name: `Utilisateur Démo ${userRole.charAt(0).toUpperCase() + userRole.slice(1)}`,
+        role: userRole,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      
+      const demoUser = {
+        id: 'demo-user',
+        email: demoProfile.email,
+      } as User;
+      
+      setUser(demoUser);
+      setProfile(demoProfile);
+      return true;
+    }
+    return false;
+  };
 
   // Charger le profil utilisateur
   const loadProfile = async (userId: string) => {
@@ -170,31 +198,79 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Connexion démo
+  const signInDemo = async (role: UserRole) => {
+    try {
+      setLoading(true);
+      
+      // Stocker les informations de session démo
+      localStorage.setItem('userRole', role);
+      localStorage.setItem('isDemo', 'true');
+      
+      // Créer le profil démo
+      checkDemoSession();
+      
+      toast({
+        title: `Accès Démo ${role.charAt(0).toUpperCase() + role.slice(1)}`,
+        description: "Bienvenue dans l'environnement de démonstration !",
+      });
+
+      return { error: null };
+    } catch (error) {
+      console.error('Demo sign in error:', error);
+      return { error };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Déconnexion
   const signOut = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signOut();
       
-      if (error) {
+      // Vérifier si c'est une session démo
+      const isDemo = localStorage.getItem('isDemo') === 'true';
+      
+      if (isDemo) {
+        // Nettoyer la session démo
+        localStorage.removeItem('isDemo');
+        localStorage.removeItem('userRole');
+        
+        setUser(null);
+        setProfile(null);
+        setSession(null);
+        
         toast({
-          title: "Erreur de déconnexion",
-          description: error.message,
-          variant: "destructive",
+          title: "Session démo terminée",
+          description: "À bientôt sur COREGAB !",
         });
-        return { error };
+
+        return { error: null };
+      } else {
+        // Déconnexion Supabase normale
+        const { error } = await supabase.auth.signOut();
+        
+        if (error) {
+          toast({
+            title: "Erreur de déconnexion",
+            description: error.message,
+            variant: "destructive",
+          });
+          return { error };
+        }
+
+        setUser(null);
+        setProfile(null);
+        setSession(null);
+        
+        toast({
+          title: "Déconnexion réussie",
+          description: "À bientôt sur COREGAB !",
+        });
+
+        return { error: null };
       }
-
-      setUser(null);
-      setProfile(null);
-      setSession(null);
-      
-      toast({
-        title: "Déconnexion réussie",
-        description: "À bientôt sur COREGAB !",
-      });
-
-      return { error: null };
     } catch (error) {
       console.error('Sign out error:', error);
       return { error: error as AuthError };
@@ -239,6 +315,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Récupérer la session actuelle
     const getSession = async () => {
+      // Vérifier d'abord les sessions démo
+      if (checkDemoSession()) {
+        setLoading(false);
+        return;
+      }
+      
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setUser(session?.user ?? null);
@@ -285,6 +367,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loading,
     signUp,
     signIn,
+    signInDemo,
     signOut,
     updateProfile,
     isAdmin,

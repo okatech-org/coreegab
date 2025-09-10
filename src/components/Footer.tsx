@@ -7,7 +7,15 @@ export const Footer = () => {
       <div className="container mx-auto">
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            <h3 className="text-2xl font-bold gradient-text mb-4">COREGAB</h3>
+            {/* Logo COREGAB */}
+            <div className="flex justify-center md:justify-start items-center mb-4">
+              <img 
+                src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
+                alt="COREGAB Logo" 
+                className="w-8 h-8"
+              />
+              <span className="text-foreground font-bold text-xl ml-2">COREGAB</span>
+            </div>
             <p className="text-muted-foreground text-sm">
               Votre partenaire de confiance pour l'import de produits coréens au Gabon
             </p>

@@ -7,20 +7,15 @@ import { ServicesSection } from '@/components/ServicesSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
 import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { CurrencySwitcher } from '@/components/CurrencySwitcher';
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
-import { PWAInstallButton } from '@/components/PWAInstallButton';
-import { Button } from '@/components/ui/button';
-import { User, LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@/hooks/use-toast';
 import { SEO } from '@/components/SEO';
 import { MobileNavigation } from '@/components/mobile/MobileNavigation';
+import { MobileHeader } from '@/components/mobile/MobileHeader';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
 import { cn } from '@/lib/utils';
 
@@ -58,65 +53,7 @@ const Index = () => {
       <SEO />
       <SidebarProvider>
         <div className="min-h-screen w-full">
-        {/* Mobile Header */}
-        <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-          <div className="flex items-center justify-between px-4 py-3">
-            <div className="flex items-center gap-3">
-              <SidebarTrigger className="p-2 hover:bg-muted rounded-md" />
-              <div className="flex items-center gap-1">
-                <img 
-                  src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-                  alt="COREGAB Logo" 
-                  className="w-11 h-11"
-                />
-                <span className="text-foreground font-bold text-2xl">COREGAB</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <PWAInstallButton variant="ghost" size="sm" />
-              <ThemeToggle />
-              <CurrencySwitcher />
-              <LanguageSwitcher />
-              
-              {/* Indicateur de connexion */}
-              {user ? (
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      const dashboardRoutes = {
-                        client: '/client-dashboard',
-                        commercial: '/commercial-dashboard',
-                        admin: '/admin-dashboard',
-                      };
-                      navigate(dashboardRoutes[profile?.role || 'client']);
-                    }}
-                  >
-                    <User className="h-4 w-4 mr-1" />
-                    {profile?.name || 'Mon compte'}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => signOut()}
-                  >
-                    <LogOut className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate('/auth')}
-                >
-                  <LogIn className="h-4 w-4 mr-1" />
-                  Se connecter
-                </Button>
-              )}
-            </div>
-          </div>
-        </header>
+        <MobileHeader />
 
         <div className="flex min-h-screen">
           {!mobile.isMobile && <AppSidebar />}
