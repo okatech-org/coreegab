@@ -55,11 +55,7 @@ const Index = () => {
                   alt="COREGAB Logo" 
                   className="w-8 h-8"
                 />
-                <img 
-                  src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
-                  alt="COREGAB" 
-                  className="h-6 w-auto"
-                />
+                <span className="text-foreground font-bold text-lg">COREGAB</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
