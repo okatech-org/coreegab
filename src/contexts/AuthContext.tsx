@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { toast } = useToast();
 
   // Vérifier les sessions démo
-  const checkDemoSession = () => {
+  const checkDemoSession = useCallback(() => {
     const isDemo = localStorage.getItem('isDemo') === 'true';
     const userRole = localStorage.getItem('userRole') as UserRole;
     
@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return true;
     }
     return false;
-  };
+  }, []);
 
   // Charger le profil utilisateur
   const loadProfile = async (userId: string) => {
@@ -339,6 +339,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       async (event, session) => {
         console.log('Auth state change:', event, session);
         
+        // Ne pas écraser les sessions démo
+        const isDemo = localStorage.getItem('isDemo') === 'true';
+        if (isDemo) {
+          console.log('Demo session active, ignoring Supabase auth change');
+          return;
+        }
+        
         setSession(session);
         setUser(session?.user ?? null);
 
@@ -352,8 +359,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     );
 
-    return () => subscription.unsubscribe();
-  }, []);
+    // Écouter les changements dans localStorage pour maintenir les sessions démo
+    const handleStorageChange = () => {
+      const isDemo = localStorage.getItem('isDemo') === 'true';
+      if (isDemo) {
+        checkDemoSession();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [checkDemoSession]);
 
   // Rôles helpers
   const isAdmin = profile?.role === 'admin';

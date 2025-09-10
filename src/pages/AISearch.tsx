@@ -3,40 +3,38 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Sparkles, TrendingUp, Zap } from 'lucide-react';
-import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { mockProducts } from '@/data/mockData';
-import ProductCard from '@/components/ProductCard';
+import { AISearchResults } from '@/components/AISearchResults';
+import { aiService, AISearchResponse } from '@/services/aiService';
 
 export default function AISearchPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResponse, setSearchResponse] = useState<AISearchResponse | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-
-  const popularSearches = [
-    "Samsung Galaxy S24 récent",
-    "Réfrigérateur économique LG", 
-    "Voiture familiale Hyundai",
-    "Pièces détachées originales",
-    "Smartphone sous 500,000 FCFA"
-  ];
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
     
     setIsSearching(true);
+    setError(null);
     
-    // Simulation de recherche IA
-    setTimeout(() => {
-      const filtered = mockProducts.filter(product =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase()) ||
-        product.description?.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(filtered);
+    try {
+      const response = await aiService.searchWithAI(query);
+      setSearchResponse(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      setSearchResponse(null);
+    } finally {
       setIsSearching(false);
-    }, 1500);
+    }
+  };
+
+  const handleRetry = () => {
+    if (searchQuery.trim()) {
+      handleSearch(searchQuery);
+    }
   };
 
   const handleQuickSearch = (query: string) => {
@@ -45,185 +43,160 @@ export default function AISearchPage() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full flex bg-background">
-        <AppSidebar />
-        <div className="flex-1">
-          {/* Header */}
-          <header className="bg-card shadow-lg sticky top-0 z-40 border-b border-border">
-            <div className="container mx-auto px-4 lg:px-6 py-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <SidebarTrigger />
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-primary" />
-                    <h1 className="text-xl font-bold text-foreground">Recherche IA</h1>
-                  </div>
+    <div className="min-h-screen w-full bg-background">
+      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
+        <NewVerticalMenu />
+      </div>
+      <div className="flex-1 lg:pl-[340px]">
+        {/* Header */}
+        <header className="bg-card shadow-lg sticky top-0 z-40 border-b border-border">
+          <div className="container mx-auto px-4 lg:px-6 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-6 h-6 text-blue-500" />
+                  <h1 className="text-xl font-bold text-foreground">Recherche IA</h1>
                 </div>
-                <ThemeToggle />
               </div>
+              <ThemeToggle />
             </div>
-          </header>
+          </div>
+        </header>
 
-          <main className="container mx-auto px-4 lg:px-6 py-8">
-            <div className="max-w-4xl mx-auto">
-              {/* Hero Section */}
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-sm font-medium">Recherche Intelligente</span>
-                </div>
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Trouvez exactement ce que vous cherchez
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Notre IA comprend vos besoins et vous propose les meilleurs produits coréens
-                </p>
+        <main className="container mx-auto px-4 lg:px-6 py-8">
+          <div className="max-w-6xl mx-auto">
+            {/* Hero Section */}
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Sparkles className="w-8 h-8 text-blue-500" />
+                <h2 className="text-3xl font-bold text-foreground">Recherche Intelligente</h2>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Trouvez exactement ce que vous cherchez grâce à notre intelligence artificielle avancée
+              </p>
+            </div>
 
-                {/* Search Bar */}
-                <div className="relative max-w-2xl mx-auto mb-8">
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            {/* Search Bar */}
+            <Card className="mb-8">
+              <CardContent className="p-6">
+                <div className="flex gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
-                      placeholder="Décrivez ce que vous cherchez... (ex: téléphone Samsung récent avec bonne caméra)"
+                      type="text"
+                      placeholder="Décrivez ce que vous cherchez..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 h-12 text-lg"
                       onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                      className="pl-12 pr-24 h-14 text-lg bg-background border-border"
                     />
-                    <Button
-                      onClick={() => handleSearch(searchQuery)}
-                      disabled={!searchQuery.trim() || isSearching}
-                      className="absolute right-2 top-2 h-10 bg-primary hover:bg-primary-hover"
-                    >
-                      {isSearching ? (
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        <Sparkles className="w-4 h-4" />
-                      )}
-                    </Button>
                   </div>
+                  <Button 
+                    onClick={() => handleSearch(searchQuery)}
+                    disabled={isSearching}
+                    className="h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {isSearching ? (
+                      <Zap className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <>
+                        <Search className="w-5 h-5 mr-2" />
+                        Rechercher
+                      </>
+                    )}
+                  </Button>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Popular Searches */}
-              {!searchResults.length && !isSearching && (
-                <Card className="bg-card border border-border mb-8">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-foreground">
-                      <TrendingUp className="w-5 h-5 text-primary" />
-                      Essayez ces recherches populaires
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {popularSearches.map((search, index) => (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          onClick={() => handleQuickSearch(search)}
-                          className="h-auto p-4 text-left justify-start bg-background hover:bg-muted border-border"
-                        >
-                          <div>
-                            <div className="font-medium text-foreground">{search}</div>
-                          </div>
-                        </Button>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Search Results */}
-              {isSearching && (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center gap-3 text-primary">
-                    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                    <span className="text-lg font-medium">Recherche en cours...</span>
-                  </div>
-                  <p className="text-muted-foreground mt-2">Notre IA analyse votre demande</p>
-                </div>
-              )}
-
-              {searchResults.length > 0 && !isSearching && (
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <Sparkles className="w-6 h-6 text-primary" />
-                    <h3 className="text-xl font-semibold text-foreground">
-                      {searchResults.length} résultat{searchResults.length > 1 ? 's' : ''} trouvé{searchResults.length > 1 ? 's' : ''}
-                    </h3>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {searchResults.map((product) => (
-                      <ProductCard
-                        key={product.id}
-                        product={product}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {searchQuery && searchResults.length === 0 && !isSearching && (
-                <Card className="bg-card border border-border text-center py-12">
-                  <CardContent>
-                    <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-2">
-                      Aucun résultat trouvé
-                    </h3>
-                    <p className="text-muted-foreground mb-4">
-                      Essayez de reformuler votre recherche ou utilisez des termes plus généraux
-                    </p>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSearchResults([]);
-                      }}
-                    >
-                      Nouvelle recherche
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Features */}
-              <div className="grid md:grid-cols-3 gap-6 mt-12">
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-6 text-center">
-                    <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <h3 className="font-semibold text-foreground mb-2">IA Avancée</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Notre intelligence artificielle comprend vos besoins en langage naturel
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-6 text-center">
-                    <Search className="w-12 h-12 text-secondary mx-auto mb-4" />
-                    <h3 className="font-semibold text-foreground mb-2">Recherche Contextuelle</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Trouvez des produits basés sur l'usage, le budget et les préférences
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-card border border-border">
-                  <CardContent className="p-6 text-center">
-                    <TrendingUp className="w-12 h-12 text-accent mx-auto mb-4" />
-                    <h3 className="font-semibold text-foreground mb-2">Recommandations</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Suggestions personnalisées basées sur vos recherches précédentes
-                    </p>
-                  </CardContent>
-                </Card>
+            {/* Quick Search Suggestions */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Recherches populaires</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Smartphones Samsung',
+                  'Cosmétiques coréens',
+                  'Vêtements K-pop',
+                  'Électronique gaming',
+                  'Produits de beauté'
+                ].map((suggestion) => (
+                  <Button
+                    key={suggestion}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleQuickSearch(suggestion)}
+                    className="h-8 border-blue-200 text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950"
+                  >
+                    {suggestion}
+                  </Button>
+                ))}
               </div>
             </div>
-          </main>
-        </div>
+
+            {/* Search Results */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-foreground">
+                  Résultats de recherche
+                  {searchQuery && (
+                    <span className="text-muted-foreground ml-2">
+                      pour "{searchQuery}"
+                    </span>
+                  )}
+                </h3>
+              </div>
+
+              <AISearchResults
+                searchResponse={searchResponse}
+                isSearching={isSearching}
+                error={error}
+                onRetry={handleRetry}
+              />
+            </div>
+
+            {/* AI Features */}
+            <Card className="mt-12">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-blue-500" />
+                  Fonctionnalités IA
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Search className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h4 className="font-semibold text-foreground mb-2">Recherche Sémantique</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Comprend le sens de vos recherches, pas seulement les mots-clés
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h4 className="font-semibold text-foreground mb-2">Recommandations</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Découvrez des produits similaires et des alternatives
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Zap className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h4 className="font-semibold text-foreground mb-2">Recherche Rapide</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Résultats instantanés grâce à notre technologie avancée
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
       </div>
-    </SidebarProvider>
+    </div>
   );
 }

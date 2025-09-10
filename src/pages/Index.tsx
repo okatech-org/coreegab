@@ -6,8 +6,7 @@ import { ProcessTimeline } from '@/components/ProcessTimeline';
 import { ServicesSection } from '@/components/ServicesSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
-import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -16,10 +15,11 @@ import { useToast } from '@/hooks/use-toast';
 import { SEO } from '@/components/SEO';
 import { MobileNavigation } from '@/components/mobile/MobileNavigation';
 import { MobileHeader } from '@/components/mobile/MobileHeader';
+import { DesktopFloatingHeader } from '@/components/DesktopFloatingHeader';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
 import { cn } from '@/lib/utils';
 
-const Index = () => {
+const IndexContent = () => {
   const { toast } = useToast();
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
@@ -48,37 +48,70 @@ const Index = () => {
     }, 1000);
   };
 
+  // Structure mobile
+  if (mobile.isMobile) {
+    return (
+      <div className="min-h-screen w-full bg-background">
+        {/* Header mobile flottant */}
+        <div className="floating-mobile-header floating-mobile-header-light floating-element">
+          <MobileHeader />
+        </div>
+
+        {/* Contenu principal mobile */}
+        <main className="pt-20 pb-24 min-h-screen">
+          <HeroSection />
+          <PriceCalculator />
+          <CategoriesSection />
+          <ProcessTimeline />
+          <ServicesSection />
+          <ContactSection />
+          <Footer />
+        </main>
+    
+        {/* Navigation mobile flottante */}
+        <div className="floating-mobile-nav floating-mobile-nav-light floating-element">
+          <MobileNavigation />
+        </div>
+        
+        <PWAInstallPrompt />
+      </div>
+    );
+  }
+
+  // Structure desktop avec nouveau menu vertical
+  return (
+    <div className="min-h-screen w-full">
+      {/* Menu vertical flottant desktop */}
+      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
+        <NewVerticalMenu />
+      </div>
+      
+      {/* Header flottant desktop */}
+      <div className="fixed top-4 right-4 z-50 hidden lg:block">
+        <DesktopFloatingHeader />
+      </div>
+      
+      {/* Contenu principal desktop */}
+      <main className="min-h-screen pt-4 lg:pl-[340px] lg:pr-8">
+          <HeroSection />
+          <PriceCalculator />
+          <CategoriesSection />
+          <ProcessTimeline />
+          <ServicesSection />
+          <ContactSection />
+          <Footer />
+        </main>
+        
+        <PWAInstallPrompt />
+    </div>
+  );
+};
+
+const Index = () => {
   return (
     <>
       <SEO />
-      <SidebarProvider>
-        <div className="min-h-screen w-full">
-        <MobileHeader />
-
-        <div className="flex min-h-screen">
-          {!mobile.isMobile && <AppSidebar />}
-          <div className="flex-1">
-            <main className={cn(
-              mobile.isMobile ? 'pt-16 pb-20' : 'pt-16 lg:pt-0'
-            )}>
-              <HeroSection />
-              <PriceCalculator />
-              <CategoriesSection />
-              <ProcessTimeline />
-              <ServicesSection />
-              <ContactSection />
-              <Footer />
-            </main>
-          </div>
-        </div>
-        
-        {/* Navigation mobile */}
-        {mobile.isMobile && <MobileNavigation />}
-        
-        {/* PWA Install Prompt */}
-        <PWAInstallPrompt />
-      </div>
-      </SidebarProvider>
+      <IndexContent />
     </>
   );
 };

@@ -93,7 +93,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-12 bg-muted/20">
+    <section id="contact" className="floating-spacing section-glass">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">
@@ -119,7 +119,7 @@ export const ContactSection = () => {
                   <h3 className="text-xl font-bold text-foreground mb-6">Nos coordonnées</h3>
                   <div className="space-y-4">
                     {contactInfo.map((info, index) => (
-                      <Card key={index} className="bg-card border border-border">
+                      <Card key={index} className="floating-card theme-transition">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3">
                             <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
@@ -145,7 +145,7 @@ export const ContactSection = () => {
 
                 {/* Contact Form - Compact */}
                 <div className="lg:col-span-2">
-                  <Card className="card-elevated bg-card border border-border">
+                  <Card className="floating-card theme-transition">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-xl text-foreground flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-primary" />
@@ -244,7 +244,7 @@ export const ContactSection = () => {
 
             <TabsContent value="faq">
               {/* FAQ Section - Ultra Compact */}
-              <Card className="bg-card border border-border">
+              <Card className="floating-card theme-transition">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-xl text-foreground text-center">
                     Questions Fréquentes
@@ -253,7 +253,7 @@ export const ContactSection = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-4">
                     {faqItems.map((item, index) => (
-                      <Card key={index} className="bg-background border border-border">
+                      <Card key={index} className="floating-card theme-transition">
                         <CardContent className="p-4">
                           <div className="flex items-start gap-2">
                             <CheckCircle className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />

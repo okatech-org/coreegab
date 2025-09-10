@@ -20,8 +20,8 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   const navigate = useNavigate();
 
   return (
-    <header className={`lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border ${className}`}>
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className={`lg:hidden bg-transparent border-0 ${className}`}>
+      <div className="flex items-center justify-between px-4 py-3 rounded-xl">
         <div className="flex items-center gap-3">
           {showLogo && (
             <div className="flex items-center gap-2">

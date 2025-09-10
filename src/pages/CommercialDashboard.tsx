@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TrendingUp, Users, DollarSign, Calendar, Bell } from 'lucide-react';
-import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { TrendingUp, Users, DollarSign, Calendar, Bell, LogOut, User } from 'lucide-react';
+import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const mockClients = [
   { id: 1, name: 'Jean Dupont', email: 'jean@email.com', phone: '+241 XX XX XX XX', orders: 5, totalSpent: 2500000 },
@@ -22,9 +22,13 @@ const mockTodayOrders = [
 ];
 
 export default function CommercialDashboard() {
-  const [activeView, setActiveView] = useState('overview');
   const [commissionPrice, setCommissionPrice] = useState('');
   const { t } = useLanguage();
+  const { profile, signOut } = useAuth();
+  
+  // Gérer les paramètres d'URL
+  const searchParams = new URLSearchParams(window.location.search);
+  const [activeView, setActiveView] = useState(searchParams.get('view') || 'overview');
   
   const totalSalesToday = mockTodayOrders.reduce((sum, order) => sum + order.amount, 0);
   const totalCommissionToday = mockTodayOrders.reduce((sum, order) => sum + order.commission, 0);
@@ -243,47 +247,75 @@ export default function CommercialDashboard() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full flex bg-background">
-        <AppSidebar />
-        <div className="flex-1">
-          <main className="p-6">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.commercial.title')}</h1>
-              <p className="text-muted-foreground">{t('dashboard.commercial.welcome')}</p>
-            </div>
-            
-            <div className="flex gap-4 mb-6">
-              <Button 
-                variant={activeView === 'overview' ? 'default' : 'outline'}
-                onClick={() => setActiveView('overview')}
-              >
-                Vue d'ensemble
-              </Button>
-              <Button 
-                variant={activeView === 'neworder' ? 'default' : 'outline'}
-                onClick={() => setActiveView('neworder')}
-              >
-                Nouvelle commande
-              </Button>
-              <Button 
-                variant={activeView === 'clients' ? 'default' : 'outline'}
-                onClick={() => setActiveView('clients')}
-              >
-                {t('dashboard.commercial.clients')}
-              </Button>
-              <Button 
-                variant={activeView === 'commission' ? 'default' : 'outline'}
-                onClick={() => setActiveView('commission')}
-              >
-                Commission
-              </Button>
-            </div>
-
-            {renderContent()}
-          </main>
-        </div>
+    <div className="min-h-screen w-full bg-background">
+      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
+        <NewVerticalMenu />
       </div>
-    </SidebarProvider>
+      <div className="flex-1 lg:pl-[340px]">
+        {/* Header */}
+        <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-14 items-center justify-between px-6">
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-semibold">Dashboard Commercial</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Informations utilisateur */}
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <User className="h-4 w-4" />
+                <span>{profile?.name || 'Commercial'}</span>
+              </div>
+              <Button variant="outline" size="sm">
+                <Bell className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={signOut}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+                title="Se déconnecter"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <main className="p-6">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.commercial.title')}</h1>
+            <p className="text-muted-foreground">{t('dashboard.commercial.welcome')}</p>
+          </div>
+          
+          <div className="flex gap-4 mb-6">
+            <Button 
+              variant={activeView === 'overview' ? 'default' : 'outline'}
+              onClick={() => setActiveView('overview')}
+            >
+              Vue d'ensemble
+            </Button>
+            <Button 
+              variant={activeView === 'neworder' ? 'default' : 'outline'}
+              onClick={() => setActiveView('neworder')}
+            >
+              Nouvelle commande
+            </Button>
+            <Button 
+              variant={activeView === 'clients' ? 'default' : 'outline'}
+              onClick={() => setActiveView('clients')}
+            >
+              {t('dashboard.commercial.clients')}
+            </Button>
+            <Button 
+              variant={activeView === 'commission' ? 'default' : 'outline'}
+              onClick={() => setActiveView('commission')}
+            >
+              Commission
+            </Button>
+          </div>
+
+          {renderContent()}
+        </main>
+      </div>
+    </div>
   );
 }

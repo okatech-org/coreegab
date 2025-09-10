@@ -37,7 +37,7 @@ const categories = [
 
 export const CategoriesSection = () => {
   return (
-    <section className="py-12 lg:py-16 px-4 bg-muted/30">
+    <section className="floating-spacing px-4 section-glass">
       <div className="container mx-auto">
         <h3 className="text-2xl lg:text-3xl font-bold text-center mb-8 lg:mb-12 text-foreground">
           Nos Catégories
@@ -50,7 +50,7 @@ export const CategoriesSection = () => {
             return (
               <Card 
                 key={category.id} 
-                className="card-elevated bg-card border border-border cursor-pointer group"
+                className="floating-card theme-transition cursor-pointer group"
               >
                 <CardContent className="p-4 lg:p-6 text-center">
                   <div className={`w-12 h-12 lg:w-16 lg:h-16 mx-auto mb-3 lg:mb-4 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>

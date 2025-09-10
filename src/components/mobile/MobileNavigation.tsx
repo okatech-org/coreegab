@@ -17,7 +17,12 @@ import {
   Settings,
   Sun,
   DollarSign,
-  Globe
+  Globe,
+  Upload,
+  BarChart3,
+  TrendingUp,
+  Users,
+  Plus
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
@@ -36,59 +41,128 @@ export const MobileNavigation: React.FC = () => {
   const { unreadCount } = useNotifications();
   const location = useLocation();
 
-  // Navigation principale selon le statut de connexion et le rôle
+  // Mock stats pour les admins - À remplacer par de vraies données
+  const stats = { pending: 3, confirmed: 5, shipping: 2, delivered: 12 };
+
+  // Navigation principale selon le statut de connexion et le rôle - HIÉRARCHISÉE PAR PRIORITÉ
   const getMainNavItems = () => {
     if (!user) {
-      // Utilisateur non connecté: Accueil, Boutique, Recherche, Calculateur, Menu
+      // Utilisateur non connecté - Priorité: Découverte → Action → Outils → Informations
       return [
-        { to: '/', icon: Home, label: 'Accueil' },
-        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-        { to: '/search', icon: Search, label: 'Recherche' },
-        { to: '/calculator', icon: Calculator, label: 'Calculateur' },
+        { to: '/', icon: Home, label: 'Accueil', priority: 1 },
+        { to: '/boutique', icon: ShoppingBag, label: 'Boutique', priority: 2, highlight: true },
+        { to: '/search', icon: Search, label: 'Recherche', priority: 3 },
+        { to: '/calculator', icon: Calculator, label: 'Prix', priority: 4 },
       ];
     }
     
     if (profile?.role === 'client') {
-      // Client connecté: Boutique, Recherche, Panier, Profil, Menu
+      // Client connecté - Priorité: Shopping → Gestion → Suivi → Profil
       return [
-        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-        { to: '/search', icon: Search, label: 'Recherche' },
-        { to: '/boutique?view=cart', icon: ShoppingCart, label: 'Panier', badge: getCartCount() > 0 ? getCartCount() : undefined },
+        { 
+          to: '/boutique', 
+          icon: ShoppingBag, 
+          label: 'Boutique', 
+          priority: 1, 
+          highlight: true 
+        },
+        { 
+          to: '/boutique?view=cart', 
+          icon: ShoppingCart, 
+          label: 'Panier', 
+          priority: 2,
+          badge: getCartCount() > 0 ? getCartCount() : undefined,
+          pulse: getCartCount() > 0
+        },
+        { 
+          to: '/search', 
+          icon: Search, 
+          label: 'Recherche', 
+          priority: 3 
+        },
         { 
           to: '/client-dashboard', 
           icon: User, 
-          label: 'Profil',
-          badge: unreadCount > 0 ? unreadCount : undefined
+          label: 'Compte',
+          priority: 4,
+          badge: unreadCount > 0 ? unreadCount : undefined,
+          pulse: unreadCount > 0
         },
       ];
     }
     
     if (profile?.role === 'admin') {
-      // Admin: Dashboard, Boutique, Produits, Utilisateurs, Menu
+      // Admin - Priorité: Gestion → Analytics → Produits → Système
       return [
-        { to: '/admin-dashboard', icon: Settings, label: 'Dashboard' },
-        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-        { to: '/admin-import', icon: Package, label: 'Produits' },
-        { to: '/admin-dashboard', icon: User, label: 'Utilisateurs' },
+        { 
+          to: '/admin-dashboard', 
+          icon: Settings, 
+          label: 'Dashboard', 
+          priority: 1,
+          highlight: true
+        },
+        { 
+          to: '/admin-dashboard?tab=orders', 
+          icon: Package, 
+          label: 'Commandes', 
+          priority: 2,
+          badge: (stats?.pending || 0) > 0 ? stats.pending : undefined,
+          pulse: (stats?.pending || 0) > 0
+        },
+        { 
+          to: '/admin-import', 
+          icon: Upload, 
+          label: 'Produits', 
+          priority: 3 
+        },
+        { 
+          to: '/admin-dashboard?tab=analytics', 
+          icon: BarChart3, 
+          label: 'Analytics', 
+          priority: 4 
+        },
       ];
     }
     
     if (profile?.role === 'commercial') {
-      // Commercial: Dashboard, Chat, Boutique, Commandes, Menu
+      // Commercial - Priorité: Ventes → Communication → Clients → Outils
       return [
-        { to: '/commercial-dashboard', icon: MessageCircle, label: 'Dashboard' },
-        { to: '/commercial-chat', icon: MessageCircle, label: 'Chat' },
-        { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-        { to: '/orders', icon: Package, label: 'Commandes' },
+        { 
+          to: '/commercial-dashboard', 
+          icon: TrendingUp, 
+          label: 'Ventes', 
+          priority: 1,
+          highlight: true
+        },
+        { 
+          to: '/commercial-chat', 
+          icon: MessageCircle, 
+          label: 'Chat', 
+          priority: 2,
+          badge: unreadCount > 0 ? unreadCount : undefined,
+          pulse: unreadCount > 0
+        },
+        { 
+          to: '/commercial-dashboard?view=clients', 
+          icon: Users, 
+          label: 'Clients', 
+          priority: 3 
+        },
+        { 
+          to: '/boutique', 
+          icon: ShoppingBag, 
+          label: 'Catalogue', 
+          priority: 4 
+        },
       ];
     }
     
     // Par défaut (client)
     return [
-      { to: '/boutique', icon: ShoppingBag, label: 'Boutique' },
-      { to: '/search', icon: Search, label: 'Recherche' },
-      { to: '/boutique', icon: ShoppingCart, label: 'Panier' },
-      { to: '/client-dashboard', icon: User, label: 'Profil' },
+      { to: '/boutique', icon: ShoppingBag, label: 'Boutique', priority: 1 },
+      { to: '/search', icon: Search, label: 'Recherche', priority: 2 },
+      { to: '/boutique', icon: ShoppingCart, label: 'Panier', priority: 3 },
+      { to: '/client-dashboard', icon: User, label: 'Profil', priority: 4 },
     ];
   };
 
@@ -98,59 +172,107 @@ export const MobileNavigation: React.FC = () => {
     return location.pathname === path;
   };
 
-  // Barre de navigation fixe en bas (mobile) - ULTRA COMPACTE
+  // Barre de navigation flottante en bas (mobile) - UX AMÉLIORÉE
   const BottomTabBar = () => (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-t border-border lg:hidden w-full max-w-full">
-      <div className="flex items-center justify-between py-1 px-1 w-full max-w-full">
+    <div className="lg:hidden w-full bg-transparent border-0">
+      {/* Indicateur de sécurité pour safe area */}
+      <div className="safe-area-inset-bottom" />
+      
+      <div className="flex items-center justify-between py-2 px-2 w-full">
         {mainNavItems.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.to);
+          const isHighlighted = item.highlight;
+          const hasPulse = item.pulse;
           
           return (
             <NavLink
               key={`${item.to}-${index}`}
               to={item.to}
               className={cn(
-                'flex flex-col items-center gap-0 p-1 rounded-md flex-1 max-w-[20%] transition-colors',
+                'flex flex-col items-center gap-1 p-2 rounded-xl flex-1 max-w-[20%] transition-all duration-300 transform',
+                'hover:scale-105 active:scale-95',
                 active 
-                  ? 'text-primary bg-primary/10' 
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'text-primary bg-primary/15 shadow-sm' 
+                  : isHighlighted
+                    ? 'text-blue-600 hover:text-blue-700 hover:bg-blue-50'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
               )}
             >
-              <div className="relative">
-                <Icon className="w-4 h-4" />
+              <div className={cn(
+                'relative transition-all duration-300',
+                active && 'scale-110',
+                hasPulse && 'animate-pulse'
+              )}>
+                <Icon className={cn(
+                  'transition-all duration-300',
+                  active ? 'w-6 h-6' : 'w-5 h-5'
+                )} />
+                
+                {/* Badge amélioré */}
                 {item.badge && (
-                  <Badge className="absolute -top-1 -right-1 h-2 w-2 p-0 text-[8px] rounded-full flex items-center justify-center min-w-[8px]">
-                    {item.badge > 9 ? '9+' : item.badge}
+                  <Badge className={cn(
+                    'absolute -top-2 -right-2 h-4 w-4 p-0 text-[10px] rounded-full flex items-center justify-center min-w-[16px] font-bold',
+                    'shadow-md border-2 border-background',
+                    hasPulse ? 'bg-red-500 animate-bounce' : 'bg-primary'
+                  )}>
+                    {item.badge > 99 ? '99+' : item.badge > 9 ? '9+' : item.badge}
                   </Badge>
                 )}
+                
+                {/* Indicateur de priorité */}
+                {isHighlighted && !active && (
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-500 rounded-full animate-pulse" />
+                )}
               </div>
-              <span className="text-[8px] font-medium leading-tight mt-0.5">{item.label}</span>
+              
+              <span className={cn(
+                'text-[10px] font-medium leading-tight transition-all duration-300',
+                active ? 'font-semibold text-primary' : 'text-current'
+              )}>
+                {item.label}
+              </span>
             </NavLink>
           );
         })}
         
-        {/* Menu burger pour plus d'options */}
+        {/* Menu burger amélioré */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="sm" className="flex flex-col gap-0 p-1 flex-1 max-w-[20%]">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className={cn(
+                'flex flex-col gap-1 p-2 flex-1 max-w-[20%] rounded-xl transition-all duration-300',
+                'hover:scale-105 active:scale-95 hover:bg-muted/50'
+              )}
+            >
               <div className="relative">
-                <Menu className="w-4 h-4" />
+                <Menu className="w-5 h-5" />
                 {(unreadCount > 0 || !user) && (
-                  <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-destructive rounded-full" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full animate-pulse shadow-sm" />
                 )}
               </div>
-              <span className="text-[8px] font-medium leading-tight mt-0.5">Menu</span>
+              <span className="text-[10px] font-medium leading-tight">Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[70vh] max-w-full">
-            <div className="space-y-6 pt-4 max-w-full">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold">Menu COREGAB</h3>
+          <SheetContent side="bottom" className="h-[75vh] max-w-full rounded-t-3xl border-t-4 border-primary/20">
+            <div className="space-y-6 pt-6 max-w-full">
+              {/* En-tête amélioré */}
+              <div className="text-center relative">
+                <div className="w-12 h-1 bg-muted rounded-full mx-auto mb-4" />
+                <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Menu COREGAB
+                </h3>
                 {user && (
-                  <p className="text-sm text-muted-foreground">
-                    Connecté en tant que {profile?.name}
-                  </p>
+                  <div className="mt-2 flex items-center justify-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {profile?.role?.toUpperCase()}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {profile?.name}
+                    </span>
+                  </div>
                 )}
               </div>
 
@@ -227,84 +349,129 @@ export const MobileNavigation: React.FC = () => {
                   </div>
                 </>
               ) : (
-                // Utilisateur connecté: Contenu adapté selon le rôle
+                // Utilisateur connecté: Contenu spécialisé par rôle
                 <>
-                  {/* Navigation additionnelle selon le rôle */}
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                      Navigation
+                  {/* Sections spécialisées selon le rôle */}
+                  {profile?.role === 'client' && (
+                    <>
+                      {/* Actions rapides client */}
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                          <ShoppingBag className="w-4 h-4" />
+                          Actions rapides
                     </h4>
                     
-                    {profile?.role === 'client' && (
-                      <>
-                        <NavLink
-                          to="/"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <Home className="w-5 h-5" />
-                          <span>Accueil</span>
-                        </NavLink>
+                        <div className="grid grid-cols-2 gap-3">
                         <NavLink
                           to="/calculator"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
                         >
-                          <Calculator className="w-5 h-5" />
-                          <span>Calculateur</span>
+                            <Calculator className="w-6 h-6 text-blue-600" />
+                            <span className="text-sm font-medium text-blue-700">Calculateur</span>
                         </NavLink>
+                          
                         <NavLink
-                          to="/orders"
+                            to="/client-dashboard?view=orders"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <Package className="w-5 h-5" />
-                          <span>Mes commandes</span>
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors relative"
+                          >
+                            <Package className="w-6 h-6 text-green-600" />
+                            <span className="text-sm font-medium text-green-700">Commandes</span>
+                            {unreadCount > 0 && (
+                              <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500">
+                                {unreadCount}
+                              </Badge>
+                            )}
                         </NavLink>
+                        </div>
+                      </div>
                       </>
                     )}
                     
                     {profile?.role === 'admin' && (
                       <>
+                      {/* Tableau de bord admin */}
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                          <Settings className="w-4 h-4" />
+                          Administration
+                        </h4>
+                        
+                        <div className="grid grid-cols-2 gap-3">
                         <NavLink
-                          to="/"
+                            to="/admin-dashboard?tab=orders"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <Home className="w-5 h-5" />
-                          <span>Accueil</span>
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-red-50 hover:bg-red-100 transition-colors relative"
+                          >
+                            <Package className="w-6 h-6 text-red-600" />
+                            <span className="text-sm font-medium text-red-700">Commandes</span>
+                            {stats.pending > 0 && (
+                              <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs bg-red-500 animate-pulse">
+                                {stats.pending}
+                              </Badge>
+                            )}
                         </NavLink>
+                          
                         <NavLink
-                          to="/calculator"
+                            to="/admin-dashboard?tab=analytics"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-purple-50 hover:bg-purple-100 transition-colors"
                         >
-                          <Calculator className="w-5 h-5" />
-                          <span>Calculateur</span>
+                            <BarChart3 className="w-6 h-6 text-purple-600" />
+                            <span className="text-sm font-medium text-purple-700">Analytics</span>
                         </NavLink>
+                        </div>
+                      </div>
                       </>
                     )}
                     
                     {profile?.role === 'commercial' && (
                       <>
+                      {/* Outils commercial */}
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4" />
+                          Outils de vente
+                        </h4>
+                        
+                        <div className="grid grid-cols-2 gap-3">
                         <NavLink
-                          to="/"
+                            to="/commercial-dashboard?view=commission"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors"
                         >
-                          <Home className="w-5 h-5" />
-                          <span>Accueil</span>
+                            <DollarSign className="w-6 h-6 text-green-600" />
+                            <span className="text-sm font-medium text-green-700">Commission</span>
                         </NavLink>
+                          
                         <NavLink
-                          to="/calculator"
+                            to="/commercial-dashboard?view=neworder"
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            className="flex flex-col items-center gap-2 p-4 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
                         >
-                          <Calculator className="w-5 h-5" />
-                          <span>Calculateur</span>
+                            <Plus className="w-6 h-6 text-blue-600" />
+                            <span className="text-sm font-medium text-blue-700">Commande</span>
                         </NavLink>
+                        </div>
+                      </div>
                       </>
                     )}
+
+                  {/* Navigation commune */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+                      Navigation
+                    </h4>
+                    
+                    <NavLink
+                      to="/"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all duration-200 group"
+                    >
+                      <Home className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <span>Accueil</span>
+                    </NavLink>
 
                     <button
                       onClick={() => {
@@ -313,9 +480,9 @@ export const MobileNavigation: React.FC = () => {
                           document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
                         }, 300);
                       }}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all duration-200 w-full text-left group"
                     >
-                      <Settings className="w-5 h-5" />
+                      <Settings className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       <span>Services</span>
                     </button>
 
@@ -326,9 +493,9 @@ export const MobileNavigation: React.FC = () => {
                           document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                         }, 300);
                       }}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-all duration-200 w-full text-left group"
                     >
-                      <MessageCircle className="w-5 h-5" />
+                      <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       <span>Contact</span>
                     </button>
                   </div>
@@ -357,18 +524,36 @@ export const MobileNavigation: React.FC = () => {
                   </div>
 
                   {/* Compte utilisateur */}
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <div className="space-y-3 pt-4 border-t border-border">
+                    <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
                       Mon compte
                     </h4>
+                    
+                    {/* Informations utilisateur */}
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                          <User className="w-5 h-5 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-sm">{profile?.name}</p>
+                          <p className="text-xs text-muted-foreground">{profile?.email}</p>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {profile?.role?.toUpperCase()}
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    {/* Bouton de déconnexion */}
                     <button
                       onClick={() => {
                         setIsMenuOpen(false);
                         signOut();
                       }}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left"
+                      className="flex items-center justify-center gap-3 p-4 rounded-xl bg-red-50 hover:bg-red-100 transition-all duration-200 w-full text-red-700 font-medium group"
                     >
-                      <User className="w-5 h-5" />
+                      <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       <span>Se déconnecter</span>
                     </button>
                   </div>

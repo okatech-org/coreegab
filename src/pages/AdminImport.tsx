@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Upload, FileText, Zap, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AdminSidebar } from '@/components/AdminSidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 
 export default function AdminImport() {
   const [importMethod, setImportMethod] = useState('manual');
@@ -66,13 +66,12 @@ export default function AdminImport() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-muted/30 flex w-full">
-        <AdminSidebar activeView="import" onViewChange={(view) => console.log(view)} />
-        
-        <div className="flex-1">
+    <div className="min-h-screen bg-muted/30 w-full">
+      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
+        <NewVerticalMenu />
+      </div>
+        <div className="flex-1 lg:pl-[340px]">
           <header className="h-12 flex items-center border-b bg-background">
-            <SidebarTrigger className="ml-4" />
             <h1 className="ml-4 text-lg font-semibold">Import de Produits</h1>
           </header>
           <main className="p-8">
@@ -333,6 +332,5 @@ export default function AdminImport() {
         </main>
       </div>
     </div>
-  </SidebarProvider>
   );
 }

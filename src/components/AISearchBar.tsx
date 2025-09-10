@@ -153,7 +153,7 @@ export default function AISearchBar({ onSearch, placeholder }: AISearchBarProps)
           onClick={() => handleAISearch(query)}
           disabled={isSearching || !query.trim()}
           size="sm"
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-blue-600 hover:bg-blue-700 text-white"
         >
           {isSearching ? (
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

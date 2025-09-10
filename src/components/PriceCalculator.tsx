@@ -53,12 +53,12 @@ export const PriceCalculator = () => {
   };
 
   return (
-    <section className="py-12 lg:py-16 px-4 bg-background">
+    <section className="floating-spacing px-4 section-glass">
       <div className="container mx-auto max-w-4xl">
         <h3 className="text-2xl lg:text-3xl font-bold text-center mb-6 lg:mb-8 text-foreground">
           Calculateur de Prix Instantané
         </h3>
-        <Card className="card-elevated bg-card border border-border">
+        <Card className="floating-card theme-transition">
           <CardHeader className="pb-4 lg:pb-6">
             <CardTitle className="text-lg lg:text-xl text-center text-card-foreground">
               Obtenez votre devis en temps réel
@@ -107,17 +107,16 @@ export const PriceCalculator = () => {
             <div className="flex justify-center pt-2">
               <Button
                 onClick={calculatePrice}
-                variant="accent"
                 size="lg"
                 disabled={!priceKRW || !category || !weight}
-                className="w-full sm:w-auto px-8 py-3"
+                className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Calculer le Prix
               </Button>
             </div>
             
             {breakdown && (
-              <Card className="bg-card border border-primary/20 mt-4">
+              <Card className="bg-card border border-blue-200/20 dark:border-blue-800/20 mt-4">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base lg:text-lg">Détail du Prix:</CardTitle>
                 </CardHeader>
@@ -138,7 +137,7 @@ export const PriceCalculator = () => {
                     <span className="text-muted-foreground">Notre Marge (35%):</span>
                     <span className="font-semibold">{formatPrice(breakdown.marginPrice)}</span>
                   </div>
-                  <div className="flex justify-between py-3 text-lg lg:text-xl font-bold text-primary border-t-2 border-primary/20">
+                  <div className="flex justify-between py-3 text-lg lg:text-xl font-bold text-blue-600 dark:text-blue-400 border-t-2 border-blue-200/20 dark:border-blue-800/20">
                     <span>PRIX FINAL:</span>
                     <span>{formatPrice(breakdown.finalPrice)}</span>
                   </div>

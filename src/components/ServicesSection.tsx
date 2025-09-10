@@ -93,7 +93,7 @@ export const ServicesSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="services" className="py-12 bg-background">
+    <section id="services" className="floating-spacing section-glass">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">
@@ -111,7 +111,7 @@ export const ServicesSection = () => {
             <CarouselContent className="-ml-2 md:-ml-4">
               {services.map((service, index) => (
                 <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card className="card-elevated bg-card border border-border h-full">
+                  <Card className="floating-card theme-transition h-full">
                     <CardContent className="p-5">
                       <div className="flex items-center gap-3 mb-4">
                         <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
@@ -152,11 +152,11 @@ export const ServicesSection = () => {
           <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             {processSteps.map((step, index) => (
               <div key={index} className="text-center relative flex-shrink-0">
-                <div className="flex items-center justify-center w-12 h-12 bg-primary rounded-full mx-auto mb-3">
-                  <step.icon className="w-6 h-6 text-primary-foreground" />
+                <div className="flex items-center justify-center w-12 h-12 bg-blue-500 rounded-full mx-auto mb-3">
+                  <step.icon className="w-6 h-6 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-secondary rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-secondary-foreground">
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-white">
                     {step.step}
                   </span>
                 </div>
@@ -180,7 +180,7 @@ export const ServicesSection = () => {
             Prêt à commencer ?
           </h3>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button className="bg-primary hover:bg-primary-hover">
+            <Button className="bg-blue-600 hover:bg-blue-700">
               <Search className="w-4 h-4 mr-2" />
               Rechercher
             </Button>

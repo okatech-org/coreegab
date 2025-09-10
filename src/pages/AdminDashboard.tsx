@@ -19,8 +19,7 @@ import {
   Clock,
   Loader2
 } from 'lucide-react';
-import { AppSidebar } from '@/components/AppSidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { ProductManagement } from '@/components/admin/ProductManagement';
 import { useAllOrders, useOrderStats } from '@/hooks/useOrders';
 import { useProducts } from '@/hooks/useProducts';
@@ -322,16 +321,16 @@ export default function AdminDashboard() {
         noIndex={true}
       />
       
-      <SidebarProvider>
-        <div className="flex min-h-screen w-full">
-          {!mobile.isMobile && <AppSidebar />}
+      <div className="min-h-screen w-full">
+        <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
+          <NewVerticalMenu />
+        </div>
           
-          <div className="flex-1">
+          <div className="flex-1 lg:pl-[340px]">
             {/* Header */}
             <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex h-14 items-center justify-between px-4">
                 <div className="flex items-center gap-4">
-                  <SidebarTrigger className="lg:hidden" />
                   <h1 className="text-xl font-semibold">Dashboard Admin</h1>
                 </div>
                 <div className="flex items-center gap-2">
@@ -385,10 +384,9 @@ export default function AdminDashboard() {
               </Tabs>
             </div>
           </div>
-        </div>
         
         {mobile.isMobile && <MobileNavigation />}
-      </SidebarProvider>
+      </div>
     </>
   );
 }

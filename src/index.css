@@ -75,61 +75,61 @@ img {
 
 @layer base {
   :root {
-    /* Dark mode (default) - True black/gray theme like characterforge-imagix */
-    --background: 0 0% 7%;
-    --background-alt: 0 0% 5%;
+    /* Dark mode (default) - True black/gray theme with pure black nuances */
+    --background: 0 0% 4%;
+    --background-alt: 0 0% 2%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 10%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 10%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 95%;
 
-    /* Blue primary color like OpenArt Image card */
-    --primary: 213 94% 68%;
+    /* Pure black primary color with subtle gray accents */
+    --primary: 0 0% 25%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 213 94% 60%;
+    --primary-hover: 0 0% 35%;
 
-    /* Yellow accent color like OpenArt Storytelling card */
-    --secondary: 45 93% 57%;
-    --secondary-foreground: 0 0% 0%;
-    --secondary-hover: 45 93% 50%;
+    /* Light gray secondary for contrast */
+    --secondary: 0 0% 70%;
+    --secondary-foreground: 0 0% 10%;
+    --secondary-hover: 0 0% 80%;
 
-    /* Green for success states */
-    --accent: 158 64% 52%;
+    /* Subtle accent in dark gray */
+    --accent: 0 0% 40%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 158 64% 45%;
+    --accent-hover: 0 0% 50%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 213 94% 68%;
+    --border: 0 0% 15%;
+    --input: 0 0% 8%;
+    --ring: 0 0% 25%;
 
-    /* COREGAB Design System - characterforge-imagix inspired */
+    /* COREGAB Design System - Pure black theme */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
-    --gradient-card-blue: linear-gradient(135deg, hsl(213 94% 68%), hsl(213 94% 58%));
-    --gradient-card-yellow: linear-gradient(135deg, hsl(45 93% 57%), hsl(45 93% 47%));
-    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
-    --shadow-card-hover: 0 16px 40px -8px hsl(0 0% 0% / 0.5);
+    --gradient-card-blue: linear-gradient(135deg, hsl(0 0% 25%), hsl(0 0% 35%));
+    --gradient-card-yellow: linear-gradient(135deg, hsl(0 0% 70%), hsl(0 0% 80%));
+    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
+    --shadow-card-hover: 0 16px 40px -8px hsl(0 0% 0% / 0.7);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 75%;
+    --sidebar-background: 0 0% 2%;
+    --sidebar-foreground: 0 0% 80%;
     --sidebar-primary: 0 0% 95%;
     --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 213 94% 68%;
+    --sidebar-accent: 0 0% 5%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 8%;
+    --sidebar-ring: 0 0% 25%;
   }
 
   .light {
@@ -243,6 +243,93 @@ img {
     overflow: hidden;
   }
 
+  /* Classes pour la section hero */
+  .hero-title {
+    color: white;
+  }
+
+  .hero-description {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .hero-korea-gradient {
+    background: linear-gradient(135deg, 
+      hsl(200 100% 70%) 0%,
+      hsl(180 100% 60%) 50%, 
+      hsl(220 100% 70%) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+  }
+
+  .hero-primary-button {
+    background: linear-gradient(135deg, 
+      hsl(200 100% 50%) 0%,
+      hsl(220 100% 60%) 100%
+    );
+    color: white;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-primary-button:hover {
+    background: linear-gradient(135deg, 
+      hsl(200 100% 45%) 0%,
+      hsl(220 100% 55%) 100%
+    );
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero-secondary-button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-secondary-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Styles pour les segments de produits */
+  .product-segment-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-segment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .dark .product-segment-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Animation pour les badges de segments */
+  .segment-badge {
+    animation: pulse-glow 2s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
   .openart-logo {
     font-size: 1.5rem;
     font-weight: 700;
@@ -280,7 +367,12 @@ img {
     }
   }
 
-  /* Amélioration des formulaires d'auth */
+  /* Amélioration des formulaires d'auth - Mode clair/sombre finalisé */
+  .glass-effect {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
   .auth-card {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.15);
@@ -294,67 +386,1360 @@ img {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
   }
 
-  /* Amélioration des inputs sur fond d'image */
-  .auth-card .auth-input {
-    background: rgba(255, 255, 255, 0.1);
+  /* Bloc de connexion opaque selon le thème */
+  .auth-page .glass-effect {
+    background: rgba(255, 255, 255, 1); /* Blanc opaque */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.15),
+      0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .auth-page .glass-effect {
+    background: rgba(0, 0, 0, 1); /* Noir opaque */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.8),
+      0 10px 25px -5px rgba(0, 0, 0, 0.6);
   }
 
-  .auth-card .auth-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+  /* Styles pour inputs dans bloc opaque mode clair */
+  .auth-page .auth-input {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
   }
 
-  .dark .auth-card .auth-input {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
+  .auth-page .auth-input::placeholder {
+    color: hsl(var(--muted-foreground));
   }
 
-  .dark .auth-card .auth-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+  .auth-page .auth-input:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
   }
 
-  /* Amélioration du texte sur fond d'image */
-  .auth-card .text-foreground {
-    color: white !important;
+  /* Styles pour inputs dans bloc opaque mode sombre */
+  .dark .auth-page .auth-input {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
   }
 
-  .auth-card .text-muted-foreground {
-    color: rgba(255, 255, 255, 0.7) !important;
+  .dark .auth-page .auth-input::placeholder {
+    color: hsl(var(--muted-foreground));
   }
 
-  .auth-card label {
-    color: white !important;
+  .dark .auth-page .auth-input:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+  }
+
+  /* Texte dans le bloc opaque */
+  .auth-page .text-foreground {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .auth-page .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .auth-page label {
+    color: hsl(var(--foreground)) !important;
     font-weight: 500;
   }
 
-  .auth-card .text-destructive {
-    color: #ef4444 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  .auth-page .text-destructive {
+    color: hsl(var(--destructive)) !important;
   }
 
-  /* Effets de focus améliorés pour les inputs */
-  .auth-card .auth-input:focus {
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
-    border-color: rgb(96, 165, 250);
+  /* Styles pour boutons dans bloc opaque */
+  .auth-page .bg-primary {
+    background: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
+  }
+
+  .auth-page .bg-primary:hover {
+    background: hsl(var(--primary) / 0.9) !important;
+    box-shadow: 0 6px 16px hsl(var(--primary) / 0.4);
+    transform: translateY(-1px);
+  }
+
+  /* Styles pour boutons outline dans bloc opaque */
+  .auth-page .border {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .auth-page .border:hover {
+    background: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
+  }
+
+}
+
+/* ===== NAVIGATION MOBILE AMÉLIORÉE ===== */
+
+/* Safe area pour les appareils avec encoche */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Animations fluides pour la navigation */
+@keyframes navItemActive {
+  0% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.1);
+  }
+  100% { 
+    transform: scale(1.05);
+  }
+}
+
+@keyframes badgeBounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* Styles pour les éléments de navigation actifs */
+.nav-item-active {
+  animation: navItemActive 0.3s ease-out;
+}
+
+.badge-bounce {
+  animation: badgeBounce 1s ease-in-out infinite;
+}
+
+/* Amélioration des transitions */
+.nav-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Effet de verre pour la barre de navigation */
+.nav-glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .nav-glass {
+  background: rgba(0, 0, 0, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Amélioration du menu sheet */
+.menu-sheet-content {
+  border-radius: 24px 24px 0 0;
+  border-top: 4px solid hsl(var(--primary));
+}
+
+/* Animations pour les cartes d'action rapide */
+.action-card {
+  transition: all 0.2s ease-out;
+}
+
+.action-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.action-card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Optimisations pour les petits écrans */
+@media (max-width: 375px) {
+  .mobile-nav-compact {
+    padding: 0.25rem;
+  }
+  
+  .mobile-nav-compact .nav-item {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* Amélioration de l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .nav-transition,
+  .action-card,
+  .nav-item-active,
+  .badge-bounce {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== BLOC DE CONNEXION ADAPTATIF ===== */
+
+/* Fond adaptatif selon le thème */
+.auth-block-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.auth-block-dark {
+  background: rgba(0, 0, 0, 0.90);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Effet de verre premium */
+.glass-effect {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.dark .glass-effect {
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Animations pour les boutons démo */
+.demo-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.demo-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.demo-button:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Optimisation pour les écrans haute résolution */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .glass-effect {
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+  }
+}
+
+/* Adaptation pour petits écrans */
+@media (max-width: 480px) {
+  .auth-block-light,
+  .auth-block-dark {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+  }
+  
+  .dark .auth-block-light,
+  .dark .auth-block-dark {
+    background: rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* ===== SYSTÈME DE BARRES FLOTTANTES ===== */
+
+/* Conteneur principal pour page d'accueil */
+.floating-layout {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar flottante */
+.floating-sidebar {
+  width: 320px !important;
+  height: calc(100vh - 2rem) !important;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+}
+
+.floating-sidebar.collapsed {
+  width: 80px;
+}
+
+.floating-sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+/* Thème clair pour sidebar flottante */
+.floating-sidebar-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Thème sombre pour sidebar flottante */
+.dark .floating-sidebar-light {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.8),
+    0 10px 10px -5px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Header flottant */
+.floating-header {
+  border-radius: 1rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: floatIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block !important;
+}
+
+/* Menu vertical flottant - même design que le header */
+.floating-vertical-menu {
+  width: 320px;
+  height: calc(100vh - 2rem);
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(0);
+  overflow: hidden;
+  animation: floatIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Thème clair pour header flottant */
+.floating-header-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Thème clair pour menu vertical flottant */
+.floating-vertical-menu-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Thème sombre pour header flottant */
+.dark .floating-header-light {
+  background: rgba(0, 0, 0, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.9),
+    0 10px 10px -5px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Thème sombre pour menu vertical flottant */
+.dark .floating-vertical-menu-light {
+  background: rgba(0, 0, 0, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.9),
+    0 10px 10px -5px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Contenu principal - supprimé pour éviter les conflits */
+
+/* Navigation mobile flottante */
+.floating-mobile-nav {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 50;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Thème pour navigation mobile flottante */
+.floating-mobile-nav-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .floating-mobile-nav-light {
+  background: rgba(0, 0, 0, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Header mobile flottant */
+.floating-mobile-header {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 50;
+  border-radius: 1rem;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.floating-mobile-header-light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .floating-mobile-header-light {
+  background: rgba(0, 0, 0, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.9),
+    0 10px 10px -5px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Animations pour les éléments flottants */
+.floating-element {
+  animation: floatIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover effects pour éléments flottants */
+.floating-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.dark .floating-hover:hover {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  background: rgba(0, 0, 0, 0.99);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Responsive pour éléments flottants */
+@media (max-width: 1024px) {
+  .floating-sidebar,
+  .floating-vertical-menu {
+    display: none;
+  }
+  
+  .floating-content {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1rem;
+  }
+  
+  .floating-content.no-sidebar {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-mobile-header,
+  .floating-mobile-nav {
+    left: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  .floating-content {
+    padding: 0.5rem;
+  }
+}
+
+/* Forcer l'affichage des éléments desktop */
+@media (min-width: 1024px) {
+  .floating-sidebar,
+  .floating-header,
+  .floating-vertical-menu {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .floating-sidebar [data-sidebar] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .floating-sidebar.hidden {
+    display: none !important;
+  }
+}
+
+/* ===== FINALISATION MODE CLAIR - PAGE D'ACCUEIL ===== */
+
+/* Sections principales avec effet subtil en mode sombre */
+.section-glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  margin: 1.5rem 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .section-glass {
     background: rgba(255, 255, 255, 0.15);
-  }
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
 
-  .dark .auth-card .auth-input:focus {
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
-    border-color: rgb(96, 165, 250);
-    background: rgba(0, 0, 0, 0.4);
-  }
+.section-glass:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
-  /* Amélioration des boutons sur fond d'image */
-  .auth-card .bg-primary {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-  }
+.light .section-glass:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
-  .auth-card .bg-primary:hover {
-    background: linear-gradient(135deg, #2563eb, #1e40af) !important;
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+/* Cards flottantes optimisées pour mode sombre */
+.floating-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+.light .floating-card {
+  background: rgba(255, 255, 255, 0.90);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.15),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.floating-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.6),
+    0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+.light .floating-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+}
+
+/* Espacements pour design flottant */
+.floating-spacing {
+  padding: 2rem 0;
+}
+
+@media (min-width: 1024px) {
+  .floating-spacing {
+    padding: 3rem 0;
+  }
+}
+
+/* Transitions fluides pour le changement de thème */
+.theme-transition {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Optimisations spécifiques au mode clair */
+.light .floating-sidebar-light {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 10px 10px -5px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.light .floating-mobile-header-light {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.15),
+    0 4px 6px -2px rgba(0, 0, 0, 0.08);
+}
+
+.light .floating-mobile-nav-light {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+.light .floating-header-light {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.15),
+    0 4px 6px -2px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.light .floating-vertical-menu-light {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Amélioration de la lisibilité en mode clair */
+.light .text-muted-foreground {
+  color: hsl(215.4 16.3% 46.9%) !important;
+}
+
+/* Amélioration des contrastes en mode clair */
+.light .bg-background {
+  background-color: hsl(0 0% 100%);
+}
+
+.light .bg-card {
+  background-color: hsl(0 0% 100%);
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+}
+
+.light .bg-muted {
+  background-color: hsl(210 40% 98%);
+}
+
+.light .border {
+  border-color: hsl(214.3 31.8% 91.4%);
+}
+
+.light .text-foreground {
+  color: hsl(222.2 84% 4.9%);
+}
+
+/* Amélioration des éléments flottants en mode clair */
+.light .floating-element {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Amélioration des contrastes en mode sombre */
+.dark .bg-background {
+  background-color: hsl(0 0% 4%);
+}
+
+.dark .bg-card {
+  background-color: hsl(0 0% 6%);
+  border: 1px solid hsl(0 0% 15%);
+}
+
+.dark .bg-muted {
+  background-color: hsl(0 0% 12%);
+}
+
+.dark .border {
+  border-color: hsl(0 0% 15%);
+}
+
+.dark .text-foreground {
+  color: hsl(0 0% 95%);
+}
+
+.dark .text-muted-foreground {
+  color: hsl(0 0% 65%);
+}
+
+/* Amélioration des éléments flottants en mode sombre */
+.dark .floating-element {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Hero section optimisée pour mode clair */
+.light .hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.3)
+  );
+}
+
+/* Contraste optimisé pour le texte en mode clair */
+.light .text-white {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero section optimisée pour mode sombre */
+.dark .hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.5)
+  );
+}
+
+/* Contraste optimisé pour le texte en mode sombre */
+.dark .text-white {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Amélioration des gradients en mode sombre */
+.dark .bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+/* Amélioration des ombres en mode sombre */
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 4px 6px -2px rgba(0, 0, 0, 0.6);
+}
+
+.dark .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 10px 10px -5px rgba(0, 0, 0, 0.7);
+}
+
+.light .drop-shadow-2xl {
+  filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.3));
+}
+
+/* ===== SECTION HERO - COULEURS FIXES ===== */
+
+/* Titre principal - texte blanc fixe */
+.hero-title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Gradient pour "Corée du Sud" - couleurs fixes */
+.hero-korea-gradient {
+  background: linear-gradient(to right, #e5e7eb 0%, #d1d5db 50%, #9ca3af 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Description - texte blanc fixe */
+.hero-description {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Bouton principal - style fixe */
+.hero-primary-button {
+  background: #4b5563 !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.hero-primary-button:hover {
+  background: #374151 !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Bouton secondaire - style fixe */
+.hero-secondary-button {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.hero-secondary-button:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Overlay de la section hero - fixe */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  ) !important;
+}
+
+/* ===== CHATBOT IA - COULEURS FIXES ===== */
+
+/* Chatbot container - couleurs fixes indépendantes du thème */
+.chatbot-container {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Header du chatbot - gradient bleu fixe */
+.chatbot-header {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%) !important;
+  color: #ffffff !important;
+}
+
+.chatbot-header-particles {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(29, 78, 216, 0.2) 50%, rgba(30, 64, 175, 0.2) 100%) !important;
+}
+
+/* Avatar de l'IA - bleu fixe */
+.chatbot-avatar {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Messages de l'IA - fond blanc fixe */
+.chatbot-ai-message {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+.chatbot-ai-message .text-sm {
+  color: #1e293b !important;
+}
+
+.chatbot-ai-message .text-xs {
+  color: #64748b !important;
+}
+
+/* Messages utilisateur - bleu fixe */
+.chatbot-user-message {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+}
+
+.chatbot-user-message .text-sm {
+  color: #ffffff !important;
+}
+
+.chatbot-user-message .text-xs {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Avatar utilisateur - bleu clair fixe */
+.chatbot-user-avatar {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Zone de saisie - fond blanc fixe */
+.chatbot-input-area {
+  background: #f1f5f9 !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.chatbot-input {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #1e293b !important;
+}
+
+.chatbot-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.chatbot-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Bouton d'envoi - bleu fixe */
+.chatbot-send-button {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+.chatbot-send-button:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Boutons de suggestion - style fixe */
+.chatbot-suggestion-button {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+.chatbot-suggestion-button:hover {
+  background: #f3f4f6 !important;
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+}
+
+/* Indicateur de frappe - style fixe */
+.chatbot-typing-indicator {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.chatbot-typing-dots {
+  background: #64748b !important;
+}
+
+.chatbot-typing-text {
+  color: #64748b !important;
+}
+
+/* Badge IA - style fixe */
+.chatbot-ia-badge {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Statut en ligne - vert fixe */
+.chatbot-online-status {
+  background: #10b981 !important;
+}
+
+/* Icônes - couleurs fixes */
+.chatbot-icon {
+  color: #ffffff !important;
+}
+
+.chatbot-sparkles {
+  color: #fbbf24 !important;
+}
+
+/* ===== CHATBOT ORGANIQUE AVEC BATTEMENT ===== */
+
+/* Bouton chatbot principal avec forme organique */
+.chatbot-organic-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%;
+  background: linear-gradient(135deg, 
+    #ff6b6b 0%,
+    #ff8e53 25%,
+    #ffa726 50%,
+    #ffeb3b 75%,
+    #ffc107 100%
+  );
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  box-shadow: 
+    0 15px 40px rgba(255, 107, 107, 0.4),
+    0 0 60px rgba(255, 142, 83, 0.6),
+    0 0 80px rgba(255, 167, 38, 0.3),
+    inset 0 3px 15px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: organic-heartbeat 1.5s ease-in-out infinite;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.chatbot-organic-button:hover {
+  transform: scale(1.15);
+  border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+  box-shadow: 
+    0 20px 50px rgba(255, 107, 107, 0.6),
+    0 0 80px rgba(255, 142, 83, 0.8),
+    0 0 100px rgba(255, 167, 38, 0.5),
+    0 0 120px rgba(255, 235, 59, 0.3),
+    inset 0 3px 20px rgba(255, 255, 255, 0.4);
+  animation: organic-heartbeat-intense 1s ease-in-out infinite;
+}
+
+.chatbot-organic-button:active {
+  transform: scale(0.95);
+  animation: organic-squeeze 0.2s ease-out;
+}
+
+/* Animation de pulsation organique - Rose vermillon vers jaune */
+@keyframes organic-pulse {
+  0%, 100% {
+    transform: scale(1);
+    border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%;
+    box-shadow: 
+      0 15px 40px rgba(255, 107, 107, 0.4),
+      0 0 60px rgba(255, 142, 83, 0.6),
+      0 0 80px rgba(255, 167, 38, 0.3),
+      inset 0 3px 15px rgba(255, 255, 255, 0.3);
+  }
+  25% {
+    transform: scale(1.08);
+    border-radius: 50% 50% 60% 40% / 60% 50% 40% 60%;
+    box-shadow: 
+      0 18px 45px rgba(255, 107, 107, 0.5),
+      0 0 70px rgba(255, 142, 83, 0.7),
+      0 0 90px rgba(255, 167, 38, 0.4),
+      inset 0 3px 18px rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    transform: scale(1.12);
+    border-radius: 40% 60% 50% 50% / 40% 60% 50% 50%;
+    box-shadow: 
+      0 20px 50px rgba(255, 107, 107, 0.6),
+      0 0 80px rgba(255, 142, 83, 0.8),
+      0 0 100px rgba(255, 167, 38, 0.5),
+      0 0 120px rgba(255, 235, 59, 0.3),
+      inset 0 3px 20px rgba(255, 255, 255, 0.4);
+  }
+  75% {
+    transform: scale(1.08);
+    border-radius: 60% 40% 50% 50% / 50% 40% 60% 50%;
+    box-shadow: 
+      0 18px 45px rgba(255, 107, 107, 0.5),
+      0 0 70px rgba(255, 142, 83, 0.7),
+      0 0 90px rgba(255, 167, 38, 0.4),
+      inset 0 3px 18px rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Animation de battement cardiaque - Plus intense */
+@keyframes organic-heartbeat {
+  0%, 100% {
+    transform: scale(1.1);
+    border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+    box-shadow: 
+      0 20px 50px rgba(255, 107, 107, 0.6),
+      0 0 80px rgba(255, 142, 83, 0.8),
+      0 0 100px rgba(255, 167, 38, 0.5),
+      0 0 120px rgba(255, 235, 59, 0.3),
+      inset 0 3px 20px rgba(255, 255, 255, 0.4);
+  }
+  14% {
+    transform: scale(1.25);
+    border-radius: 50% 50% 40% 60% / 40% 60% 60% 40%;
+    box-shadow: 
+      0 25px 60px rgba(255, 107, 107, 0.7),
+      0 0 100px rgba(255, 142, 83, 0.9),
+      0 0 120px rgba(255, 167, 38, 0.6),
+      0 0 140px rgba(255, 235, 59, 0.4),
+      inset 0 4px 25px rgba(255, 255, 255, 0.5);
+  }
+  28% {
+    transform: scale(1.1);
+    border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+    box-shadow: 
+      0 20px 50px rgba(255, 107, 107, 0.6),
+      0 0 80px rgba(255, 142, 83, 0.8),
+      0 0 100px rgba(255, 167, 38, 0.5),
+      0 0 120px rgba(255, 235, 59, 0.3),
+      inset 0 3px 20px rgba(255, 255, 255, 0.4);
+  }
+  42% {
+    transform: scale(1.3);
+    border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
+    box-shadow: 
+      0 30px 70px rgba(255, 107, 107, 0.8),
+      0 0 120px rgba(255, 142, 83, 1.0),
+      0 0 140px rgba(255, 167, 38, 0.7),
+      0 0 160px rgba(255, 235, 59, 0.5),
+      inset 0 4px 30px rgba(255, 255, 255, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+    box-shadow: 
+      0 20px 50px rgba(255, 107, 107, 0.6),
+      0 0 80px rgba(255, 142, 83, 0.8),
+      0 0 100px rgba(255, 167, 38, 0.5),
+      0 0 120px rgba(255, 235, 59, 0.3),
+      inset 0 3px 20px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* Animation de battement cardiaque intense pour hover */
+@keyframes organic-heartbeat-intense {
+  0%, 100% {
+    transform: scale(1.15);
+    border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+    box-shadow: 
+      0 25px 60px rgba(255, 107, 107, 0.7),
+      0 0 100px rgba(255, 142, 83, 0.9),
+      0 0 120px rgba(255, 167, 38, 0.6),
+      0 0 140px rgba(255, 235, 59, 0.4),
+      inset 0 4px 25px rgba(255, 255, 255, 0.5);
+  }
+  12% {
+    transform: scale(1.35);
+    border-radius: 50% 50% 40% 60% / 40% 60% 60% 40%;
+    box-shadow: 
+      0 35px 80px rgba(255, 107, 107, 0.8),
+      0 0 140px rgba(255, 142, 83, 1.0),
+      0 0 160px rgba(255, 167, 38, 0.7),
+      0 0 180px rgba(255, 235, 59, 0.5),
+      inset 0 5px 35px rgba(255, 255, 255, 0.6);
+  }
+  24% {
+    transform: scale(1.15);
+    border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+    box-shadow: 
+      0 25px 60px rgba(255, 107, 107, 0.7),
+      0 0 100px rgba(255, 142, 83, 0.9),
+      0 0 120px rgba(255, 167, 38, 0.6),
+      0 0 140px rgba(255, 235, 59, 0.4),
+      inset 0 4px 25px rgba(255, 255, 255, 0.5);
+  }
+  36% {
+    transform: scale(1.4);
+    border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
+    box-shadow: 
+      0 40px 90px rgba(255, 107, 107, 0.9),
+      0 0 160px rgba(255, 142, 83, 1.0),
+      0 0 180px rgba(255, 167, 38, 0.8),
+      0 0 200px rgba(255, 235, 59, 0.6),
+      inset 0 5px 40px rgba(255, 255, 255, 0.7);
+  }
+  60% {
+    transform: scale(1.15);
+    border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+    box-shadow: 
+      0 25px 60px rgba(255, 107, 107, 0.7),
+      0 0 100px rgba(255, 142, 83, 0.9),
+      0 0 120px rgba(255, 167, 38, 0.6),
+      0 0 140px rgba(255, 235, 59, 0.4),
+      inset 0 4px 25px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Animation de compression */
+@keyframes organic-squeeze {
+  0% {
+    transform: scale(0.95);
+    border-radius: 70% 30% 30% 70% / 60% 70% 30% 40%;
+  }
+  50% {
+    transform: scale(0.9);
+    border-radius: 80% 20% 20% 80% / 70% 80% 20% 30%;
+  }
+  100% {
+    transform: scale(0.95);
+    border-radius: 70% 30% 30% 70% / 60% 70% 30% 40%;
+  }
+}
+
+/* Particules flottantes autour du bouton */
+.chatbot-organic-button::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    hsl(var(--primary) / 0.1) 0%,
+    transparent 60%
+  );
+  animation: particle-orbit 4s linear infinite;
+  pointer-events: none;
+}
+
+.chatbot-organic-button::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    hsl(var(--secondary) / 0.08) 0%,
+    transparent 70%
+  );
+  animation: particle-orbit 6s linear infinite reverse;
+  pointer-events: none;
+}
+
+/* Particules adaptées au nouveau gradient rose-jaune */
+.chatbot-organic-button::before {
+  background: radial-gradient(circle, 
+    rgba(255, 107, 107, 0.2) 0%,
+    rgba(255, 142, 83, 0.15) 30%,
+    transparent 60%
+  );
+}
+
+.chatbot-organic-button::after {
+  background: radial-gradient(circle, 
+    rgba(255, 167, 38, 0.18) 0%,
+    rgba(255, 235, 59, 0.12) 30%,
+    transparent 70%
+  );
+}
+
+@keyframes particle-orbit {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.3;
+  }
+}
+
+/* Icône du chatbot avec pulsation */
+.chatbot-icon {
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  animation: icon-glow 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes icon-glow {
+  0% {
+    text-shadow: 
+      0 2px 10px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    text-shadow: 
+      0 2px 15px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* Responsive pour mobiles */
+@media (max-width: 768px) {
+  .chatbot-organic-button {
+    width: 70px;
+    height: 70px;
+    bottom: 50%;
+    right: 1.5rem;
+    transform: translateY(50%);
+  }
+  
+  .chatbot-icon {
+    font-size: 1.75rem;
+  }
+}
+
+/* Le bouton garde maintenant ses couleurs rose-jaune dans tous les thèmes */
+
+/* Animation d'apparition du bouton */
+.chatbot-appear {
+  animation: chatbot-entrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes chatbot-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+    border-radius: 50%;
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(-90deg);
+    border-radius: 30% 70% 70% 30% / 70% 30% 70% 30%;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%;
+  }
+}
+
+/* États de préférence de mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  .chatbot-organic-button {
+    animation: none;
+  }
+  
+  .chatbot-organic-button:hover {
+    animation: none;
+    transform: scale(1.05);
+  }
+  
+  .chatbot-icon {
+    animation: none;
+  }
+  
+  .chatbot-organic-button::before,
+  .chatbot-organic-button::after {
+    animation: none;
   }
 }
