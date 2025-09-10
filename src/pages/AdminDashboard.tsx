@@ -5,8 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { BarChart3, Users, ShoppingBag, Package, TrendingUp, Bell, Settings } from 'lucide-react';
-import { AdminSidebar } from '@/components/AdminSidebar';
+import { AppSidebar } from '@/components/AppSidebar';
+import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const mockUsers = [
   { id: 1, name: 'Jean Dupont', email: 'jean@email.com', role: 'Client', status: 'Actif', orders: 5 },
@@ -30,6 +32,7 @@ export default function AdminDashboard() {
   const [activeView, setActiveView] = useState('overview');
   const [exchangeRate, setExchangeRate] = useState('0.45');
   const [transportRate, setTransportRate] = useState('1500');
+  const { t } = useLanguage();
   
   const totalRevenue = 45000000; // Mock data
   const ordersInProgress = mockAllOrders.filter(order => order.status !== 'Livré').length;
@@ -309,26 +312,49 @@ export default function AdminDashboard() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <AdminSidebar activeView={activeView} onViewChange={setActiveView} />
-        
-        <div className="flex-1 flex flex-col">
-          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger />
-              <h1 className="text-xl font-bold gradient-text">Dashboard Admin</h1>
+      <div className="min-h-screen w-full flex bg-background">
+        <AppSidebar />
+        <div className="flex-1">
+          <Navigation />
+          <main className="p-6">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.admin.title')}</h1>
+              <p className="text-muted-foreground">{t('dashboard.admin.welcome')}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="w-5 h-5" />
+            
+            <div className="flex gap-4 mb-6 flex-wrap">
+              <Button 
+                variant={activeView === 'overview' ? 'default' : 'outline'}
+                onClick={() => setActiveView('overview')}
+              >
+                Vue d'ensemble
               </Button>
-              <div className="text-sm">
-                <p className="font-semibold">admin@demo.com</p>
-              </div>
+              <Button 
+                variant={activeView === 'users' ? 'default' : 'outline'}
+                onClick={() => setActiveView('users')}
+              >
+                {t('dashboard.admin.users')}
+              </Button>
+              <Button 
+                variant={activeView === 'products' ? 'default' : 'outline'}
+                onClick={() => setActiveView('products')}
+              >
+                Produits
+              </Button>
+              <Button 
+                variant={activeView === 'orders' ? 'default' : 'outline'}
+                onClick={() => setActiveView('orders')}
+              >
+                Commandes
+              </Button>
+              <Button 
+                variant={activeView === 'settings' ? 'default' : 'outline'}
+                onClick={() => setActiveView('settings')}
+              >
+                {t('dashboard.admin.settings')}
+              </Button>
             </div>
-          </header>
-          
-          <main className="flex-1 p-6 overflow-auto">
+
             {renderContent()}
           </main>
         </div>

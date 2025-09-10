@@ -5,8 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TrendingUp, Users, DollarSign, Calendar, Bell } from 'lucide-react';
-import { CommercialSidebar } from '@/components/CommercialSidebar';
+import { AppSidebar } from '@/components/AppSidebar';
+import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const mockClients = [
   { id: 1, name: 'Jean Dupont', email: 'jean@email.com', phone: '+241 XX XX XX XX', orders: 5, totalSpent: 2500000 },
@@ -23,6 +25,7 @@ const mockTodayOrders = [
 export default function CommercialDashboard() {
   const [activeView, setActiveView] = useState('overview');
   const [commissionPrice, setCommissionPrice] = useState('');
+  const { t } = useLanguage();
   
   const totalSalesToday = mockTodayOrders.reduce((sum, order) => sum + order.amount, 0);
   const totalCommissionToday = mockTodayOrders.reduce((sum, order) => sum + order.commission, 0);
@@ -242,26 +245,43 @@ export default function CommercialDashboard() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <CommercialSidebar activeView={activeView} onViewChange={setActiveView} />
-        
-        <div className="flex-1 flex flex-col">
-          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger />
-              <h1 className="text-xl font-bold gradient-text">Dashboard Commercial</h1>
+      <div className="min-h-screen w-full flex bg-background">
+        <AppSidebar />
+        <div className="flex-1">
+          <Navigation />
+          <main className="p-6">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.commercial.title')}</h1>
+              <p className="text-muted-foreground">{t('dashboard.commercial.welcome')}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="w-5 h-5" />
+            
+            <div className="flex gap-4 mb-6">
+              <Button 
+                variant={activeView === 'overview' ? 'default' : 'outline'}
+                onClick={() => setActiveView('overview')}
+              >
+                Vue d'ensemble
               </Button>
-              <div className="text-sm">
-                <p className="font-semibold">commercial@demo.com</p>
-              </div>
+              <Button 
+                variant={activeView === 'neworder' ? 'default' : 'outline'}
+                onClick={() => setActiveView('neworder')}
+              >
+                Nouvelle commande
+              </Button>
+              <Button 
+                variant={activeView === 'clients' ? 'default' : 'outline'}
+                onClick={() => setActiveView('clients')}
+              >
+                {t('dashboard.commercial.clients')}
+              </Button>
+              <Button 
+                variant={activeView === 'commission' ? 'default' : 'outline'}
+                onClick={() => setActiveView('commission')}
+              >
+                Commission
+              </Button>
             </div>
-          </header>
-          
-          <main className="flex-1 p-6 overflow-auto">
+
             {renderContent()}
           </main>
         </div>

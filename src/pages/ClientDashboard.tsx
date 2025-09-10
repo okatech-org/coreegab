@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ShoppingCart, Package, User, MessageCircle, Search, Bell } from 'lucide-react';
-import { ClientSidebar } from '@/components/ClientSidebar';
+import { AppSidebar } from '@/components/AppSidebar';
+import { Navigation } from '@/components/Navigation';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import ProductCard from '@/components/ProductCard';
 import OrderStatus from '@/components/OrderStatus';
 import { mockProducts, mockOrders, calculateFinalPrice } from '@/data/mockData';
 import { Product } from '@/types/database';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Using real mock data from mockData.ts
 
@@ -17,6 +19,7 @@ export default function ClientDashboard() {
   const [activeView, setActiveView] = useState('catalog');
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<Product[]>([]);
+  const { t } = useLanguage();
 
   const addToCart = (product: Product) => {
     setCart(prev => [...prev, product]);
@@ -173,31 +176,49 @@ export default function ClientDashboard() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <ClientSidebar activeView={activeView} onViewChange={setActiveView} />
-        
-        <div className="flex-1 flex flex-col">
-          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger />
-              <h1 className="text-xl font-bold gradient-text">Dashboard Client</h1>
+      <div className="min-h-screen w-full flex bg-background">
+        <AppSidebar />
+        <div className="flex-1">
+          <Navigation />
+          <main className="p-6">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold gradient-text mb-2">{t('dashboard.client.title')}</h1>
+              <p className="text-muted-foreground">{t('dashboard.client.welcome')}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Bell className="w-5 h-5" />
+            
+            <div className="flex gap-4 mb-6">
+              <Button 
+                variant={activeView === 'catalog' ? 'default' : 'outline'}
+                onClick={() => setActiveView('catalog')}
+              >
+                Catalogue
               </Button>
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="w-5 h-5" />
+              <Button 
+                variant={activeView === 'orders' ? 'default' : 'outline'}
+                onClick={() => setActiveView('orders')}
+              >
+                {t('dashboard.client.orders')}
+              </Button>
+              <Button 
+                variant={activeView === 'cart' ? 'default' : 'outline'}
+                onClick={() => setActiveView('cart')}
+                className="relative"
+              >
+                Panier
                 {cart.length > 0 && (
                   <Badge className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center p-0 text-xs">
                     {cart.length}
                   </Badge>
                 )}
               </Button>
+              <Button 
+                variant={activeView === 'profile' ? 'default' : 'outline'}
+                onClick={() => setActiveView('profile')}
+              >
+                {t('dashboard.client.profile')}
+              </Button>
             </div>
-          </header>
-          
-          <main className="flex-1 p-6 overflow-auto">
+
             {renderContent()}
           </main>
         </div>
