@@ -244,40 +244,42 @@ export const ContactSection = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-card rounded-2xl p-8 md:p-12">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">
+        <div className="bg-card rounded-2xl p-6 md:p-8">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
               Questions Fréquentes
             </h3>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-muted-foreground">
               Trouvez rapidement les réponses à vos questions
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4 max-w-4xl mx-auto">
             {faqItems.map((item, index) => (
               <Card key={index} className="bg-background border border-border">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <CheckCircle className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
-                    <h4 className="font-semibold text-foreground">
-                      {item.question}
-                    </h4>
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-accent mt-1 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2 text-sm">
+                        {item.question}
+                      </h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {item.answer}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {item.answer}
-                  </p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <p className="text-muted-foreground mb-4">
+          <div className="text-center mt-8">
+            <p className="text-muted-foreground mb-3 text-sm">
               Vous ne trouvez pas la réponse à votre question ?
             </p>
-            <Button variant="outline" size="lg">
-              <MessageCircle className="w-5 h-5 mr-2" />
+            <Button variant="outline">
+              <MessageCircle className="w-4 h-4 mr-2" />
               Contactez-nous directement
             </Button>
           </div>
