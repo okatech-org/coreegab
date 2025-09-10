@@ -26,7 +26,6 @@ import { useProducts } from '@/hooks/useProducts';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { SEO } from '@/components/SEO';
-import { MobileNavigation } from '@/components/mobile/MobileNavigation';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
 import { StatsGridSkeleton, OrderListSkeleton } from '@/components/SkeletonLoaders';
 import { cn } from '@/lib/utils';
@@ -385,7 +384,6 @@ export default function AdminDashboard() {
             </div>
           </div>
         
-        {mobile.isMobile && <MobileNavigation />}
       </div>
     </>
   );

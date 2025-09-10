@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { SEO } from '@/components/SEO';
-import { MobileNavigation } from '@/components/mobile/MobileNavigation';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
 import { cn } from '@/lib/utils';
 
@@ -87,7 +86,6 @@ export default function Checkout() {
             </div>
           </div>
         
-        {mobile.isMobile && <MobileNavigation />}
       </div>
     </>
   );

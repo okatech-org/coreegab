@@ -9,6 +9,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { NotificationProvider } from "@/components/NotificationSystem";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { GlobalLayout } from "@/components/GlobalLayout";
 import Index from "./pages/Index";
 import ClientDashboard from "./pages/ClientDashboard";
 import CommercialDashboard from "./pages/CommercialDashboard";
@@ -36,76 +37,78 @@ const App = () => (
               <Toaster />
               <Sonner />
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<PhoneAuth />} />
-            <Route path="/boutique" element={<Boutique />} />
-            <Route path="/calculator" element={<Calculator />} />
-            <Route path="/search" element={<AISearch />} />
-            <Route path="/ai-search" element={<Navigate to="/search" replace />} />
-            <Route path="/commercial-chat" element={<Navigate to="/chat" replace />} />
-            <Route path="/login" element={<Navigate to="/auth" replace />} />
-            <Route path="/signin" element={<Navigate to="/auth" replace />} />
-            <Route path="/signup" element={<Navigate to="/auth" replace />} />
-            <Route path="/register" element={<Navigate to="/auth" replace />} />
-            
-            {/* Route de checkout protégée */}
-            <Route 
-              path="/checkout" 
-              element={
-                <ProtectedRoute>
-                  <Checkout />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Routes protégées par rôle */}
-            <Route 
-              path="/client-dashboard" 
-              element={
-                <ProtectedRoute requiredRole="client">
-                  <ClientDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/commercial-dashboard" 
-              element={
-                <ProtectedRoute requiredRole="commercial">
-                  <CommercialDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin-dashboard" 
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/chat" 
-              element={
-                <ProtectedRoute>
-                  <CommercialChat />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/import" 
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <AdminImport />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          {/* Widget de chat disponible sur toutes les pages */}
-          <ChatbotWidget />
+          <GlobalLayout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<PhoneAuth />} />
+              <Route path="/boutique" element={<Boutique />} />
+              <Route path="/calculator" element={<Calculator />} />
+              <Route path="/search" element={<AISearch />} />
+              <Route path="/ai-search" element={<Navigate to="/search" replace />} />
+              <Route path="/commercial-chat" element={<Navigate to="/chat" replace />} />
+              <Route path="/login" element={<Navigate to="/auth" replace />} />
+              <Route path="/signin" element={<Navigate to="/auth" replace />} />
+              <Route path="/signup" element={<Navigate to="/auth" replace />} />
+              <Route path="/register" element={<Navigate to="/auth" replace />} />
+              
+              {/* Route de checkout protégée */}
+              <Route 
+                path="/checkout" 
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Routes protégées par rôle */}
+              <Route 
+                path="/client-dashboard" 
+                element={
+                  <ProtectedRoute requiredRole="client">
+                    <ClientDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/commercial-dashboard" 
+                element={
+                  <ProtectedRoute requiredRole="commercial">
+                    <CommercialDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin-dashboard" 
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/chat" 
+                element={
+                  <ProtectedRoute>
+                    <CommercialChat />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/import" 
+                element={
+                  <ProtectedRoute requiredRole="admin">
+                    <AdminImport />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            {/* Widget de chat disponible sur toutes les pages */}
+            <ChatbotWidget />
+          </GlobalLayout>
         </BrowserRouter>
         </TooltipProvider>
         </LanguageProvider>

@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@/hooks/use-toast';
 import { SEO } from '@/components/SEO';
-import { MobileNavigation } from '@/components/mobile/MobileNavigation';
 import { MobileHeader } from '@/components/mobile/MobileHeader';
 import { DesktopFloatingHeader } from '@/components/DesktopFloatingHeader';
 import { useMobileOptimizations } from '@/hooks/useMobileOptimizations';
@@ -68,10 +67,6 @@ const IndexContent = () => {
           <Footer />
         </main>
     
-        {/* Navigation mobile flottante */}
-        <div className="floating-mobile-nav floating-mobile-nav-light floating-element">
-          <MobileNavigation />
-        </div>
         
         <PWAInstallPrompt />
       </div>
