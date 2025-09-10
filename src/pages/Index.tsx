@@ -1,12 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import { Navigation } from '@/components/Navigation';
+import { HeroSection } from '@/components/HeroSection';
+import { PriceCalculator } from '@/components/PriceCalculator';
+import { CategoriesSection } from '@/components/CategoriesSection';
+import { ProcessTimeline } from '@/components/ProcessTimeline';
+import { Footer } from '@/components/Footer';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
+  const { toast } = useToast();
+
+  const handleDemoLogin = (role: 'client' | 'commercial' | 'admin') => {
+    // Store demo session
+    localStorage.setItem('userRole', role);
+    localStorage.setItem('isDemo', 'true');
+    
+    // Show success toast
+    toast({
+      title: `Accès Démo ${role.charAt(0).toUpperCase() + role.slice(1)}`,
+      description: "Fonctionnalité en cours de développement. Restez connecté !",
+    });
+    
+    // In a real app, this would redirect to the appropriate dashboard
+    console.log(`Demo login as ${role}`);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navigation onDemoLogin={handleDemoLogin} />
+      <HeroSection onDemoLogin={handleDemoLogin} />
+      <PriceCalculator />
+      <CategoriesSection />
+      <ProcessTimeline />
+      <Footer />
     </div>
   );
 };
