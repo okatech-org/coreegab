@@ -5,6 +5,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
+import coregabLogo from '@/assets/coregab-logo-horizontal.png';
 
 interface NavigationProps {
   onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
@@ -15,11 +16,12 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
   return (
     <nav className="bg-background/95 backdrop-blur-sm shadow-lg fixed w-full z-50 border-b border-border">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="openart-logo">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">C</span>
-          </div>
-          COREGAB
+        <Link to="/" className="flex items-center gap-3">
+          <img 
+            src={coregabLogo} 
+            alt="COREGAB" 
+            className="h-8 w-auto object-contain"
+          />
         </Link>
         
         <div className="hidden md:flex items-center gap-8">

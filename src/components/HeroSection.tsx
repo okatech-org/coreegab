@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import heroImage from '@/assets/hero-image.jpg';
+import coregabLogo from '@/assets/coregab-logo.png';
 import { User, Briefcase, Settings as SettingsIcon, ShoppingBag } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -12,6 +13,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
     <section className="pt-32 pb-20 px-6">
       <div className="container mx-auto">
         <div className="text-center mb-16">
+          <div className="flex justify-center mb-8">
+            <img 
+              src={coregabLogo} 
+              alt="COREGAB" 
+              className="h-16 w-auto object-contain"
+            />
+          </div>
           <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
             Que souhaitez-vous{' '}
             <span className="gradient-text">créer ?</span>
