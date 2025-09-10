@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   Truck, 
   Calculator, 
@@ -14,42 +15,49 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const services = [
   {
     icon: Search,
     title: "Sourcing Intelligent",
-    description: "Notre IA trouve les meilleurs produits coréens selon vos critères spécifiques.",
-    features: ["Recherche IA avancée", "Comparaison automatique", "Vérification qualité"]
+    description: "IA pour trouver les meilleurs produits coréens selon vos critères.",
+    features: ["Recherche IA", "Comparaison auto", "Qualité vérifiée"]
   },
   {
     icon: Calculator,
-    title: "Calcul de Prix Instantané",
-    description: "Obtenez un devis précis en temps réel incluant tous les frais.",
-    features: ["Prix transparent", "Calcul automatique", "Devis immédiat"]
+    title: "Calcul Instantané",
+    description: "Devis précis en temps réel incluant tous les frais.",
+    features: ["Prix transparent", "Calcul auto", "Devis immédiat"]
   },
   {
     icon: Truck,
-    title: "Transport & Logistique",
-    description: "Transport sécurisé de la Corée vers le Gabon avec suivi complet.",
-    features: ["Suivi en temps réel", "Assurance incluse", "Livraison rapide"]
+    title: "Transport Sécurisé",
+    description: "Transport de Corée vers Gabon avec suivi complet.",
+    features: ["Suivi temps réel", "Assurance incluse", "Livraison rapide"]
   },
   {
     icon: Shield,
-    title: "Conformité & Douanes",
-    description: "Gestion complète des formalités douanières et certifications.",
-    features: ["Conformité garantie", "Dédouanement rapide", "Certifications"]
+    title: "Conformité",
+    description: "Gestion complète des formalités et certifications.",
+    features: ["Conformité garantie", "Dédouanement", "Certifications"]
   },
   {
     icon: MessageCircle,
-    title: "Support Commercial",
-    description: "Accompagnement personnalisé par nos experts commerciaux.",
-    features: ["Conseils experts", "Support 24/7", "Suivi personnalisé"]
+    title: "Support Expert",
+    description: "Accompagnement personnalisé par nos experts.",
+    features: ["Conseils experts", "Support 24/7", "Suivi perso"]
   },
   {
     icon: Globe,
     title: "Multi-devises",
-    description: "Paiements et conversions en XAF, KRW et EUR selon vos besoins.",
+    description: "Paiements en XAF, KRW et EUR selon vos besoins.",
     features: ["Taux compétitifs", "Paiement sécurisé", "Multi-devises"]
   }
 ];
@@ -57,26 +65,26 @@ const services = [
 const processSteps = [
   {
     step: "01",
-    title: "Recherche & Sélection",
-    description: "Utilisez notre IA pour trouver les produits parfaits",
+    title: "Recherche",
+    description: "IA trouve vos produits",
     icon: Search
   },
   {
     step: "02", 
-    title: "Devis Instantané",
-    description: "Obtenez votre prix final en quelques clics",
+    title: "Devis",
+    description: "Prix final instantané",
     icon: Calculator
   },
   {
     step: "03",
-    title: "Commande & Paiement",
-    description: "Finalisez votre commande en toute sécurité",
+    title: "Commande",
+    description: "Paiement sécurisé",
     icon: CheckCircle
   },
   {
     step: "04",
-    title: "Transport & Livraison",
-    description: "Suivez votre commande jusqu'à la livraison",
+    title: "Livraison",
+    description: "Suivi jusqu'à vous",
     icon: Truck
   }
 ];
@@ -85,98 +93,100 @@ export const ServicesSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="services" className="py-20 bg-background">
+    <section id="services" className="py-12 bg-background">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold gradient-text mb-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold gradient-text mb-4">
             {t('nav.services')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Une solution complète pour vos importations depuis la Corée du Sud, 
-            de la recherche de produits à la livraison finale.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Solution complète pour vos importations depuis la Corée du Sud
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {services.map((service, index) => (
-            <Card key={index} className="card-elevated bg-card border border-border group hover:scale-105 transition-transform duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6 group-hover:bg-primary/20 transition-colors">
-                  <service.icon className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  {service.description}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <CheckCircle className="w-4 h-4 text-accent" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Services Carousel */}
+        <div className="mb-12">
+          <Carousel className="w-full max-w-5xl mx-auto">
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {services.map((service, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className="card-elevated bg-card border border-border h-full">
+                    <CardContent className="p-5">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                          <service.icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <h3 className="font-bold text-foreground text-sm">
+                          {service.title}
+                        </h3>
+                      </div>
+                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
+                        {service.description}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {service.features.map((feature, idx) => (
+                          <Badge key={idx} variant="secondary" className="text-xs px-2 py-1">
+                            {feature}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </div>
 
-        {/* Process Section */}
-        <div className="bg-muted/30 rounded-2xl p-8 md:p-12">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">
+        {/* Compact Process */}
+        <div className="bg-muted/30 rounded-xl p-6 mb-10">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-foreground mb-2">
               Comment ça marche ?
             </h3>
-            <p className="text-lg text-muted-foreground">
-              Un processus simple et transparent en 4 étapes
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
             {processSteps.map((step, index) => (
-              <div key={index} className="text-center relative">
-                <div className="flex items-center justify-center w-20 h-20 bg-primary rounded-full mx-auto mb-6">
-                  <step.icon className="w-10 h-10 text-primary-foreground" />
+              <div key={index} className="text-center relative flex-shrink-0">
+                <div className="flex items-center justify-center w-12 h-12 bg-primary rounded-full mx-auto mb-3">
+                  <step.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                  <span className="text-sm font-bold text-secondary-foreground">
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-secondary rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-secondary-foreground">
                     {step.step}
                   </span>
                 </div>
-                <h4 className="text-lg font-bold text-foreground mb-3">
+                <h4 className="text-sm font-bold text-foreground mb-1">
                   {step.title}
                 </h4>
-                <p className="text-muted-foreground">
+                <p className="text-xs text-muted-foreground max-w-[80px]">
                   {step.description}
                 </p>
                 {index < processSteps.length - 1 && (
-                  <ArrowRight className="hidden lg:block absolute top-10 -right-4 w-6 h-6 text-muted-foreground" />
+                  <ArrowRight className="hidden lg:block absolute top-6 -right-6 w-4 h-4 text-muted-foreground" />
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center mt-16">
-          <h3 className="text-2xl font-bold text-foreground mb-4">
+        {/* Compact CTA */}
+        <div className="text-center">
+          <h3 className="text-xl font-bold text-foreground mb-3">
             Prêt à commencer ?
           </h3>
-          <p className="text-muted-foreground mb-8">
-            Découvrez nos produits ou calculez votre devis dès maintenant
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-primary hover:bg-primary-hover">
-              <Search className="w-5 h-5 mr-2" />
-              Rechercher des produits
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button className="bg-primary hover:bg-primary-hover">
+              <Search className="w-4 h-4 mr-2" />
+              Rechercher
             </Button>
-            <Button size="lg" variant="outline">
-              <Calculator className="w-5 h-5 mr-2" />
-              Calculer un devis
+            <Button variant="outline">
+              <Calculator className="w-4 h-4 mr-2" />
+              Calculer
             </Button>
           </div>
         </div>
