@@ -8,23 +8,23 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
   return (
-    <section className="pt-32 pb-20 px-6">
+    <section className="pt-8 lg:pt-32 pb-20 px-4 lg:px-6">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
+        <div className="text-center mb-8 lg:mb-16">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-foreground mb-4 lg:mb-6 leading-tight">
             Importez depuis la{' '}
             <span className="gradient-text">Corée du Sud</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 lg:mb-8 px-4">
             Plateforme complète d'import de produits coréens avec assistance IA, 
             calcul de prix en temps réel et gestion commerciale intégrée.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
+            <Button size="lg" className="text-base lg:text-lg px-6 lg:px-8 py-3 lg:py-4">
               Commencer maintenant
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowRight className="ml-2 w-4 lg:w-5 h-4 lg:h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+            <Button size="lg" variant="outline" className="text-base lg:text-lg px-6 lg:px-8 py-3 lg:py-4">
               Voir la démo
             </Button>
           </div>
