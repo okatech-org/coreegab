@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import coregabLogo from '@/assets/coregab-logo-transparent.png';
+import coregabLogo from '@/assets/coregab-logo-clear.png';
 import { 
   Home, 
   Users, 

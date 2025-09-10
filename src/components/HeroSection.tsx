@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import heroImage from '@/assets/hero-image.jpg';
-import coregabLogo from '@/assets/coregab-logo-transparent.png';
+import coregabLogo from '@/assets/coregab-logo-clear.png';
 import { User, Briefcase, Settings as SettingsIcon, ShoppingBag } from 'lucide-react';
 
 interface HeroSectionProps {

@@ -5,7 +5,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import coregabLogo from '@/assets/coregab-logo-horizontal-transparent.png';
+import coregabLogo from '@/assets/coregab-logo-horizontal-clear.png';
 
 interface NavigationProps {
   onDemoLogin?: (role: 'client' | 'commercial' | 'admin') => void;
