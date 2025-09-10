@@ -18,11 +18,19 @@ const Index = () => {
     // Show success toast
     toast({
       title: `Accès Démo ${role.charAt(0).toUpperCase() + role.slice(1)}`,
-      description: "Fonctionnalité en cours de développement. Restez connecté !",
+      description: "Redirection vers votre dashboard...",
     });
     
-    // In a real app, this would redirect to the appropriate dashboard
-    console.log(`Demo login as ${role}`);
+    // Redirect to appropriate dashboard
+    const routes = {
+      client: '/client-dashboard',
+      commercial: '/commercial-dashboard',
+      admin: '/admin-dashboard'
+    };
+    
+    setTimeout(() => {
+      window.location.href = routes[role];
+    }, 1000);
   };
 
   return (
