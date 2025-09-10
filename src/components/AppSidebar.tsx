@@ -61,9 +61,11 @@ export function AppSidebar() {
     <Sidebar className={`${collapsed ? "w-14" : "w-60"} sidebar-nav`} collapsible="icon">
       <SidebarContent className="p-4">
         {/* Logo */}
-        <div className="mb-8">
+        <div className="mb-8 px-2">
           <div className="openart-logo">
-            <Box className="w-6 h-6 text-primary" />
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-lg">C</span>
+            </div>
             {!collapsed && <span>COREGAB</span>}
           </div>
         </div>
