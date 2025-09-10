@@ -71,7 +71,7 @@ export default function ClientDashboard() {
             <h2 className="text-2xl font-bold text-foreground mb-6">Mes Commandes</h2>
             <div className="space-y-4">
               {mockOrders.slice(0, 3).map(order => (
-                <Card key={order.id} className="card-elevated">
+                <Card key={order.id} className="card-elevated bg-card border border-border">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
@@ -98,14 +98,14 @@ export default function ClientDashboard() {
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Mon Panier</h2>
             {cart.length === 0 ? (
-              <Card className="card-elevated text-center p-12">
+              <Card className="card-elevated bg-card border border-border text-center p-12">
                 <ShoppingCart className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">Votre panier est vide</p>
               </Card>
             ) : (
               <div className="space-y-4">
                 {cart.map((item, index) => (
-                  <Card key={index} className="card-elevated">
+                  <Card key={index} className="card-elevated bg-card border border-border">
                     <CardContent className="p-4 flex justify-between items-center">
                       <div className="flex items-center gap-4">
                         <img 
@@ -141,7 +141,7 @@ export default function ClientDashboard() {
         return (
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Mon Profil</h2>
-            <Card className="card-elevated max-w-2xl">
+            <Card className="card-elevated bg-card border border-border max-w-2xl">
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div>
@@ -177,7 +177,7 @@ export default function ClientDashboard() {
         <ClientSidebar activeView={activeView} onViewChange={setActiveView} />
         
         <div className="flex-1 flex flex-col">
-          <header className="bg-white border-b border-border p-4 flex justify-between items-center">
+          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
               <h1 className="text-xl font-bold gradient-text">Dashboard Client</h1>

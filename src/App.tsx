@@ -11,6 +11,9 @@ import Boutique from "./pages/Boutique";
 import AdminImport from "./pages/AdminImport";
 import PhoneAuth from "./pages/PhoneAuth";
 import NotFound from "./pages/NotFound";
+import Calculator from "./pages/Calculator";
+import AISearch from "./pages/AISearch";
+import CommercialChat from "./pages/CommercialChat";
 import ChatbotWidget from "./components/ChatbotWidget";
 
 const queryClient = new QueryClient();
@@ -28,6 +31,9 @@ const App = () => (
           <Route path="/commercial-dashboard" element={<CommercialDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/boutique" element={<Boutique />} />
+          <Route path="/calculator" element={<Calculator />} />
+          <Route path="/search" element={<AISearch />} />
+          <Route path="/chat" element={<CommercialChat />} />
           <Route path="/admin/import" element={<AdminImport />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

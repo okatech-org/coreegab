@@ -53,7 +53,7 @@ export default function AdminDashboard() {
         return (
           <div className="space-y-6">
             <div className="grid md:grid-cols-4 gap-6">
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
             </div>
 
             <div className="grid lg:grid-cols-2 gap-6">
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardHeader>
                   <CardTitle>Dernières Commandes</CardTitle>
                 </CardHeader>
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardHeader>
                   <CardTitle>Performance des Commerciaux</CardTitle>
                 </CardHeader>
@@ -167,7 +167,7 @@ export default function AdminDashboard() {
             </div>
             <div className="space-y-4">
               {mockUsers.map(user => (
-                <Card key={user.id} className="card-elevated">
+                <Card key={user.id} className="card-elevated bg-card border border-border">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
             </div>
             <div className="space-y-4">
               {mockProducts.map(product => (
-                <Card key={product.id} className="card-elevated">
+                <Card key={product.id} className="card-elevated bg-card border border-border">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
             <h2 className="text-2xl font-bold text-foreground mb-6">Toutes les Commandes</h2>
             <div className="space-y-4">
               {mockAllOrders.map(order => (
-                <Card key={order.id} className="card-elevated">
+                <Card key={order.id} className="card-elevated bg-card border border-border">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Paramètres Système</h2>
             <div className="space-y-6 max-w-2xl">
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardHeader>
                   <CardTitle>Taux de Change</CardTitle>
                 </CardHeader>
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardHeader>
                   <CardTitle>Transport</CardTitle>
                 </CardHeader>
@@ -313,7 +313,7 @@ export default function AdminDashboard() {
         <AdminSidebar activeView={activeView} onViewChange={setActiveView} />
         
         <div className="flex-1 flex flex-col">
-          <header className="bg-white border-b border-border p-4 flex justify-between items-center">
+          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
               <h1 className="text-xl font-bold gradient-text">Dashboard Admin</h1>

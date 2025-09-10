@@ -41,7 +41,7 @@ export default function CommercialDashboard() {
         return (
           <div className="space-y-6">
             <div className="grid md:grid-cols-4 gap-6">
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -55,7 +55,7 @@ export default function CommercialDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -69,7 +69,7 @@ export default function CommercialDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -83,7 +83,7 @@ export default function CommercialDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="card-elevated">
+              <Card className="card-elevated bg-card border border-border">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -98,7 +98,7 @@ export default function CommercialDashboard() {
               </Card>
             </div>
 
-            <Card className="card-elevated">
+            <Card className="card-elevated bg-card border border-border">
               <CardHeader>
                 <CardTitle>Commandes du Jour</CardTitle>
               </CardHeader>
@@ -129,7 +129,7 @@ export default function CommercialDashboard() {
         return (
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Nouvelle Commande</h2>
-            <Card className="card-elevated max-w-2xl">
+            <Card className="card-elevated bg-card border border-border max-w-2xl">
               <CardContent className="p-6 space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -169,7 +169,7 @@ export default function CommercialDashboard() {
             <h2 className="text-2xl font-bold text-foreground mb-6">Mes Clients</h2>
             <div className="space-y-4">
               {mockClients.map(client => (
-                <Card key={client.id} className="card-elevated">
+                <Card key={client.id} className="card-elevated bg-card border border-border">
                   <CardContent className="p-6">
                     <div className="flex justify-between items-center">
                       <div>
@@ -195,7 +195,7 @@ export default function CommercialDashboard() {
         return (
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Calculateur de Commission</h2>
-            <Card className="card-elevated max-w-lg">
+            <Card className="card-elevated bg-card border border-border max-w-lg">
               <CardContent className="p-6 space-y-4">
                 <div>
                   <Label>Prix de la commande (FCFA)</Label>
@@ -246,7 +246,7 @@ export default function CommercialDashboard() {
         <CommercialSidebar activeView={activeView} onViewChange={setActiveView} />
         
         <div className="flex-1 flex flex-col">
-          <header className="bg-white border-b border-border p-4 flex justify-between items-center">
+          <header className="bg-card shadow-lg border-b border-border p-4 flex justify-between items-center">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
               <h1 className="text-xl font-bold gradient-text">Dashboard Commercial</h1>
