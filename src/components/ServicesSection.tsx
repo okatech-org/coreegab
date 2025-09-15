@@ -15,6 +15,9 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { useMonitoring } from '@/lib/monitoring';
 import {
   Carousel,
   CarouselContent,
@@ -91,6 +94,29 @@ const processSteps = [
 
 export const ServicesSection = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { trackEvent } = useMonitoring();
+
+  const handleServiceAction = (action: string, title: string) => {
+    trackEvent('service_action_clicked', { action, title });
+    
+    const routes = {
+      search: '/search',
+      calculator: '/calculator',
+      boutique: '/boutique',
+      chat: '/chat'
+    };
+
+    const route = routes[action as keyof typeof routes];
+    if (route) {
+      navigate(route);
+      toast({
+        title: `${title}`,
+        description: "Redirection en cours...",
+      });
+    }
+  };
 
   return (
     <section id="services" className="floating-spacing section-glass">
@@ -180,13 +206,28 @@ export const ServicesSection = () => {
             Prêt à commencer ?
           </h3>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 transition-all duration-300 hover:scale-105"
+              onClick={() => handleServiceAction('search', 'Recherche IA')}
+            >
               <Search className="w-4 h-4 mr-2" />
-              Rechercher
+              Rechercher des produits
             </Button>
-            <Button variant="outline">
+            <Button 
+              variant="outline"
+              className="hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              onClick={() => handleServiceAction('calculator', 'Calculateur de prix')}
+            >
               <Calculator className="w-4 h-4 mr-2" />
-              Calculer
+              Calculer un prix
+            </Button>
+            <Button 
+              variant="secondary"
+              className="hover:bg-secondary/80 transition-all duration-300"
+              onClick={() => handleServiceAction('boutique', 'Boutique')}
+            >
+              <ArrowRight className="w-4 h-4 mr-2" />
+              Voir la boutique
             </Button>
           </div>
         </div>

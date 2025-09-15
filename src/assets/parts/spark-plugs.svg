@@ -1,0 +1,13 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#F3F4F6"/>
+  <rect x="80" y="40" width="40" height="120" rx="20" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="2"/>
+  <rect x="85" y="45" width="30" height="110" rx="15" fill="#F9FAFB"/>
+  <rect x="90" y="50" width="20" height="100" rx="10" fill="#6B7280"/>
+  <rect x="95" y="55" width="10" height="90" rx="5" fill="#374151"/>
+  <circle cx="100" cy="35" r="8" fill="#F59E0B"/>
+  <circle cx="100" cy="35" r="5" fill="#FCD34D"/>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#374151">Bougies d'Allumage</text>
+  <path d="M70 35 L130 35" stroke="#F59E0B" stroke-width="2"/>
+  <path d="M70 35 L60 25" stroke="#F59E0B" stroke-width="1"/>
+  <path d="M130 35 L140 25" stroke="#F59E0B" stroke-width="1"/>
+</svg>

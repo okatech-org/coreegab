@@ -1,0 +1,13 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#F3F4F6"/>
+  <rect x="60" y="70" width="80" height="60" rx="8" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="2"/>
+  <rect x="70" y="80" width="60" height="40" rx="4" fill="#F9FAFB"/>
+  <rect x="80" y="90" width="40" height="20" rx="2" fill="#6B7280"/>
+  <rect x="90" y="100" width="20" height="10" rx="1" fill="#374151"/>
+  <rect x="95" y="50" width="10" height="15" rx="5" fill="#EF4444"/>
+  <rect x="95" y="135" width="10" height="15" rx="5" fill="#EF4444"/>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#374151">Batterie</text>
+  <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#F9FAFB">12V</text>
+  <path d="M95 50 L95 65" stroke="#EF4444" stroke-width="2"/>
+  <path d="M105 50 L105 65" stroke="#EF4444" stroke-width="2"/>
+</svg>

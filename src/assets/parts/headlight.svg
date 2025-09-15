@@ -1,0 +1,14 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#F3F4F6"/>
+  <circle cx="100" cy="100" r="60" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="3"/>
+  <circle cx="100" cy="100" r="45" fill="#F9FAFB"/>
+  <circle cx="100" cy="100" r="30" fill="#FEF3C7"/>
+  <circle cx="100" cy="100" r="15" fill="#FCD34D"/>
+  <rect x="85" y="40" width="30" height="8" rx="4" fill="#6B7280"/>
+  <rect x="85" y="152" width="30" height="8" rx="4" fill="#6B7280"/>
+  <rect x="40" y="85" width="8" height="30" rx="4" fill="#6B7280"/>
+  <rect x="152" y="85" width="8" height="30" rx="4" fill="#6B7280"/>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#374151">Phare LED</text>
+  <path d="M70 100 L130 100" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,3"/>
+  <path d="M100 70 L100 130" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,3"/>
+</svg>

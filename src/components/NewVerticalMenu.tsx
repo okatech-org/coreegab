@@ -1,9 +1,12 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { useMonitoring } from '@/lib/monitoring';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { 
   Home, 
   ShoppingBag, 
@@ -27,6 +30,11 @@ export const NewVerticalMenu: React.FC = () => {
   const { t } = useLanguage();
   const { user, profile, signOut, signInDemo } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { trackEvent } = useMonitoring();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState<string | null>(null);
 
   const mainItems = [
     { title: t('sidebar.home'), icon: Home, url: '/' },
@@ -75,6 +83,65 @@ export const NewVerticalMenu: React.FC = () => {
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
+  };
+
+  const handleDemoLogin = async (role: 'client' | 'commercial' | 'admin') => {
+    setIsDemoLoading(role);
+    trackEvent('demo_login_clicked', { role });
+    
+    try {
+      await signInDemo(role);
+      
+      toast({
+        title: `Connexion démo ${role}`,
+        description: "Redirection vers votre dashboard...",
+      });
+
+      // Redirect after successful login
+      const routes = {
+        client: '/client-dashboard',
+        commercial: '/commercial-dashboard',
+        admin: '/admin-dashboard'
+      };
+      
+      setTimeout(() => {
+        navigate(routes[role]);
+      }, 1000);
+
+    } catch (error) {
+      toast({
+        title: "Erreur de connexion",
+        description: "Impossible de se connecter en mode démo",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDemoLoading(null);
+    }
+  };
+
+  const handleSignOut = async () => {
+    setIsLoggingOut(true);
+    trackEvent('logout_clicked', { role: profile?.role });
+    
+    try {
+      await signOut();
+      
+      toast({
+        title: "Déconnexion réussie",
+        description: "À bientôt !",
+      });
+
+      navigate('/');
+      
+    } catch (error) {
+      toast({
+        title: "Erreur de déconnexion",
+        description: "Une erreur est survenue",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -153,11 +220,18 @@ export const NewVerticalMenu: React.FC = () => {
                     key={item.role}
                     variant="ghost"
                     size="sm"
-                    onClick={() => signInDemo(item.role as 'client' | 'commercial' | 'admin')}
-                    className="w-full flex items-center justify-start gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+                    onClick={() => handleDemoLogin(item.role as 'client' | 'commercial' | 'admin')}
+                    disabled={isDemoLoading === item.role}
+                    className="w-full flex items-center justify-start gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-200 disabled:opacity-50"
                   >
-                    <item.icon className="w-5 h-5 flex-shrink-0" />
-                    <span className="whitespace-nowrap">{item.label}</span>
+                    {isDemoLoading === item.role ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <item.icon className="w-5 h-5 flex-shrink-0" />
+                    )}
+                    <span className="whitespace-nowrap">
+                      {isDemoLoading === item.role ? 'Connexion...' : item.label}
+                    </span>
                   </Button>
                 ))}
               </div>
@@ -179,11 +253,16 @@ export const NewVerticalMenu: React.FC = () => {
             </div>
             <Button
               variant="ghost"
-              className="w-full flex items-center justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 transition-all duration-200"
-              onClick={signOut}
+              className="w-full flex items-center justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 transition-all duration-200 disabled:opacity-50"
+              onClick={handleSignOut}
+              disabled={isLoggingOut}
             >
-              <LogOut className="w-5 h-5" />
-              <span>{t('sidebar.logout')}</span>
+              {isLoggingOut ? (
+                <LoadingSpinner />
+              ) : (
+                <LogOut className="w-5 h-5" />
+              )}
+              <span>{isLoggingOut ? 'Déconnexion...' : t('sidebar.logout')}</span>
             </Button>
           </div>
         )}

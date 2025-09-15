@@ -10,11 +10,14 @@ export const useProducts = (filters?: {
   search?: string;
   limit?: number;
   offset?: number;
-}) => {
+}, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['products', filters],
     queryFn: () => productService.getProducts(filters),
     staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+    enabled: options?.enabled ?? true,
   });
 };
 

@@ -1,0 +1,15 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#F3F4F6"/>
+  <circle cx="100" cy="100" r="50" fill="#E5E7EB" stroke="#9CA3AF" stroke-width="3"/>
+  <circle cx="100" cy="100" r="35" fill="#F9FAFB"/>
+  <circle cx="100" cy="100" r="20" fill="#E5E7EB"/>
+  <rect x="95" y="30" width="10" height="20" rx="5" fill="#6B7280"/>
+  <rect x="95" y="150" width="10" height="20" rx="5" fill="#6B7280"/>
+  <rect x="30" y="95" width="20" height="10" rx="5" fill="#6B7280"/>
+  <rect x="150" y="95" width="20" height="10" rx="5" fill="#6B7280"/>
+  <path d="M100 50 L100 70" stroke="#3B82F6" stroke-width="3"/>
+  <path d="M100 130 L100 150" stroke="#3B82F6" stroke-width="3"/>
+  <path d="M50 100 L70 100" stroke="#3B82F6" stroke-width="3"/>
+  <path d="M130 100 L150 100" stroke="#3B82F6" stroke-width="3"/>
+  <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#374151">Pompe à Eau</text>
+</svg>

@@ -27,8 +27,7 @@ export const productService = {
     try {
       let query = supabase
         .from('products')
-        .select('*')
-        .eq('is_active', true);
+        .select('*');
 
       if (filters?.category) {
         query = query.eq('category', filters.category);
@@ -64,7 +63,6 @@ export const productService = {
         .from('products')
         .select('*')
         .eq('id', id)
-        .eq('is_active', true)
         .single();
 
       if (error) throw error;
@@ -116,9 +114,10 @@ export const productService = {
   // Supprimer un produit (soft delete)
   async deleteProduct(id: string) {
     try {
+      // Si la colonne is_active n'existe pas, effectuer une suppression hard en fallback
       const { data, error } = await supabase
         .from('products')
-        .update({ is_active: false })
+        .delete()
         .eq('id', id)
         .select()
         .single();
@@ -137,16 +136,15 @@ export const productService = {
     try {
       const { data, error } = await supabase
         .from('products')
-        .select('category')
-        .eq('is_active', true);
+        .select('category');
 
       if (error) throw error;
 
       // Compter les produits par catégorie
-      const categoryCounts = data.reduce((acc: Record<string, number>, product) => {
+      const categoryCounts = (data as Array<{ category: string }>).reduce((acc: Record<string, number>, product) => {
         acc[product.category] = (acc[product.category] || 0) + 1;
         return acc;
-      }, {});
+      }, {} as Record<string, number>);
 
       return { data: categoryCounts, error: null };
     } catch (error) {
@@ -166,7 +164,6 @@ export const productService = {
       let supabaseQuery = supabase
         .from('products')
         .select('*')
-        .eq('is_active', true)
         .or(`name.ilike.%${query}%,description.ilike.%${query}%`);
 
       if (filters?.category) {

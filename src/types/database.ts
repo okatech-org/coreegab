@@ -11,6 +11,37 @@ export interface Product {
   updated_at: string;
 }
 
+export interface Vehicle {
+  id: string;
+  created_at: string;
+  make: string;
+  model: string;
+  year_start: number;
+  year_end?: number;
+  engine?: string;
+  trim?: string;
+}
+
+export interface Part {
+  id: string;
+  created_at: string;
+  part_number: string;
+  oem_number?: string;
+  name: string;
+  description?: string;
+  brand?: string;
+  price_krw?: number;
+  stock_quantity?: number;
+  image_url?: string;
+}
+
+export interface PartVehicleFitment {
+  id: string;
+  part_id: string;
+  vehicle_id: string;
+  notes?: string;
+}
+
 export interface Order {
   id: string;
   client_id: string;

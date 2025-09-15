@@ -13,10 +13,14 @@ import {
   Clock, 
   MessageCircle, 
   Send,
-  CheckCircle
+  CheckCircle,
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { useMonitoring } from '@/lib/monitoring';
+import { supabase } from '@/integrations/supabase/client';
 
 const contactInfo = [
   {
@@ -61,6 +65,7 @@ const faqItems = [
 export const ContactSection = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { trackEvent } = useMonitoring();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,27 +74,98 @@ export const ContactSection = () => {
     message: '',
     urgency: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Le nom est requis';
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'L\'email est requis';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email invalide';
+    }
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Le sujet est requis';
+    }
+    if (!formData.message.trim()) {
+      newErrors.message = 'Le message est requis';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Le message doit contenir au moins 10 caractères';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    toast({
-      title: "Message envoyé !",
-      description: "Nous vous répondrons dans les plus brefs délais.",
+    if (!validateForm()) {
+      toast({
+        title: "Erreur de validation",
+        description: "Veuillez corriger les erreurs dans le formulaire",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    trackEvent('contact_form_submitted', { 
+      urgency: formData.urgency,
+      hasPhone: !!formData.phone 
     });
 
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: '',
-      urgency: ''
-    });
+    try {
+      // Simuler l'envoi vers Supabase ou service email
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Ici on pourrait envoyer vers une table 'contact_messages' ou un service email
+      // const { error } = await supabase
+      //   .from('contact_messages')
+      //   .insert([formData]);
+
+      toast({
+        title: "Message envoyé !",
+        description: "Nous vous répondrons dans les plus brefs délais.",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        urgency: ''
+      });
+      setErrors({});
+
+      trackEvent('contact_form_success', { urgency: formData.urgency });
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Erreur d'envoi",
+        description: "Une erreur est survenue. Veuillez réessayer.",
+        variant: "destructive",
+      });
+      
+      trackEvent('contact_form_error', { error: 'submission_failed' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   return (
@@ -162,9 +238,15 @@ export const ContactSection = () => {
                               value={formData.name}
                               onChange={(e) => handleInputChange('name', e.target.value)}
                               placeholder="Votre nom"
-                              className="h-9"
+                              className={`h-9 ${errors.name ? 'border-destructive' : ''}`}
                               required
                             />
+                            {errors.name && (
+                              <div className="flex items-center gap-1 text-xs text-destructive">
+                                <AlertCircle className="w-3 h-3" />
+                                {errors.name}
+                              </div>
+                            )}
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="email" className="text-sm">Email *</Label>
@@ -174,9 +256,15 @@ export const ContactSection = () => {
                               value={formData.email}
                               onChange={(e) => handleInputChange('email', e.target.value)}
                               placeholder="votre@email.com"
-                              className="h-9"
+                              className={`h-9 ${errors.email ? 'border-destructive' : ''}`}
                               required
                             />
+                            {errors.email && (
+                              <div className="flex items-center gap-1 text-xs text-destructive">
+                                <AlertCircle className="w-3 h-3" />
+                                {errors.email}
+                              </div>
+                            )}
                           </div>
                         </div>
 
@@ -214,9 +302,15 @@ export const ContactSection = () => {
                             value={formData.subject}
                             onChange={(e) => handleInputChange('subject', e.target.value)}
                             placeholder="Objet de votre demande"
-                            className="h-9"
+                            className={`h-9 ${errors.subject ? 'border-destructive' : ''}`}
                             required
                           />
+                          {errors.subject && (
+                            <div className="flex items-center gap-1 text-xs text-destructive">
+                              <AlertCircle className="w-3 h-3" />
+                              {errors.subject}
+                            </div>
+                          )}
                         </div>
 
                         <div className="space-y-1">
@@ -227,13 +321,33 @@ export const ContactSection = () => {
                             onChange={(e) => handleInputChange('message', e.target.value)}
                             placeholder="Décrivez votre projet..."
                             rows={4}
+                            className={errors.message ? 'border-destructive' : ''}
                             required
                           />
+                          {errors.message && (
+                            <div className="flex items-center gap-1 text-xs text-destructive">
+                              <AlertCircle className="w-3 h-3" />
+                              {errors.message}
+                            </div>
+                          )}
                         </div>
 
-                        <Button type="submit" className="w-full bg-primary hover:bg-primary-hover">
-                          <Send className="w-4 h-4 mr-2" />
-                          Envoyer le message
+                        <Button 
+                          type="submit" 
+                          className="w-full bg-primary hover:bg-primary-hover disabled:opacity-50"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Envoi en cours...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-4 h-4 mr-2" />
+                              Envoyer le message
+                            </>
+                          )}
                         </Button>
                       </form>
                     </CardContent>
