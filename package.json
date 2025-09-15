@@ -1,7 +1,7 @@
 {
   "name": "coreegab",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,8 @@
     "test:coverage": "jest --coverage",
     "import:vehicles": "node scripts/korean-vehicle-import.js run",
     "import:schedule": "node scripts/korean-vehicle-import.js schedule",
-    "import:test": "node scripts/korean-vehicle-import.js test"
+    "import:test": "node scripts/korean-vehicle-import.js test",
+    "deploy": "npm run build && echo 'Deployment ready for Lovable'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

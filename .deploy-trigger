@@ -1,0 +1,10 @@
+# Déclencheur de déploiement Lovable
+# Timestamp: $(date)
+# Version: 1.0.0
+# Architecture: Unifiée
+# Status: Production Ready
+
+FORCE_DEPLOY=true
+DEPLOY_TIMESTAMP=2025-01-15T20:30:00Z
+DEPLOY_VERSION=1.0.0
+DEPLOY_MESSAGE="Architecture unifiée COREEGAB - Boutique simplifiée et optimisée"
