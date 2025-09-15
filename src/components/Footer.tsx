@@ -7,14 +7,14 @@ export const Footer = () => {
       <div className="container mx-auto">
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
           <div>
-            {/* Logo COREGAB */}
+            {/* Logo COREEGAB */}
             <div className="flex justify-center md:justify-start items-center mb-4">
               <img 
                 src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-                alt="COREGAB Logo" 
+                alt="COREEGAB Logo" 
                 className="w-8 h-8"
               />
-              <span className="text-foreground font-bold text-xl ml-2">COREGAB</span>
+              <span className="text-foreground font-bold text-xl ml-2">COREEGAB</span>
             </div>
             <p className="text-muted-foreground text-sm">
               Votre partenaire de confiance pour l'import de produits coréens au Gabon
@@ -30,7 +30,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <Mail className="w-4 h-4 text-primary" />
-                <span className="text-muted-foreground">contact@coregab.ga</span>
+                <span className="text-muted-foreground">contact@coreegab.ga</span>
               </div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <MapPin className="w-4 h-4 text-primary" />
@@ -51,7 +51,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 COREGAB. Tous droits réservés.</p>
+          <p>&copy; 2024 COREEGAB. Tous droits réservés.</p>
         </div>
       </div>
     </footer>
