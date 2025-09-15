@@ -1,18 +1,28 @@
 // Service de recherche IA pour les produits coréens
 export interface AISearchResult {
   id: string;
+  name: string;
   title: string;
   description: string;
   category: string;
   price: number;
+  price_krw: number;
   currency: string;
   imageUrl: string;
+  image_url: string;
+  relevance: number;
   relevanceScore: number;
   source: string;
+  weight: number;
+  in_stock: boolean;
+  created_at: string;
+  updated_at: string;
+  aiReasoning?: string;
 }
 
 export interface AISearchResponse {
   results: AISearchResult[];
+  suggestions: string[];
   totalResults: number;
   searchTime: number;
 }
@@ -27,7 +37,7 @@ class AIService {
       id: '1',
       title: 'Hyundai Tucson 2024',
       description: 'SUV compact avec technologie avancée et design moderne',
-      category: 'Véhicules',
+      category: 'vehicles',
       price: 25000000,
       currency: 'FCFA',
       imageUrl: '/assets/hyundai-tucson.jpg',
@@ -37,7 +47,7 @@ class AIService {
       id: '2',
       title: 'Samsung Galaxy S24',
       description: 'Smartphone premium avec IA intégrée et caméra professionnelle',
-      category: 'Électronique',
+      category: 'smartphones',
       price: 450000,
       currency: 'FCFA',
       imageUrl: '/assets/samsung-galaxy-s24.jpg',
@@ -47,7 +57,7 @@ class AIService {
       id: '3',
       title: 'LG Réfrigérateur Smart',
       description: 'Réfrigérateur intelligent avec technologie ThinQ et économie d\'énergie',
-      category: 'Électroménager',
+      category: 'appliances',
       price: 850000,
       currency: 'FCFA',
       imageUrl: '/assets/lg-refrigerator.jpg',
@@ -57,7 +67,7 @@ class AIService {
       id: '4',
       title: 'Kia Sportage 2024',
       description: 'SUV familial avec sécurité avancée et confort premium',
-      category: 'Véhicules',
+      category: 'vehicles',
       price: 22000000,
       currency: 'FCFA',
       imageUrl: '/assets/kia-sportage.jpg',
@@ -67,7 +77,7 @@ class AIService {
       id: '5',
       title: 'MacBook Pro M3',
       description: 'Ordinateur portable professionnel avec puce M3 et écran Retina',
-      category: 'Informatique',
+      category: 'electronics',
       price: 1200000,
       currency: 'FCFA',
       imageUrl: '/assets/macbook-pro-m3.jpg',
@@ -97,10 +107,14 @@ class AIService {
       // Tri par pertinence
       const sortedResults = results.sort((a, b) => b.relevanceScore - a.relevanceScore);
       
+      // Génération des suggestions
+      const suggestions = this.getSearchSuggestions(query);
+      
       const searchTime = Date.now() - startTime;
       
       return {
         results: sortedResults,
+        suggestions,
         totalResults: sortedResults.length,
         searchTime
       };
@@ -109,6 +123,7 @@ class AIService {
       console.error('Erreur lors de la recherche IA:', error);
       return {
         results: [],
+        suggestions: [],
         totalResults: 0,
         searchTime: Date.now() - startTime
       };
@@ -159,10 +174,26 @@ class AIService {
       }
       
       if (relevanceScore > 0) {
+        const now = new Date().toISOString();
         results.push({
-          ...product,
+          id: product.id,
+          name: product.title,
+          title: product.title,
+          description: product.description,
+          category: product.category,
+          price: product.price,
+          price_krw: product.price * 0.5, // Estimation KRW
+          currency: product.currency,
+          imageUrl: product.imageUrl,
+          image_url: product.imageUrl,
+          relevance: relevanceScore / 100,
           relevanceScore,
-          source: 'Base de données CoreGab'
+          source: 'Base de données COREEGAB',
+          weight: 1.5, // Poids estimé en kg
+          in_stock: true,
+          created_at: now,
+          updated_at: now,
+          aiReasoning: `Correspondance trouvée pour "${query}" avec un score de ${relevanceScore}%`
         });
       }
     });
