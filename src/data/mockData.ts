@@ -1,4 +1,5 @@
 import { Product, Order, PriceSettings } from "@/types/database";
+import { koreanVehicles } from "@/services/koreanVehiclesData";
 
 // Segments principaux de la boutique (organisés par gamme logique)
 export const boutiqueSegments = {
@@ -39,14 +40,22 @@ export const boutiqueSegments = {
 // Mock Products Data (organisés par gamme et section logique)
 export const mockProducts: Product[] = [
   // ===== VÉHICULES CORÉENS =====
-  // SUV Premium
-  { id: '11', name: 'Hyundai Tucson 2024', category: 'vehicles', price_krw: 35000000, weight: 1500, image_url: '/src/assets/hyundai-tucson.jpg', description: 'SUV hybride 7 places, moteur 2.5L, transmission automatique', in_stock: true, created_at: '2024-01-01', updated_at: '2024-01-01' },
-  { id: '12', name: 'Kia Sportage 2024', category: 'vehicles', price_krw: 32000000, weight: 1450, image_url: '/placeholder-car.svg', description: 'SUV compact moderne, moteur 2.4L, transmission automatique', in_stock: true, created_at: '2024-01-01', updated_at: '2024-01-01' },
-  { id: '13', name: 'Genesis GV70', category: 'vehicles', price_krw: 45000000, weight: 1800, image_url: '/placeholder-car.svg', description: 'SUV de luxe Genesis, moteur 3.5L V6, transmission automatique', in_stock: false, created_at: '2024-01-01', updated_at: '2024-01-01' },
-  
-  // Berlines
-  { id: '14', name: 'Hyundai Elantra 2024', category: 'vehicles', price_krw: 25000000, weight: 1300, image_url: '/placeholder-car.svg', description: 'Berline élégante, moteur 2.0L, transmission automatique', in_stock: true, created_at: '2024-01-01', updated_at: '2024-01-01' },
-  { id: '15', name: 'Kia Carnival 2024', category: 'vehicles', price_krw: 40000000, weight: 2000, image_url: '/placeholder-car.svg', description: 'Monospace familial 8 places, moteur 3.5L V6', in_stock: true, created_at: '2024-01-01', updated_at: '2024-01-01' },
+  // Conversion des véhicules coréens en format Product
+  ...koreanVehicles.map(vehicle => ({
+    id: vehicle.id,
+    name: vehicle.name,
+    category: vehicle.category,
+    price_krw: vehicle.price_krw,
+    weight: 1500, // Poids moyen des véhicules
+    image_url: vehicle.image_url,
+    description: vehicle.description,
+    in_stock: vehicle.in_stock,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
+    brand: vehicle.brand,
+    part_number: vehicle.part_number,
+    stock_quantity: vehicle.stock_quantity
+  })),
 
   // ===== ÉLECTRONIQUE CORÉENNE =====
   // Smartphones Samsung

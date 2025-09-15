@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -53,7 +54,10 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
       if (error) {
         // Si la table notifications n'existe pas, ne pas afficher d'erreur
-        if (error.code === 'PGRST116' || error.message.includes('relation "notifications" does not exist')) {
+        if (error.code === 'PGRST116' || 
+            error.code === 'PGRST205' ||
+            error.message.includes('relation "notifications" does not exist') ||
+            error.message.includes('Could not find the table')) {
           console.log('Table notifications non disponible - mode démo');
           setNotifications([]);
           return;
@@ -142,35 +146,42 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
     loadNotifications();
 
-    // Subscription pour les nouvelles notifications
-    const subscription = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          const newNotification = payload.new as Notification;
-          
-          // Ajouter à la liste
-          setNotifications(prev => [newNotification, ...prev]);
-          
-          // Afficher un toast
-          toast({
-            title: newNotification.title,
-            description: newNotification.message,
-            variant: newNotification.type === 'error' ? 'destructive' : 'default',
-          });
-        }
-      )
-      .subscribe();
+    // Subscription pour les nouvelles notifications (si la table existe)
+    let subscription;
+    try {
+      subscription = supabase
+        .channel('notifications')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const newNotification = payload.new as Notification;
+            
+            // Ajouter à la liste
+            setNotifications(prev => [newNotification, ...prev]);
+            
+            // Afficher un toast
+            toast({
+              title: newNotification.title,
+              description: newNotification.message,
+              variant: newNotification.type === 'error' ? 'destructive' : 'default',
+            });
+          }
+        )
+        .subscribe();
+    } catch (error) {
+      console.log('Subscription notifications non disponible - mode démo');
+    }
 
     return () => {
-      subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, [user, toast]);
 

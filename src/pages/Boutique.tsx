@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Filter, ShoppingCart, Sparkles, Car, Smartphone, Home, Loader2, AlertCircle, Grid, List } from 'lucide-react';
 import { useProducts, useCart } from '@/hooks/useProducts';
 import { useParts } from '@/hooks/useParts';
+import { useVehicles } from '@/hooks/useVehicles';
 import { mockProducts } from '@/data/mockData';
 import ProductCard from '@/components/ProductCard';
 import { PartCard } from '@/components/PartCard';
@@ -21,7 +22,10 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { useAuth } from '@/contexts/AuthContext';
 import { vehicleCompatibilityService } from '@/services/vehicleCompatibilityService';
+import VehicleCard from '@/components/VehicleCard';
+import { koreanVehicles } from '@/services/koreanVehiclesData';
 import type { Product, Part } from '@/types/database';
+import type { KoreanVehicle } from '@/services/koreanVehiclesData';
 
 // Types minimaux utilisés par l'UI pour afficher les éléments
 interface BasicItem {
@@ -53,6 +57,7 @@ export default function Boutique() {
   const [searchError, setSearchError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
   
   // Filtres unifiés - source unique de vérité
   const [filters, setFilters] = useState<FilterState>({
@@ -64,6 +69,12 @@ export default function Boutique() {
     sortBy: 'name',
     sortOrder: 'asc',
   });
+  
+  // Récupérer les véhicules depuis Supabase (avec fallback vers mock)
+  const { data: vehiclesData, isLoading: vehiclesLoading, error: vehiclesError } = useVehicles({
+    category: filters.category === 'vehicles' ? 'vehicles' : undefined,
+    limit: 50
+  }, { enabled: filters.category === 'vehicles' });
 
   // Synchroniser activeCategory avec filters.category
   React.useEffect(() => {
@@ -71,6 +82,12 @@ export default function Boutique() {
       setActiveCategory(filters.category);
     }
   }, [filters.category, activeCategory]);
+
+  // Forcer le rechargement des données quand les filtres changent
+  React.useEffect(() => {
+    // Réinitialiser la page quand les filtres changent
+    setCurrentPage(0);
+  }, [filters.category, filters.search, filters.brand, filters.priceRange, filters.inStock, filters.sortBy, filters.sortOrder]);
 
   // Fonction de retry automatique en cas d'erreur
   const handleRetry = async () => {
@@ -116,15 +133,19 @@ export default function Boutique() {
   const { formatPrice } = useCurrency();
   const { user } = useAuth();
   
-  // Utiliser les hooks pour les données réelles (sans filtres pour permettre le filtrage local)
+  // Utiliser les hooks pour les données réelles avec filtres
   const { 
     data: productsResult, 
     isLoading: productsLoading, 
     error: productsError 
   } = useProducts({
+    category: filters.category !== 'all' ? filters.category : undefined,
+    search: filters.search || undefined,
     limit: 50, // Récupérer plus de données pour le filtrage local
     offset: 0,
-  }, { enabled: !selectedVehicleId });
+  }, { 
+    enabled: !selectedVehicleId
+  });
 
   const {
     data: partsResult,
@@ -132,6 +153,7 @@ export default function Boutique() {
     error: partsError,
   } = useParts({
     vehicleId: selectedVehicleId || undefined,
+    search: filters.search || undefined,
     limit: 50, // Récupérer plus de données pour le filtrage local
     offset: 0,
   });
@@ -150,6 +172,38 @@ export default function Boutique() {
       return displayData as BasicItem[];
     }
     
+    // Si la catégorie est "vehicles", utiliser les véhicules coréens (Supabase + mock)
+    if (filters.category === 'vehicles') {
+      const supabaseVehicles = (vehiclesData as any)?.data || [];
+      const mockVehicles = koreanVehicles || [];
+      
+      // Si on a des véhicules de Supabase, les utiliser
+      if (supabaseVehicles.length > 0) {
+        const allVehicles = [
+          ...supabaseVehicles.map((v: any) => ({
+            id: v.id,
+            name: v.name,
+            price_krw: v.final_price_fcfa || v.supplier_price_fcfa || 0,
+            image_url: v.images?.[0] || '/placeholder-car.svg',
+            description: v.description || '',
+            category: v.category || 'vehicles',
+            brand: v.brand || '',
+            model: v.model || '',
+            year: v.year || 2024,
+            specifications: v.specifications || {},
+            features: v.features || [],
+            in_stock: v.status === 'active',
+            stock_quantity: 1
+          })),
+          ...mockVehicles
+        ];
+        return allVehicles as BasicItem[];
+      }
+      
+      // Sinon, utiliser les véhicules mock
+      return mockVehicles as BasicItem[];
+    }
+    
     // Sinon, utiliser les données mock pour les produits génériques
     if (!selectedVehicleId) {
       return mockProducts as BasicItem[];
@@ -157,7 +211,7 @@ export default function Boutique() {
     
     // Pour les pièces, retourner un tableau vide si pas de données
     return [];
-  }, [displayData, selectedVehicleId]);
+  }, [displayData, selectedVehicleId, filters.category]);
 
   // Filtrage et tri des produits - appliqué à toutes les données
   const filteredAndSortedProducts = useMemo(() => {
@@ -289,12 +343,18 @@ export default function Boutique() {
 
   // Gérer les filtres avec feedback
   const handleFiltersChange = (newFilters: FilterState) => {
+    setIsFiltering(true);
     setFilters(newFilters);
     setCurrentPage(0);
     
     // Synchroniser activeCategory avec la catégorie des filtres
     if (newFilters.category !== activeCategory) {
       setActiveCategory(newFilters.category);
+    }
+    
+    // Réinitialiser le sélecteur de véhicule si on change de catégorie (sauf pour 'parts')
+    if (newFilters.category !== filters.category && newFilters.category !== 'parts') {
+      setSelectedVehicleId(null);
     }
     
     // Feedback utilisateur pour les changements de filtres
@@ -312,6 +372,11 @@ export default function Boutique() {
         description: `Filtres modifiés: ${changes.join(', ')}`,
       });
     }
+
+    // Simuler un délai de filtrage pour l'UX
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 300);
   };
 
   // Réinitialiser les filtres avec confirmation
@@ -619,7 +684,14 @@ export default function Boutique() {
           }
         >
           <Badge variant="secondary" className="ml-2">
-            {filteredAndSortedProducts.length} produits
+            {isFiltering ? (
+              <>
+                <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                Filtrage...
+              </>
+            ) : (
+              `${filteredAndSortedProducts.length} produits`
+            )}
           </Badge>
         </DesktopHeader>
 
@@ -662,17 +734,205 @@ export default function Boutique() {
                 />
 
         <div className="p-6 space-y-6">
-          {/* Sélecteur de véhicule */}
-          <VehicleSelector onVehicleSelect={handleVehicleSelect} />
+          {/* Sélecteur de véhicule - seulement pour les pièces automobiles */}
+          {filters.category === 'parts' && (
+            <>
+              <VehicleSelector onVehicleSelect={handleVehicleSelect} />
+              
+              {selectedVehicleId && (
+                <div className="flex justify-center">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setSelectedVehicleId(null)}
+                  >
+                    Voir toutes les pièces
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
 
-          {selectedVehicleId && (
-            <div className="flex justify-center">
-              <Button 
-                variant="outline" 
-                onClick={() => setSelectedVehicleId(null)}
-              >
-                Voir tous les produits
-              </Button>
+          {/* Filtres spécifiques par catégorie */}
+          {filters.category === 'all' && (
+            <div className="bg-gray-50 dark:bg-gray-950/20 p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                🌟 Filtres pour Toutes Catégories
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filters.brand === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'all'})}
+                >
+                  Toutes marques
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Samsung' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Samsung'})}
+                >
+                  Samsung
+                </Button>
+                <Button 
+                  variant={filters.brand === 'LG' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'LG'})}
+                >
+                  LG
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Hyundai' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Hyundai'})}
+                >
+                  Hyundai
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Kia' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Kia'})}
+                >
+                  Kia
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {filters.category === 'vehicles' && (
+            <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                🚗 Filtres pour Véhicules Coréens
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filters.brand === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'all'})}
+                >
+                  Toutes marques
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Hyundai' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Hyundai'})}
+                >
+                  Hyundai
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Kia' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Kia'})}
+                >
+                  Kia
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Genesis' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Genesis'})}
+                >
+                  Genesis
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {filters.category === 'electronics' && (
+            <div className="bg-purple-50 dark:bg-purple-950/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
+                📱 Filtres pour Électronique Coréenne
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filters.brand === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'all'})}
+                >
+                  Toutes marques
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Samsung' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Samsung'})}
+                >
+                  Samsung
+                </Button>
+                <Button 
+                  variant={filters.brand === 'LG' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'LG'})}
+                >
+                  LG
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {filters.category === 'appliances' && (
+            <div className="bg-green-50 dark:bg-green-950/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+              <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+                🏠 Filtres pour Électroménager Coréen
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filters.brand === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'all'})}
+                >
+                  Toutes marques
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Samsung' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Samsung'})}
+                >
+                  Samsung
+                </Button>
+                <Button 
+                  variant={filters.brand === 'LG' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'LG'})}
+                >
+                  LG
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {filters.category === 'parts' && (
+            <div className="bg-orange-50 dark:bg-orange-950/20 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+              <h3 className="font-semibold text-orange-900 dark:text-orange-100 mb-2">
+                🔧 Filtres pour Pièces Automobiles
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filters.brand === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'all'})}
+                >
+                  Toutes marques
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Hyundai' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Hyundai'})}
+                >
+                  Hyundai
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Kia' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Kia'})}
+                >
+                  Kia
+                </Button>
+                <Button 
+                  variant={filters.brand === 'Genesis' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => handleFiltersChange({...filters, brand: 'Genesis'})}
+                >
+                  Genesis
+                </Button>
+              </div>
             </div>
           )}
 
@@ -685,7 +945,7 @@ export default function Boutique() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="Rechercher des produits..."
+                    placeholder={`Rechercher ${filters.category === 'parts' ? 'des pièces' : filters.category === 'vehicles' ? 'des véhicules' : filters.category === 'electronics' ? 'de l\'électronique' : filters.category === 'appliances' ? 'de l\'électroménager' : 'des produits'}...`}
                     value={filters.search}
                     onChange={(e) => handleSearchInputChange(e.target.value)}
                     className="pl-10"
@@ -761,7 +1021,14 @@ export default function Boutique() {
               </div>
               
               <Badge variant="secondary" className="text-sm">
-                {filteredAndSortedProducts.length} {selectedVehicleId ? 'pièces' : 'produits'}
+                {isFiltering ? (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                    Filtrage...
+                  </>
+                ) : (
+                  `${filteredAndSortedProducts.length} ${selectedVehicleId ? 'pièces' : 'produits'}`
+                )}
               </Badge>
             </div>
           </div>
@@ -773,7 +1040,63 @@ export default function Boutique() {
               : "space-y-4"
           }>
             {products.map((product) => {
-              // Utiliser PartCard pour les pièces automobiles, ProductCard pour les autres
+              // Utiliser VehicleCard pour les véhicules
+              if (filters.category === 'vehicles') {
+                // Chercher d'abord dans les véhicules de Supabase
+                const supabaseVehicle = (vehiclesData as any)?.data?.find((v: any) => v.id === product.id);
+                // Puis dans les véhicules mockés
+                const mockVehicle = koreanVehicles.find(v => v.id === product.id);
+                
+                let vehicle = supabaseVehicle || mockVehicle;
+                
+                // Si c'est un véhicule de Supabase, le convertir au format KoreanVehicle
+                if (supabaseVehicle && !mockVehicle) {
+                  vehicle = {
+                    id: supabaseVehicle.id,
+                    name: supabaseVehicle.name,
+                    brand: supabaseVehicle.brand,
+                    model: supabaseVehicle.model,
+                    year: supabaseVehicle.year || 2024,
+                    category: 'vehicles',
+                    price_krw: supabaseVehicle.final_price_fcfa || supabaseVehicle.supplier_price_fcfa || 0,
+                    image_url: supabaseVehicle.images?.[0] || '/placeholder-car.svg',
+                    description: supabaseVehicle.description || '',
+                    specifications: supabaseVehicle.specifications || {
+                      engine: 'Non spécifié',
+                      transmission: 'Non spécifié',
+                      fuelType: 'Non spécifié',
+                      power: 'Non spécifié',
+                      torque: 'Non spécifié',
+                      acceleration: 'Non spécifié',
+                      topSpeed: 'Non spécifié',
+                      fuelConsumption: 'Non spécifié',
+                      seating: 5,
+                      drivetrain: 'Non spécifié'
+                    },
+                    features: supabaseVehicle.features || [],
+                    in_stock: supabaseVehicle.status === 'active',
+                    stock_quantity: 1
+                  };
+                }
+                
+                if (vehicle) {
+                  return (
+                    <VehicleCard
+                      key={product.id}
+                      vehicle={vehicle}
+                      onOrder={handleOrderNow}
+                      onViewDetails={(vehicle) => {
+                        toast({
+                          title: "Détails du véhicule",
+                          description: `${vehicle.name} - ${vehicle.specifications?.engine || 'Moteur non spécifié'}`,
+                        });
+                      }}
+                    />
+                  );
+                }
+              }
+              
+              // Utiliser PartCard pour les pièces automobiles
               if (selectedVehicleId && product.part_number) {
                 return (
                   <PartCard
@@ -785,6 +1108,7 @@ export default function Boutique() {
                   />
                 );
               } else {
+                // Utiliser ProductCard pour les autres produits
                 return (
                   <ProductCard
                     key={product.id}

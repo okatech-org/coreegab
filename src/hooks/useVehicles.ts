@@ -1,78 +1,58 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { Vehicle } from '@/types/database';
-import { useCallback, useMemo } from 'react';
+import { vehicleService } from '@/services/vehicleService';
 
-// Fonction pour récupérer tous les véhicules
-const fetchVehicles = async (): Promise<Vehicle[]> => {
-  const { data, error } = await supabase.from('vehicles').select('*');
-  if (error) throw new Error(error.message);
-  return data;
-};
-
-// Hook principal pour utiliser les données des véhicules
-export const useVehicles = () => {
-  const { data: vehicles = [], isLoading, error } = useQuery<Vehicle[]>({
-    queryKey: ['vehicles'],
-    queryFn: fetchVehicles,
+// Hook pour récupérer tous les véhicules étendus
+export const useVehicles = (filters?: {
+  category?: string;
+  brand?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+  status?: string;
+}, options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: ['vehicles', filters],
+    queryFn: () => vehicleService.getVehicles(filters),
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
     refetchOnWindowFocus: false,
+    enabled: options?.enabled ?? true,
   });
+};
 
-  // Debug log (commenté pour la production)
-  // console.log('useVehicles Debug:', { vehicles: vehicles.length, isLoading, error });
+// Hook pour récupérer un véhicule par ID
+export const useVehicle = (id: string) => {
+  return useQuery({
+    queryKey: ['vehicle', id],
+    queryFn: () => vehicleService.getVehicleById(id),
+    enabled: !!id,
+  });
+};
 
-  // Extraire les marques uniques (mémorisé)
-  const makes = useMemo(() => {
-    if (!vehicles || vehicles.length === 0) return [];
-    return [...new Set(vehicles.map(v => v.make))].sort();
-  }, [vehicles]);
+// Hook pour récupérer les marques disponibles
+export const useVehicleBrands = () => {
+  return useQuery({
+    queryKey: ['vehicle-brands'],
+    queryFn: () => vehicleService.getBrands(),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
 
-  // Obtenir les modèles pour une marque sélectionnée (callback stable)
-  const getModelsByMake = useCallback((make: string | null) => {
-    if (!make || !vehicles || vehicles.length === 0) return [] as string[];
-    return [...new Set(vehicles.filter(v => v.make === make).map(v => v.model))].sort();
-  }, [vehicles]);
+// Hook pour récupérer les catégories de véhicules
+export const useVehicleCategories = () => {
+  return useQuery({
+    queryKey: ['vehicle-categories'],
+    queryFn: () => vehicleService.getVehicleCategories(),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+};
 
-  // Obtenir les années pour un couple marque/modèle (callback stable)
-  const getYearsByMakeAndModel = useCallback((make: string | null, model: string | null) => {
-    if (!make || !model || !vehicles || vehicles.length === 0) return [] as number[];
-    
-    const relevantVehicles = vehicles.filter(v => v.make === make && v.model === model);
-    const years = new Set<number>();
-
-    relevantVehicles.forEach(v => {
-      const endYear = v.year_end || new Date().getFullYear();
-      for (let year = v.year_start; year <= endYear; year++) {
-        years.add(year);
-      }
-    });
-
-    return Array.from(years).sort((a, b) => b - a); // Trier de la plus récente à la plus ancienne
-  }, [vehicles]);
-  
-  // Trouver l'ID du véhicule correspondant à la sélection (callback stable)
-  const getVehicleId = useCallback((make: string | null, model: string | null, year: number | null) => {
-    if (!make || !model || !year || !vehicles || vehicles.length === 0) return null;
-
-    const vehicle = vehicles.find(v => 
-      v.make === make &&
-      v.model === model &&
-      year >= v.year_start &&
-      year <= (v.year_end || new Date().getFullYear())
-    );
-
-    return vehicle ? vehicle.id : null;
-  }, [vehicles]);
-
-  return {
-    vehicles,
-    makes,
-    getModelsByMake,
-    getYearsByMakeAndModel,
-    getVehicleId,
-    isLoading,
-    error,
-  };
+// Hook pour la recherche de véhicules
+export const useVehicleSearch = () => {
+  return useQuery({
+    queryKey: ['vehicle-search'],
+    queryFn: () => vehicleService.searchVehicles('', {}),
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    enabled: false, // Désactivé par défaut, activé par la fonction de recherche
+  });
 };

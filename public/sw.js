@@ -1,15 +1,21 @@
-const CACHE_NAME = 'coregab-v1.0.1-dev';
-const STATIC_CACHE = 'coregab-static-v1-dev';
-const DYNAMIC_CACHE = 'coregab-dynamic-v1-dev';
+const CACHE_NAME = 'coregab-v1.0.3-dev';
+const STATIC_CACHE = 'coregab-static-v1.0.3-dev';
+const DYNAMIC_CACHE = 'coregab-dynamic-v1.0.3-dev';
 
 // Ressources critiques à mettre en cache
 const STATIC_RESOURCES = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  '/placeholder.svg',
+  '/placeholder-headphones.svg',
+  '/placeholder-appliance.svg',
+  '/placeholder-phone.svg',
+  '/placeholder-tv.svg',
+  '/placeholder-car.svg',
+  '/placeholder-parts.svg'
 ];
 
 // Ressources à mettre en cache dynamiquement
@@ -55,12 +61,15 @@ self.addEventListener('activate', (event) => {
   
   event.waitUntil(
     Promise.all([
-      // DÉVELOPPEMENT : Vider TOUS les caches pour éviter les problèmes
+      // Nettoyer les anciens caches
       caches.keys().then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            console.log('[SW] Deleting cache:', cacheName);
-            return caches.delete(cacheName);
+            // Ne garder que les caches actuels
+            if (!cacheName.startsWith('coregab-')) {
+              console.log('[SW] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
           })
         );
       }),
@@ -71,27 +80,55 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Stratégie de gestion des requêtes - DÉSACTIVÉ POUR LE DÉVELOPPEMENT
+// Stratégie de gestion des requêtes optimisée
 self.addEventListener('fetch', (event) => {
   const { request } = event;
+  const url = new URL(request.url);
   
-  // MODE DÉVELOPPEMENT : Toujours aller chercher sur le réseau
-  // Cela permet de voir immédiatement les modifications
+  // Ignorer les requêtes vers Supabase et autres APIs externes
+  if (url.hostname.includes('supabase.co') || 
+      url.hostname.includes('stripe.com') ||
+      url.hostname.includes('googleapis.com') ||
+      url.hostname.includes('gstatic.com') ||
+      url.hostname.includes('js.stripe.com')) {
+    return; // Laisser le navigateur gérer ces requêtes
+  }
+  
+  // Pour les ressources statiques, utiliser cache first
+  if (request.destination === 'style' || 
+      request.destination === 'script' || 
+      request.destination === 'image' ||
+      request.destination === 'font') {
+    event.respondWith(cacheFirst(request, STATIC_CACHE));
+    return;
+  }
+  
+  // Pour les pages HTML, utiliser network first
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(request, DYNAMIC_CACHE));
+    return;
+  }
+  
+  // Pour les autres requêtes, utiliser network first avec cache fallback
   event.respondWith(
     fetch(request)
       .then(response => {
-        console.log('[SW] Fetching from network:', request.url);
+        // Mettre en cache les réponses réussies (seulement pour les requêtes GET)
+        if (response.status === 200 && request.method === 'GET') {
+          const responseClone = response.clone();
+          caches.open(DYNAMIC_CACHE).then(cache => {
+            cache.put(request, responseClone);
+          });
+        }
         return response;
       })
       .catch(error => {
-        console.error('[SW] Network request failed:', error);
-        // En cas d'échec réseau, essayer le cache comme fallback
+        console.log('[SW] Network failed, trying cache:', request.url);
         return caches.match(request).then(cached => {
           if (cached) {
-            console.log('[SW] Fallback to cache:', request.url);
             return cached;
           }
-          return new Response('Network error', { status: 503 });
+          return new Response('Offline', { status: 503 });
         });
       })
   );
@@ -128,9 +165,10 @@ async function networkFirst(request, cacheName) {
     console.log('[SW] Trying network first:', request.url);
     const response = await fetch(request);
     
-    if (response.status === 200) {
+    if (response.status === 200 && request.method === 'GET') {
+      const responseClone = response.clone();
       const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
+      cache.put(request, responseClone);
     }
     
     return response;

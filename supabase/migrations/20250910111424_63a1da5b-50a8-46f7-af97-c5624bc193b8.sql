@@ -1,6 +1,3 @@
--- Create enum for user roles
-CREATE TYPE public.user_role AS ENUM ('client', 'commercial', 'admin');
-
 -- Create enum for product categories
 CREATE TYPE public.product_category AS ENUM ('vehicles', 'electronics', 'appliances', 'parts');
 
@@ -11,11 +8,6 @@ CREATE TYPE public.order_status AS ENUM ('pending', 'confirmed', 'shipping', 'de
 ALTER TABLE public.profiles 
 ADD COLUMN IF NOT EXISTS email TEXT,
 ADD COLUMN IF NOT EXISTS name TEXT;
-
--- Update profiles table role to use enum
-ALTER TABLE public.profiles 
-ALTER COLUMN role TYPE user_role USING role::user_role,
-ALTER COLUMN role SET DEFAULT 'client'::user_role;
 
 -- Create products table
 CREATE TABLE public.products (
