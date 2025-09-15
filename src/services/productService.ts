@@ -5,11 +5,10 @@ export interface CreateProductData {
   name: string;
   description?: string;
   price_krw: number;
-  category: string;
+  weight: number;
+  category: 'vehicles' | 'electronics' | 'appliances' | 'parts';
   image_url?: string;
-  stock_quantity?: number;
-  specifications?: any;
-  is_active?: boolean;
+  in_stock?: boolean;
 }
 
 export interface UpdateProductData extends Partial<CreateProductData> {
@@ -28,10 +27,10 @@ export const productService = {
       let query = supabase
         .from('products')
         .select('*')
-        .eq('is_active', true);
+        .eq('in_stock', true);
 
-      if (filters?.category) {
-        query = query.eq('category', filters.category);
+      if (filters?.category && filters.category !== 'all') {
+        query = query.eq('category', filters.category as any);
       }
 
       if (filters?.search) {
@@ -64,7 +63,7 @@ export const productService = {
         .from('products')
         .select('*')
         .eq('id', id)
-        .eq('is_active', true)
+        .eq('in_stock', true)
         .single();
 
       if (error) throw error;
@@ -97,9 +96,12 @@ export const productService = {
   // Mettre à jour un produit
   async updateProduct({ id, ...updates }: UpdateProductData) {
     try {
+      const cleanUpdates = { ...updates };
+      delete (cleanUpdates as any).id;
+      
       const { data, error } = await supabase
         .from('products')
-        .update(updates)
+        .update(cleanUpdates)
         .eq('id', id)
         .select()
         .single();
@@ -118,7 +120,7 @@ export const productService = {
     try {
       const { data, error } = await supabase
         .from('products')
-        .update({ is_active: false })
+        .update({ in_stock: false })
         .eq('id', id)
         .select()
         .single();
@@ -138,7 +140,7 @@ export const productService = {
       const { data, error } = await supabase
         .from('products')
         .select('category')
-        .eq('is_active', true);
+        .eq('in_stock', true);
 
       if (error) throw error;
 
@@ -166,11 +168,11 @@ export const productService = {
       let supabaseQuery = supabase
         .from('products')
         .select('*')
-        .eq('is_active', true)
+        .eq('in_stock', true)
         .or(`name.ilike.%${query}%,description.ilike.%${query}%`);
 
-      if (filters?.category) {
-        supabaseQuery = supabaseQuery.eq('category', filters.category);
+      if (filters?.category && filters.category !== 'all') {
+        supabaseQuery = supabaseQuery.eq('category', filters.category as 'vehicles' | 'electronics' | 'appliances' | 'parts');
       }
 
       if (filters?.minPrice) {

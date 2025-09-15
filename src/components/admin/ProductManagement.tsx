@@ -83,6 +83,7 @@ export const ProductManagement: React.FC = () => {
         await updateProduct.mutateAsync({
           id: editingProduct.id,
           ...data,
+          category: data.category as any,
         });
       } else {
         // Création

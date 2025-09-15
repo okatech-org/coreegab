@@ -90,14 +90,13 @@ export default function Boutique() {
     const finalPriceXaf = Math.round(totalKrw * 0.65); // Conversion KRW vers XAF
 
     createOrder.mutate({
-      product_id: product.id,
-      quantity: 1,
-      unit_price_krw: product.price_krw,
-      total_price_krw: product.price_krw,
-      shipping_cost_krw: shippingCost,
-      customs_cost_krw: customsCost,
-      final_price_xaf: finalPriceXaf,
-      status: 'pending',
+      products: { items: [{ id: product.id, quantity: 1, name: product.name }] },
+      supplier_price: product.price_krw,
+      transport_cost: shippingCost,
+      customs_cost: customsCost,
+      margin: finalPriceXaf - (product.price_krw + shippingCost + customsCost),
+      total_price: finalPriceXaf,
+      status: 'pending' as any,
     });
   };
 
@@ -204,7 +203,7 @@ export default function Boutique() {
                   <SelectItem value="all">Toutes catégories</SelectItem>
                   {Object.entries(categories).map(([category, count]) => (
                     <SelectItem key={category} value={category}>
-                      {category} ({count})
+                      {category} ({String(count)})
                     </SelectItem>
                   ))}
                 </SelectContent>

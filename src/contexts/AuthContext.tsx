@@ -104,7 +104,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         .from('profiles')
         .insert([
           {
-            id: user.id,
+            user_id: user.id,
+            phone: '000000000', // Temporary phone number
             email: user.email!,
             name,
             role,

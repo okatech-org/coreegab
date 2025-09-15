@@ -53,7 +53,7 @@ export default function ClientDashboard() {
   const { t } = useLanguage();
   const { formatPrice } = useCurrency();
   const { user, profile, signOut } = useAuth();
-  const { getCartCount, addToCart, getCartItems } = useCart();
+  const { getCartCount, addToCart, cartItems } = useCart();
   const navigate = useNavigate();
   
   // Gérer les paramètres d'URL
@@ -117,9 +117,9 @@ export default function ClientDashboard() {
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.price_krw,
-      image: product.image_url,
-      quantity: 1
+      price_krw: product.price_krw,
+      image_url: product.image_url,
+      category: product.category
     });
   };
 

@@ -237,4 +237,22 @@ class AIService {
   }
 }
 
-export const aiService = new AIService();
+export const aiService = {
+  async searchWithAI(query: string): Promise<AISearchResponse> {
+    const aiServiceInstance = new AIService();
+    const response = await aiServiceInstance.searchProducts(query);
+    
+    return {
+      results: response.results,
+      totalResults: response.totalResults,
+      searchTime: response.searchTime,
+      suggestions: response.suggestions
+    };
+  },
+
+  async searchProducts(query: string): Promise<AISearchResult[]> {
+    const aiServiceInstance = new AIService();
+    const response = await aiServiceInstance.searchProducts(query);
+    return response.results;
+  }
+};
