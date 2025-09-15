@@ -51,11 +51,21 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (error) throw error;
+      if (error) {
+        // Si la table notifications n'existe pas, ne pas afficher d'erreur
+        if (error.code === 'PGRST116' || error.message.includes('relation "notifications" does not exist')) {
+          console.log('Table notifications non disponible - mode démo');
+          setNotifications([]);
+          return;
+        }
+        throw error;
+      }
 
       setNotifications(data || []);
     } catch (error) {
       console.error('Error loading notifications:', error);
+      // En cas d'erreur, initialiser avec un tableau vide pour éviter les erreurs
+      setNotifications([]);
     }
   };
 
