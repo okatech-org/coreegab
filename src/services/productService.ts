@@ -6,7 +6,7 @@ export interface CreateProductData {
   description?: string;
   price_krw: number;
   weight: number;
-  category: 'vehicles' | 'electronics' | 'appliances' | 'parts';
+  category: 'vehicles' | 'electronics' | 'appliances' | 'parts' | 'smartphones';
   image_url?: string;
   in_stock?: boolean;
 }
@@ -172,7 +172,7 @@ export const productService = {
         .or(`name.ilike.%${query}%,description.ilike.%${query}%`);
 
       if (filters?.category && filters.category !== 'all') {
-        supabaseQuery = supabaseQuery.eq('category', filters.category as 'vehicles' | 'electronics' | 'appliances' | 'parts');
+        supabaseQuery = supabaseQuery.eq('category', filters.category as 'vehicles' | 'electronics' | 'appliances' | 'parts' | 'smartphones');
       }
 
       if (filters?.minPrice) {

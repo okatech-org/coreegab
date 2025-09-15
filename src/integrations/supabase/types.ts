@@ -74,6 +74,81 @@ export type Database = {
           },
         ]
       }
+      part_vehicle_fitment: {
+        Row: {
+          id: string
+          notes: string | null
+          part_id: string
+          vehicle_id: string
+        }
+        Insert: {
+          id?: string
+          notes?: string | null
+          part_id: string
+          vehicle_id: string
+        }
+        Update: {
+          id?: string
+          notes?: string | null
+          part_id?: string
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "part_vehicle_fitment_part_id_fkey"
+            columns: ["part_id"]
+            isOneToOne: false
+            referencedRelation: "parts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "part_vehicle_fitment_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parts: {
+        Row: {
+          brand: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          oem_number: string | null
+          part_number: string
+          price_krw: number | null
+          stock_quantity: number | null
+        }
+        Insert: {
+          brand?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          oem_number?: string | null
+          part_number: string
+          price_krw?: number | null
+          stock_quantity?: number | null
+        }
+        Update: {
+          brand?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          oem_number?: string | null
+          part_number?: string
+          price_krw?: number | null
+          stock_quantity?: number | null
+        }
+        Relationships: []
+      }
       phone_verifications: {
         Row: {
           attempts: number | null
@@ -209,16 +284,73 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicles: {
+        Row: {
+          created_at: string
+          engine: string | null
+          id: string
+          make: string
+          model: string
+          trim: string | null
+          year_end: number | null
+          year_start: number
+        }
+        Insert: {
+          created_at?: string
+          engine?: string | null
+          id?: string
+          make: string
+          model: string
+          trim?: string | null
+          year_end?: number | null
+          year_start: number
+        }
+        Update: {
+          created_at?: string
+          engine?: string | null
+          id?: string
+          make?: string
+          model?: string
+          trim?: string | null
+          year_end?: number | null
+          year_start?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_parts_for_vehicle: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_search?: string
+          p_vehicle_id: string
+        }
+        Returns: {
+          brand: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string
+          name: string
+          oem_number: string
+          part_number: string
+          price_krw: number
+          stock_quantity: number
+        }[]
+      }
     }
     Enums: {
       order_status: "pending" | "confirmed" | "shipping" | "delivered"
-      product_category: "vehicles" | "electronics" | "appliances" | "parts"
+      product_category:
+        | "vehicles"
+        | "electronics"
+        | "appliances"
+        | "parts"
+        | "smartphones"
       user_role: "client" | "commercial" | "admin"
     }
     CompositeTypes: {
@@ -348,7 +480,13 @@ export const Constants = {
   public: {
     Enums: {
       order_status: ["pending", "confirmed", "shipping", "delivered"],
-      product_category: ["vehicles", "electronics", "appliances", "parts"],
+      product_category: [
+        "vehicles",
+        "electronics",
+        "appliances",
+        "parts",
+        "smartphones",
+      ],
       user_role: ["client", "commercial", "admin"],
     },
   },
