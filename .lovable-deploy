@@ -1,0 +1,16 @@
+# Lovable Deploy Trigger
+# This file triggers automatic deployment on Lovable
+
+DEPLOY_NOW=true
+FORCE_DEPLOY=true
+VERSION=1.0.2
+TIMESTAMP=2025-01-15T21:15:00Z
+
+# All modifications are ready for deployment
+# Architecture unifiée COREEGAB
+# Boutique simplifiée et optimisée
+# Performance maximale
+# Zéro erreur console
+
+# Deploy to: https://coreegab.lovable.app/
+# Status: READY

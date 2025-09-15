@@ -1,0 +1,14 @@
+LOVABLE_DEPLOY_TRIGGER=true
+DEPLOYMENT_FORCE=true
+TIMESTAMP=2025-01-15T21:15:00Z
+VERSION=1.0.1
+STATUS=READY_FOR_DEPLOYMENT
+
+# Architecture unifiée COREEGAB
+# Boutique simplifiée et optimisée
+# Toutes les modifications incluses
+# Prêt pour déploiement sur https://coreegab.lovable.app/
+
+FORCE_DEPLOY_NOW=true
+ALL_CHANGES_COMMITTED=true
+PRODUCTION_READY=true
