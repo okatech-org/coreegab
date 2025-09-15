@@ -16,13 +16,13 @@ export const SEO: React.FC<SEOProps> = ({
   description = "Plateforme d'import de produits coréens au Gabon. Véhicules, électronique, électroménager avec calcul automatique des prix transport et douanes.",
   keywords = "import, corée du sud, gabon, véhicules coréens, électronique, électroménager, samsung, hyundai, lg",
   image = "/coregab-accueil.JPG",
-  url = "https://coregab.lovable.app",
+  url = "https://coreegab.com",
   type = "website",
   noIndex = false,
 }) => {
   const fullTitle = title.includes('COREGAB') ? title : `${title} | COREGAB`;
-  const fullUrl = url.startsWith('http') ? url : `https://coregab.lovable.app${url}`;
-  const fullImage = image.startsWith('http') ? image : `https://coregab.lovable.app${image}`;
+  const fullUrl = url.startsWith('http') ? url : `https://coreegab.com${url}`;
+  const fullImage = image.startsWith('http') ? image : `https://coreegab.com${image}`;
 
   return (
     <Helmet>
@@ -72,7 +72,7 @@ export const SEO: React.FC<SEOProps> = ({
           "url": fullUrl,
           "logo": fullImage,
           "sameAs": [
-            "https://coregab.lovable.app"
+            "https://coreegab.com"
           ],
           "contactPoint": {
             "@type": "ContactPoint",
