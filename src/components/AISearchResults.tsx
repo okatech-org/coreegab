@@ -119,7 +119,7 @@ export const AISearchResults: React.FC<AISearchResultsProps> = ({
                   {Math.round(product.relevance * 100)}% match
                 </Badge>
               </div>
-              <ProductCard product={product as any} />
+              <ProductCard product={product} />
               {product.aiReasoning && (
                 <CardContent className="p-3 pt-0">
                   <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
