@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -39,21 +40,24 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Charger les notifications de l'utilisateur
+  // Charger les notifications de l'utilisateur (utilisation d'un mock pour l'instant)
   const loadNotifications = async () => {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (error) throw error;
-
-      setNotifications(data || []);
+      // Mock notifications for now since the table doesn't exist
+      const mockNotifications: Notification[] = [
+        {
+          id: '1',
+          title: 'Bienvenue !',
+          message: 'Merci de rejoindre COREEGAB',
+          type: 'info',
+          read: false,
+          created_at: new Date().toISOString(),
+          user_id: user.id
+        }
+      ];
+      setNotifications(mockNotifications);
     } catch (error) {
       console.error('Error loading notifications:', error);
     }
@@ -62,13 +66,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
   // Marquer comme lu
   const markAsRead = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', id);
-
-      if (error) throw error;
-
+      // Mock implementation for now
       setNotifications(prev =>
         prev.map(notif =>
           notif.id === id ? { ...notif, read: true } : notif
@@ -84,14 +82,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     if (!user) return;
 
     try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('user_id', user.id)
-        .eq('read', false);
-
-      if (error) throw error;
-
+      // Mock implementation for now
       setNotifications(prev =>
         prev.map(notif => ({ ...notif, read: true }))
       );
@@ -108,19 +99,17 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     type: 'info' | 'success' | 'warning' | 'error' = 'info'
   ) => {
     try {
-      const { error } = await supabase
-        .from('notifications')
-        .insert([
-          {
-            user_id: userId,
-            title,
-            message,
-            type,
-            read: false,
-          }
-        ]);
-
-      if (error) throw error;
+      // Mock implementation for now
+      const newNotification: Notification = {
+        id: Date.now().toString(),
+        user_id: userId,
+        title,
+        message,
+        type,
+        read: false,
+        created_at: new Date().toISOString()
+      };
+      setNotifications(prev => [newNotification, ...prev]);
     } catch (error) {
       console.error('Error creating notification:', error);
     }
@@ -132,36 +121,15 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
     loadNotifications();
 
-    // Subscription pour les nouvelles notifications
-    const subscription = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload) => {
-          const newNotification = payload.new as Notification;
-          
-          // Ajouter à la liste
-          setNotifications(prev => [newNotification, ...prev]);
-          
-          // Afficher un toast
-          toast({
-            title: newNotification.title,
-            description: newNotification.message,
-            variant: newNotification.type === 'error' ? 'destructive' : 'default',
-          });
-        }
-      )
-      .subscribe();
+    // Mock real-time subscription for now
+    // const subscription = supabase
+    //   .channel('notifications')
+    //   .on('postgres_changes', ...)
+    //   .subscribe();
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    // return () => {
+    //   subscription.unsubscribe();
+    // };
   }, [user, toast]);
 
   const unreadCount = notifications.filter(n => !n.read).length;

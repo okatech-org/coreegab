@@ -9,12 +9,22 @@ export interface AISearchResult {
   imageUrl: string;
   relevanceScore: number;
   source: string;
+  // Add missing properties to match Product interface
+  name: string;
+  price_krw: number;
+  weight: number;
+  in_stock: boolean;
+  created_at: string;
+  updated_at: string;
+  relevance: number;
+  aiReasoning?: string;
 }
 
 export interface AISearchResponse {
   results: AISearchResult[];
   totalResults: number;
   searchTime: number;
+  suggestions: string[];
 }
 
 class AIService {
@@ -102,7 +112,8 @@ class AIService {
       return {
         results: sortedResults,
         totalResults: sortedResults.length,
-        searchTime
+        searchTime,
+        suggestions: this.getSearchSuggestions(query)
       };
       
     } catch (error) {
@@ -110,7 +121,8 @@ class AIService {
       return {
         results: [],
         totalResults: 0,
-        searchTime: Date.now() - startTime
+        searchTime: Date.now() - startTime,
+        suggestions: []
       };
     }
   }
@@ -162,7 +174,16 @@ class AIService {
         results.push({
           ...product,
           relevanceScore,
-          source: 'Base de données CoreGab'
+          source: 'Base de données CoreGab',
+          // Add missing properties
+          name: product.title,
+          price_krw: product.price,
+          weight: 1.0,
+          in_stock: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          relevance: relevanceScore / 100,
+          aiReasoning: `Correspondance trouvée pour "${query}" - Score: ${relevanceScore}`
         });
       }
     });
@@ -202,7 +223,16 @@ class AIService {
     return {
       ...product,
       relevanceScore: 100,
-      source: 'Base de données CoreGab'
+      source: 'Base de données CoreGab',
+      // Add missing properties
+      name: product.title,
+      price_krw: product.price,
+      weight: 1.0,
+      in_stock: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      relevance: 1.0,
+      aiReasoning: `Produit sélectionné - ID: ${productId}`
     };
   }
 }

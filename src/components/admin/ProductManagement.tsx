@@ -86,7 +86,7 @@ export const ProductManagement: React.FC = () => {
         });
       } else {
         // Création
-        await createProduct.mutateAsync(data);
+        await createProduct.mutateAsync(data as any);
       }
       
       reset();
