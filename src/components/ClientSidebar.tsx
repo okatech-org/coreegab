@@ -44,13 +44,13 @@ export function ClientSidebar({ activeView, onViewChange }: ClientSidebarProps) 
           <div className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-              alt="COREGAB Logo" 
+              alt="COREEGAB Logo" 
               className="w-7 h-7 lg:w-8 lg:h-8"
             />
             {state !== "collapsed" && (
               <img 
                 src="/lovable-uploads/14b3cf89-5c77-491d-97f3-9d8f19ebe034.png" 
-                alt="COREGAB" 
+                alt="COREEGAB" 
                 className="h-6 lg:h-7 w-auto"
               />
             )}

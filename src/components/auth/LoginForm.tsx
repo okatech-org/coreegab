@@ -98,7 +98,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode }) => {
       <CardHeader className="space-y-2 pb-4">
         <CardTitle className="text-xl font-bold text-center">Connexion</CardTitle>
         <p className="text-xs text-muted-foreground text-center">
-          Accédez à votre espace COREGAB
+          Accédez à votre espace COREEGAB
         </p>
       </CardHeader>
       <CardContent>

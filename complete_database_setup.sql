@@ -1,4 +1,4 @@
--- Script SQL complet pour initialiser la base de données COREGAB
+-- Script SQL complet pour initialiser la base de données COREEGAB
 -- À exécuter dans l'éditeur SQL de Supabase
 
 -- 1. Création de la table des véhicules

@@ -45,8 +45,8 @@ export default function Checkout() {
   return (
     <>
       <SEO
-        title="Finaliser ma commande - COREGAB"
-        description="Finalisez votre commande d'import depuis la Corée du Sud avec COREGAB"
+        title="Finaliser ma commande - COREEGAB"
+        description="Finalisez votre commande d'import depuis la Corée du Sud avec COREEGAB"
         noIndex={true}
       />
       

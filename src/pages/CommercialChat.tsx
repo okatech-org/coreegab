@@ -21,7 +21,7 @@ export default function CommercialChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Bonjour ! Je suis iAsted, votre assistant commercial COREGAB. Comment puis-je vous aider aujourd\'hui ?',
+      text: 'Bonjour ! Je suis iAsted, votre assistant commercial COREEGAB. Comment puis-je vous aider aujourd\'hui ?',
       sender: 'bot',
       timestamp: new Date(),
       type: 'text'

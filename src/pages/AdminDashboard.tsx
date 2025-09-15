@@ -85,7 +85,7 @@ export default function AdminDashboard() {
           Bienvenue, {profile?.name} !
         </h2>
         <p className="text-purple-100">
-          Tableau de bord administrateur COREGAB
+          Tableau de bord administrateur COREEGAB
         </p>
       </div>
 
@@ -315,8 +315,8 @@ export default function AdminDashboard() {
   return (
     <>
       <SEO
-        title="Dashboard Administrateur - COREGAB"
-        description="Interface d'administration pour la gestion de la plateforme COREGAB"
+        title="Dashboard Administrateur - COREEGAB"
+        description="Interface d'administration pour la gestion de la plateforme COREEGAB"
         noIndex={true}
       />
       

@@ -6,6 +6,7 @@ import { CurrencySwitcher } from '@/components/CurrencySwitcher';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import { 
   User, 
   LogOut, 
@@ -20,6 +21,7 @@ export const DesktopFloatingHeader: React.FC = () => {
   const { user, profile, signOut } = useAuth();
   const { getCartCount } = useCart();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   return (
     <div className="floating-header floating-header-light">
@@ -68,11 +70,31 @@ export const DesktopFloatingHeader: React.FC = () => {
                 </Button>
               )}
 
-              <Button variant="ghost" size="sm">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  toast({
+                    title: "Notifications",
+                    description: "Système de notifications bientôt disponible",
+                  });
+                }}
+                title="Notifications"
+              >
                 <Bell className="w-4 h-4" />
               </Button>
               
-              <Button variant="ghost" size="sm">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  toast({
+                    title: "Messages",
+                    description: "Système de messages bientôt disponible",
+                  });
+                }}
+                title="Messages"
+              >
                 <MessageCircle className="w-4 h-4" />
               </Button>
               

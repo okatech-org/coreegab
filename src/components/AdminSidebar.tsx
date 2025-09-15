@@ -45,11 +45,11 @@ export function AdminSidebar({ activeView, onViewChange }: AdminSidebarProps) {
           <div className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-              alt="COREGAB Logo" 
+              alt="COREEGAB Logo" 
               className="w-8 h-8 lg:w-10 lg:h-10"
             />
             {state !== "collapsed" && (
-              <span className="text-foreground font-bold text-xl lg:text-2xl">COREGAB</span>
+              <span className="text-foreground font-bold text-xl lg:text-2xl">COREEGAB</span>
             )}
           </div>
         </div>

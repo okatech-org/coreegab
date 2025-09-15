@@ -12,7 +12,7 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({
-  title = "COREGAB - Import Corée-Gabon | Votre partenaire import/export",
+  title = "COREEGAB - Import Corée-Gabon | Votre partenaire import/export",
   description = "Plateforme d'import de produits coréens au Gabon. Véhicules, électronique, électroménager avec calcul automatique des prix transport et douanes.",
   keywords = "import, corée du sud, gabon, véhicules coréens, électronique, électroménager, samsung, hyundai, lg",
   image = "/coregab-accueil.JPG",
@@ -20,7 +20,7 @@ export const SEO: React.FC<SEOProps> = ({
   type = "website",
   noIndex = false,
 }) => {
-  const fullTitle = title.includes('COREGAB') ? title : `${title} | COREGAB`;
+  const fullTitle = title.includes('COREEGAB') ? title : `${title} | COREEGAB`;
   const fullUrl = url.startsWith('http') ? url : `https://coreegab.com${url}`;
   const fullImage = image.startsWith('http') ? image : `https://coreegab.com${image}`;
 
@@ -30,7 +30,7 @@ export const SEO: React.FC<SEOProps> = ({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="author" content="COREGAB" />
+      <meta name="author" content="COREEGAB" />
       
       {/* Robots */}
       {noIndex && <meta name="robots" content="noindex,nofollow" />}
@@ -41,7 +41,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullImage} />
       <meta property="og:url" content={fullUrl} />
-      <meta property="og:site_name" content="COREGAB" />
+      <meta property="og:site_name" content="COREEGAB" />
       <meta property="og:locale" content="fr_FR" />
       
       {/* Twitter Card */}
@@ -67,7 +67,7 @@ export const SEO: React.FC<SEOProps> = ({
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "COREGAB",
+          "name": "COREEGAB",
           "description": description,
           "url": fullUrl,
           "logo": fullImage,

@@ -19,7 +19,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onDemoLogin }) => {
       <div className="absolute inset-0 w-full h-full">
         <img
           src={imageError ? "/src/assets/hero-image.jpg" : "/coregab-accueil.JPG"}
-          alt="COREGAB - Votre spécialiste du marché coréen"
+          alt="COREEGAB - Votre spécialiste du marché coréen"
           className="w-full h-full object-cover object-center"
           loading="eager"
           onError={() => setImageError(true)}

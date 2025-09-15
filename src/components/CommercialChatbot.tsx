@@ -27,7 +27,7 @@ export default function CommercialChatbot({ isOpen, onClose }: ChatbotProps) {
     {
       id: '1',
       role: 'assistant',
-      content: "👋 Salut ! Je suis iAsted, votre conseiller commercial IA chez COREGAB ! 🎌\n\n✨ Je peux vous aider à :\n• 🔍 Trouver des produits coréens (véhicules, électronique, électroménager)\n• 💰 Calculer les prix finaux avec tous les frais\n• 🎯 Vous conseiller sur les meilleures options\n• 📦 Suivre vos commandes\n• 🚚 Informer sur les délais de livraison\n\n💬 Quel produit vous intéresse aujourd'hui ?",
+      content: "👋 Salut ! Je suis iAsted, votre conseiller commercial IA chez COREEGAB ! 🎌\n\n✨ Je peux vous aider à :\n• 🔍 Trouver des produits coréens (véhicules, électronique, électroménager)\n• 💰 Calculer les prix finaux avec tous les frais\n• 🎯 Vous conseiller sur les meilleures options\n• 📦 Suivre vos commandes\n• 🚚 Informer sur les délais de livraison\n\n💬 Quel produit vous intéresse aujourd'hui ?",
       timestamp: new Date()
     }
   ]);

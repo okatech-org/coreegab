@@ -213,7 +213,7 @@ export const RealTimeChat: React.FC<RealTimeChatProps> = ({
           {
             content: randomResponse,
             sender_id: 'bot',
-            sender_name: 'Assistant COREGAB',
+            sender_name: 'Assistant COREEGAB',
             sender_role: 'bot',
             chat_id: currentChatId,
             message_type: 'text',
@@ -334,7 +334,7 @@ export const RealTimeChat: React.FC<RealTimeChatProps> = ({
             )} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold">Support COREGAB</h3>
+            <h3 className="text-sm font-semibold">Support COREEGAB</h3>
             <p className="text-xs text-muted-foreground">
               {isOnline ? 'En ligne' : 'Hors ligne'}
             </p>
@@ -446,10 +446,29 @@ export const RealTimeChat: React.FC<RealTimeChatProps> = ({
               />
               
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => {
+                    toast({
+                      title: "Pièce jointe",
+                      description: "Fonctionnalité de pièce jointe bientôt disponible",
+                    });
+                  }}
+                  title="Ajouter une pièce jointe"
+                >
                   <Paperclip className="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => {
+                    const emojis = ['😊', '👍', '❤️', '🎉', '🔥', '💯'];
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    setNewMessage(prev => prev + randomEmoji);
+                  }}
+                  title="Ajouter un emoji"
+                >
                   <Smile className="w-4 h-4" />
                 </Button>
               </div>
@@ -467,13 +486,46 @@ export const RealTimeChat: React.FC<RealTimeChatProps> = ({
 
         {/* Actions rapides */}
         <div className="flex gap-2 mt-2">
-          <Button variant="outline" size="sm" className="text-xs">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs"
+            onClick={() => {
+              setNewMessage("Je souhaite demander un devis pour un produit");
+              toast({
+                title: "Demande de devis",
+                description: "Message pré-rempli pour votre demande de devis",
+              });
+            }}
+          >
             💰 Demander un devis
           </Button>
-          <Button variant="outline" size="sm" className="text-xs">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs"
+            onClick={() => {
+              setNewMessage("Je veux suivre ma commande");
+              toast({
+                title: "Suivi de commande",
+                description: "Message pré-rempli pour le suivi de commande",
+              });
+            }}
+          >
             📦 Suivi de commande
           </Button>
-          <Button variant="outline" size="sm" className="text-xs">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs"
+            onClick={() => {
+              setNewMessage("J'ai une question fréquente");
+              toast({
+                title: "FAQ",
+                description: "Message pré-rempli pour vos questions",
+              });
+            }}
+          >
             ❓ FAQ
           </Button>
         </div>

@@ -18,10 +18,10 @@ export const Navigation: React.FC<NavigationProps> = ({ onDemoLogin }) => {
         <Link to="/" className="openart-logo flex items-center gap-3">
           <img 
             src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-            alt="COREGAB Logo" 
+            alt="COREEGAB Logo" 
             className="w-8 h-8"
           />
-          <span className="text-foreground font-bold text-xl">COREGAB</span>
+          <span className="text-foreground font-bold text-xl">COREEGAB</span>
         </Link>
         
         <div className="flex items-center gap-8">

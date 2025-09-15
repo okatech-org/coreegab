@@ -94,7 +94,7 @@ const translations = {
     },
     hero: {
       title: "Solutions d'importation intelligentes avec",
-      subtitle: "COREGAB",
+      subtitle: "COREEGAB",
       description: "Simplifiez vos importations depuis la Corée du Sud avec notre plateforme IA et nos services personnalisés.",
       cta: "Commencer maintenant",
       demo: "Voir la démo"
@@ -222,7 +222,7 @@ const translations = {
     },
     hero: {
       title: "지능형 수입 솔루션",
-      subtitle: "COREGAB",
+      subtitle: "COREEGAB",
       description: "AI 플랫폼과 맞춤형 서비스로 한국에서의 수입을 간소화하세요.",
       cta: "지금 시작하기",
       demo: "데모 보기"
@@ -350,7 +350,7 @@ const translations = {
     },
     hero: {
       title: "Smart import solutions with",
-      subtitle: "COREGAB",
+      subtitle: "COREEGAB",
       description: "Simplify your imports from South Korea with our AI platform and personalized services.",
       cta: "Get started now",
       demo: "View demo"

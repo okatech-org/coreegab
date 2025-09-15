@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Script pour configurer la base de données COREGAB
+# Script pour configurer la base de données COREEGAB
 # Ce script exécute le script SQL de configuration dans Supabase
 
-echo "🚀 Configuration de la base de données COREGAB..."
+echo "🚀 Configuration de la base de données COREEGAB..."
 echo ""
 
 # Vérifier si le fichier SQL existe
@@ -16,7 +16,7 @@ fi
 echo "📋 Instructions pour configurer la base de données:"
 echo ""
 echo "1. Ouvrez votre dashboard Supabase: https://supabase.com/dashboard"
-echo "2. Sélectionnez votre projet COREGAB"
+echo "2. Sélectionnez votre projet COREEGAB"
 echo "3. Allez dans l'éditeur SQL (SQL Editor)"
 echo "4. Copiez le contenu du fichier complete_database_setup.sql"
 echo "5. Collez-le dans l'éditeur SQL"

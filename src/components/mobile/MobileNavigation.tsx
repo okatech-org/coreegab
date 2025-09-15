@@ -262,7 +262,7 @@ export const MobileNavigation: React.FC = () => {
               <div className="text-center relative">
                 <div className="w-12 h-1 bg-muted rounded-full mx-auto mb-4" />
                 <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Menu COREGAB
+                  Menu COREEGAB
                 </h3>
                 {user && (
                   <div className="mt-2 flex items-center justify-center gap-2">

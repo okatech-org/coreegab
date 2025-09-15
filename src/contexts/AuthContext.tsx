@@ -185,7 +185,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await loadProfile(data.user.id);
         toast({
           title: "Connexion réussie",
-          description: "Bienvenue sur COREGAB !",
+          description: "Bienvenue sur COREEGAB !",
         });
       }
 
@@ -243,7 +243,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         toast({
           title: "Session démo terminée",
-          description: "À bientôt sur COREGAB !",
+          description: "À bientôt sur COREEGAB !",
         });
 
         return { error: null };
@@ -266,7 +266,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         toast({
           title: "Déconnexion réussie",
-          description: "À bientôt sur COREGAB !",
+          description: "À bientôt sur COREEGAB !",
         });
 
         return { error: null };

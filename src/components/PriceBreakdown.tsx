@@ -90,7 +90,7 @@ export default function PriceBreakdown({
             {/* Marge */}
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="text-sm">Marge COREGAB</span>
+                <span className="text-sm">Marge COREEGAB</span>
                 <TrendingUp className="w-3 h-3 text-muted-foreground" />
               </div>
               <div className="text-right">

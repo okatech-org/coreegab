@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script de test pour la boutique COREGAB
-echo "🧪 Test de la Boutique COREGAB"
+# Script de test pour la boutique COREEGAB
+echo "🧪 Test de la Boutique COREEGAB"
 echo "================================"
 echo ""
 
@@ -154,4 +154,4 @@ echo "   - Affichage des pièces avec images"
 echo "   - Filtres avancés et recherche"
 echo "   - Tri et mode d'affichage"
 echo ""
-echo "🎉 La boutique COREGAB est prête !"
+echo "🎉 La boutique COREEGAB est prête !"

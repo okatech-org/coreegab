@@ -1,4 +1,4 @@
-# Guide d'Utilisation - COREGAB
+# Guide d'Utilisation - COREEGAB
 
 ## 🚀 Démarrage Rapide
 

@@ -1,6 +1,6 @@
 {
-  "name": "COREGAB - Import Corée-Gabon",
-  "short_name": "COREGAB",
+  "name": "COREEGAB - Import Corée-Gabon",
+  "short_name": "COREEGAB",
   "description": "Plateforme d'import de produits coréens au Gabon. Véhicules, électronique, électroménager avec calcul automatique des prix transport et douanes.",
   "start_url": "/",
   "display": "standalone",
@@ -17,14 +17,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "COREGAB Desktop Application"
+      "label": "COREEGAB Desktop Application"
     },
     {
       "src": "/screenshot-narrow.png", 
       "sizes": "640x1136",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "COREGAB Mobile Application"
+      "label": "COREEGAB Mobile Application"
     }
   ],
   "icons": [

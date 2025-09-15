@@ -1,4 +1,4 @@
-# Guide Final - Boutique COREGAB
+# Guide Final - Boutique COREEGAB
 
 ## 🎯 Objectifs Atteints
 
@@ -194,7 +194,7 @@ BAT-2E000 - Batterie (Varta) - 18,000 KRW
 
 ## 🎯 Résultat Final
 
-La boutique COREGAB est maintenant **entièrement fonctionnelle** avec :
+La boutique COREEGAB est maintenant **entièrement fonctionnelle** avec :
 
 - 🚗 **10 véhicules** Hyundai et Kia (2019-2024)
 - 🔧 **20+ pièces** automobiles avec références réelles

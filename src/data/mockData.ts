@@ -180,7 +180,7 @@ export const demoAccounts = {
   admin: {
     id: 'admin-1',
     email: 'admin@demo.com',
-    name: 'Admin COREGAB',
+    name: 'Admin COREEGAB',
     role: 'admin' as const,
     phone: '+241 XX XX XX XX'
   }

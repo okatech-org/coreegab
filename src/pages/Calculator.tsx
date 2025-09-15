@@ -179,7 +179,7 @@ export default function CalculatorPage() {
                         <div className="flex items-center justify-between py-2 border-b border-border">
                           <div className="flex items-center gap-2">
                             <Calculator className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-foreground">Marge COREGAB</span>
+                            <span className="text-foreground">Marge COREEGAB</span>
                           </div>
                           <span className="font-semibold text-foreground">{formatPrice(breakdown.marginPrice, 'XAF')}</span>
                         </div>
@@ -224,7 +224,7 @@ export default function CalculatorPage() {
               <Card className="bg-card border border-border">
                 <CardContent className="p-6 text-center">
                   <DollarSign className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="font-semibold text-foreground mb-2">Service COREGAB</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Service COREEGAB</h3>
                   <p className="text-sm text-muted-foreground">
                     Marge de service (35%) pour notre accompagnement complet
                   </p>

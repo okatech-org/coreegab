@@ -31,7 +31,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
         title: "Installation sur iOS",
         description: (
           <div className="space-y-2">
-            <p>Pour installer COREGAB sur iOS :</p>
+            <p>Pour installer COREEGAB sur iOS :</p>
             <div className="flex items-center gap-2 text-sm">
               <Share className="w-4 h-4" />
               <span>1. Appuyez sur l'icône Partager</span>
@@ -54,7 +54,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
           title: "Installation sur Android",
           description: (
             <div className="space-y-2">
-              <p>Pour installer COREGAB :</p>
+              <p>Pour installer COREEGAB :</p>
               <div className="flex items-center gap-2 text-sm">
                 <div className="w-4 h-4 flex items-center justify-center bg-muted rounded text-xs">⋮</div>
                 <span>1. Menu Chrome (3 points)</span>
@@ -76,7 +76,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
     if (success) {
       toast({
         title: "Installation réussie !",
-        description: "COREGAB a été installé avec succès.",
+        description: "COREEGAB a été installé avec succès.",
       });
     }
   };

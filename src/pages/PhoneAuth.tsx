@@ -45,7 +45,7 @@ export default function PhoneAuth() {
       <div className="absolute inset-0">
         <img
           src="/coregab-accueil.JPG"
-          alt="COREGAB - Import Corée-Gabon"
+          alt="COREEGAB - Import Corée-Gabon"
           className="w-full h-full object-cover object-center"
           loading="eager"
         />
@@ -86,11 +86,11 @@ export default function PhoneAuth() {
               <div className="flex items-center justify-center gap-3 mb-4">
                 <img 
                   src="/lovable-uploads/ff7ce1b8-d2a2-4701-acda-806f793d401b.png" 
-                  alt="COREGAB Logo" 
+                  alt="COREEGAB Logo" 
                   className="w-12 h-12 drop-shadow-lg"
                 />
                 <h1 className="text-3xl font-bold text-white drop-shadow-2xl">
-                  COREGAB
+                  COREEGAB
                 </h1>
               </div>
             </div>

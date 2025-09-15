@@ -375,7 +375,7 @@ export const PaymentSystem: React.FC<PaymentSystemProps> = ({
               <CardContent className="p-4 space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm">Bénéficiaire:</span>
-                  <span className="font-medium">COREGAB SARL</span>
+                  <span className="font-medium">COREEGAB SARL</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm">IBAN:</span>

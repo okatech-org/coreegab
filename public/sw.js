@@ -190,7 +190,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push notification received');
   
   const options = {
-    body: event.data ? event.data.text() : 'Nouvelle notification de COREGAB',
+    body: event.data ? event.data.text() : 'Nouvelle notification de COREEGAB',
     icon: '/icon-192x192.png',
     badge: '/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -213,7 +213,7 @@ self.addEventListener('push', (event) => {
   };
   
   event.waitUntil(
-    self.registration.showNotification('COREGAB', options)
+    self.registration.showNotification('COREEGAB', options)
   );
 });
 

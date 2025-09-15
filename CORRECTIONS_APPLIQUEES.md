@@ -1,4 +1,4 @@
-# Corrections Appliquées - COREGAB
+# Corrections Appliquées - COREEGAB
 
 ## 🚨 Problèmes Identifiés et Résolus
 

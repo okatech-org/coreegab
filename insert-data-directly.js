@@ -58,7 +58,7 @@ const products = [
 ];
 
 async function insertData() {
-  console.log('🚀 Insertion des données dans la base COREGAB...\n');
+  console.log('🚀 Insertion des données dans la base COREEGAB...\n');
 
   try {
     // 1. Nettoyer les données existantes

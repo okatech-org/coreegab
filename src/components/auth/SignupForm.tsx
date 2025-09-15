@@ -62,7 +62,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleMode }) => {
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Créer un compte</CardTitle>
         <p className="text-sm text-muted-foreground text-center">
-          Rejoignez COREGAB pour importer depuis la Corée du Sud
+          Rejoignez COREEGAB pour importer depuis la Corée du Sud
         </p>
       </CardHeader>
       <CardContent>

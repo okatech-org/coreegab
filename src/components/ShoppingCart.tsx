@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 interface CartItem {
@@ -32,12 +32,14 @@ export default function ShoppingCart({
 }: ShoppingCartProps) {
   const [coupon, setCoupon] = useState('');
   const [shippingMethod, setShippingMethod] = useState('pickup');
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [isUpdatingQuantity, setIsUpdatingQuantity] = useState<string | null>(null);
   const { toast } = useToast();
 
   const calculateTotals = () => {
     const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     const shipping = shippingMethod === 'delivery' ? 15000 : 0;
-    const discount = coupon === 'COREGAB10' ? subtotal * 0.1 : 0;
+    const discount = coupon === 'COREEGAB10' ? subtotal * 0.1 : 0;
     
     return {
       subtotal,
@@ -49,18 +51,62 @@ export default function ShoppingCart({
 
   const totals = calculateTotals();
 
-  const applyCoupon = () => {
-    if (coupon === 'COREGAB10') {
+  const applyCoupon = async () => {
+    if (!coupon.trim()) return;
+    
+    setIsApplyingCoupon(true);
+    
+    try {
+      // Simuler une validation serveur
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      if (coupon === 'COREEGAB10') {
+        toast({
+          title: "Code promo appliqué",
+          description: "10% de réduction ajoutée !",
+        });
+      } else {
+        toast({
+          title: "Code promo invalide",
+          description: "Vérifiez votre code et réessayez",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       toast({
-        title: "Code promo appliqué",
-        description: "10% de réduction ajoutée !",
-      });
-    } else if (coupon) {
-      toast({
-        title: "Code promo invalide",
-        description: "Vérifiez votre code et réessayez",
+        title: "Erreur",
+        description: "Impossible de valider le code promo",
         variant: "destructive",
       });
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const handleUpdateQuantity = async (id: string, quantity: number) => {
+    if (quantity < 0) {
+      toast({
+        title: "Quantité invalide",
+        description: "La quantité ne peut pas être négative",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsUpdatingQuantity(id);
+    
+    try {
+      // Simuler une mise à jour serveur
+      await new Promise(resolve => setTimeout(resolve, 500));
+      onUpdateQuantity(id, quantity);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de mettre à jour la quantité",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingQuantity(null);
     }
   };
 
@@ -120,23 +166,34 @@ export default function ShoppingCart({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                        onClick={() => handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                        disabled={isUpdatingQuantity === item.id}
                       >
-                        <Minus className="w-4 h-4" />
+                        {isUpdatingQuantity === item.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Minus className="w-4 h-4" />
+                        )}
                       </Button>
                       <Input
                         type="number"
                         value={item.quantity}
-                        onChange={(e) => onUpdateQuantity(item.id, parseInt(e.target.value) || 1)}
+                        onChange={(e) => handleUpdateQuantity(item.id, parseInt(e.target.value) || 1)}
                         className="w-16 text-center"
                         min="1"
+                        disabled={isUpdatingQuantity === item.id}
                       />
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                        disabled={isUpdatingQuantity === item.id}
                       >
-                        <Plus className="w-4 h-4" />
+                        {isUpdatingQuantity === item.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Plus className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                     
@@ -173,12 +230,23 @@ export default function ShoppingCart({
                 <label className="text-sm font-medium">Code promo</label>
                 <div className="flex gap-2">
                   <Input
-                    placeholder="Ex: COREGAB10"
+                    placeholder="Ex: COREEGAB10"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value.toUpperCase())}
                   />
-                  <Button variant="outline" onClick={applyCoupon}>
-                    Appliquer
+                  <Button 
+                    variant="outline" 
+                    onClick={applyCoupon}
+                    disabled={isApplyingCoupon || !coupon.trim()}
+                  >
+                    {isApplyingCoupon ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        Validation...
+                      </>
+                    ) : (
+                      'Appliquer'
+                    )}
                   </Button>
                 </div>
               </div>

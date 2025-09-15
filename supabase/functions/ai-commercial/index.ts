@@ -79,10 +79,10 @@ function searchProducts(query: string) {
 }
 
 // Instructions système pour le chatbot
-const systemPrompt = `Tu es iAsted, un agent commercial IA spécialisé dans l'import de produits coréens vers le Gabon via COREGAB.
+const systemPrompt = `Tu es iAsted, un agent commercial IA spécialisé dans l'import de produits coréens vers le Gabon via COREEGAB.
 
 CONTEXTE :
-- Tu travailles pour COREGAB, spécialiste de l'import de produits coréens
+- Tu travailles pour COREEGAB, spécialiste de l'import de produits coréens
 - Tu peux importer : véhicules Hyundai/Kia, électronique Samsung/LG, électroménager
 - Tu calcules automatiquement les prix finaux avec tous les frais
 - Tu es disponible 24/7 pour aider les clients
@@ -94,7 +94,7 @@ CALCULS DE PRIX :
 - Taux de change : 1 KRW = 0.65 FCFA
 - Transport de base : 50,000 FCFA + 1,000 FCFA/kg
 - Frais de douane : 10% du prix fournisseur
-- Marge COREGAB : 35% sur le coût total
+- Marge COREEGAB : 35% sur le coût total
 
 INSTRUCTIONS :
 1. Sois chaleureux, professionnel et proactif
@@ -129,7 +129,7 @@ serve(async (req) => {
       {
         type: "function",
         name: "search_products",
-        description: "Recherche des produits dans le catalogue COREGAB selon les critères du client",
+        description: "Recherche des produits dans le catalogue COREEGAB selon les critères du client",
         parameters: {
           type: "object",
           properties: {

@@ -124,7 +124,7 @@ export const PWAInstallPrompt: React.FC = () => {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">C</span>
               </div>
-              Installer COREGAB
+              Installer COREEGAB
             </DialogTitle>
             <Button
               variant="ghost"
@@ -139,7 +139,7 @@ export const PWAInstallPrompt: React.FC = () => {
         
         <div className="space-y-4">
           <p className="text-muted-foreground">
-            Installez COREGAB sur votre {platform.isMobile ? 'téléphone' : 'ordinateur'} pour une expérience optimale :
+            Installez COREEGAB sur votre {platform.isMobile ? 'téléphone' : 'ordinateur'} pour une expérience optimale :
           </p>
           
           <div className="grid grid-cols-2 gap-4 py-4">

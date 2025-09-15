@@ -1,4 +1,4 @@
-# 🎉 Boutique COREGAB - Prête à l'Emploi !
+# 🎉 Boutique COREEGAB - Prête à l'Emploi !
 
 ## ✅ **Base de Données Configurée**
 
@@ -128,7 +128,7 @@ headlight.svg - Phare LED
 
 ## 🎯 **Résultat Final**
 
-La boutique COREGAB est maintenant **entièrement fonctionnelle** avec :
+La boutique COREEGAB est maintenant **entièrement fonctionnelle** avec :
 
 - 🚗 **10 véhicules** Hyundai et Kia (2019-2024)
 - 🔧 **26 pièces** automobiles avec références réelles
@@ -147,6 +147,6 @@ La boutique COREGAB est maintenant **entièrement fonctionnelle** avec :
 
 ---
 
-**🎉 La boutique COREGAB est prête pour la production !**
+**🎉 La boutique COREEGAB est prête pour la production !**
 
 **Testez maintenant en sélectionnant un véhicule dans la boutique !** 🚗

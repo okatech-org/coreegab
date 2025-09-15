@@ -8,7 +8,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function populateDatabase() {
-  console.log('🚀 Peuplement de la base de données COREGAB...\n');
+  console.log('🚀 Peuplement de la base de données COREEGAB...\n');
 
   try {
     // Lire le script SQL
