@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -39,59 +39,130 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Simuler des notifications pour la démo
+  // Charger les notifications de l'utilisateur
   const loadNotifications = async () => {
     if (!user) return;
 
-    // Notifications factices pour la démo
-    const mockNotifications: Notification[] = [
-      {
-        id: '1',
-        title: 'Commande confirmée',
-        message: 'Votre commande Samsung Galaxy S24 a été confirmée',
-        type: 'success',
-        read: false,
-        created_at: new Date().toISOString(),
-        user_id: user.id
-      },
-      {
-        id: '2',
-        title: 'Nouveau produit disponible',
-        message: 'Hyundai Tucson 2024 maintenant disponible à l\'import',
-        type: 'info',
-        read: false,
-        created_at: new Date(Date.now() - 3600000).toISOString(),
-        user_id: user.id
-      }
-    ];
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-    setNotifications(mockNotifications);
+      if (error) throw error;
+
+      setNotifications(data || []);
+    } catch (error) {
+      console.error('Error loading notifications:', error);
+    }
   };
 
   // Marquer comme lu
   const markAsRead = async (id: string) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    );
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setNotifications(prev =>
+        prev.map(notif =>
+          notif.id === id ? { ...notif, read: true } : notif
+        )
+      );
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
   // Marquer toutes comme lues
   const markAllAsRead = async () => {
     if (!user) return;
 
-    setNotifications(prev =>
-      prev.map(notif => ({ ...notif, read: true }))
-    );
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('user_id', user.id)
+        .eq('read', false);
+
+      if (error) throw error;
+
+      setNotifications(prev =>
+        prev.map(notif => ({ ...notif, read: true }))
+      );
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
   };
 
-  // Charger les notifications au montage
-  useEffect(() => {
-    if (user) {
-      loadNotifications();
+  // Créer une notification
+  const createNotification = async (
+    userId: string,
+    title: string,
+    message: string,
+    type: 'info' | 'success' | 'warning' | 'error' = 'info'
+  ) => {
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .insert([
+          {
+            user_id: userId,
+            title,
+            message,
+            type,
+            read: false,
+          }
+        ]);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error creating notification:', error);
     }
-  }, [user]);
+  };
+
+  // Écouter les nouvelles notifications en temps réel
+  useEffect(() => {
+    if (!user) return;
+
+    loadNotifications();
+
+    // Subscription pour les nouvelles notifications
+    const subscription = supabase
+      .channel('notifications')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          const newNotification = payload.new as Notification;
+          
+          // Ajouter à la liste
+          setNotifications(prev => [newNotification, ...prev]);
+          
+          // Afficher un toast
+          toast({
+            title: newNotification.title,
+            description: newNotification.message,
+            variant: newNotification.type === 'error' ? 'destructive' : 'default',
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [user, toast]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 

@@ -12,17 +12,17 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({
-  title = "COREEGAB - Import Corée-Gabon | Votre partenaire import/export",
+  title = "COREGAB - Import Corée-Gabon | Votre partenaire import/export",
   description = "Plateforme d'import de produits coréens au Gabon. Véhicules, électronique, électroménager avec calcul automatique des prix transport et douanes.",
   keywords = "import, corée du sud, gabon, véhicules coréens, électronique, électroménager, samsung, hyundai, lg",
   image = "/coregab-accueil.JPG",
-  url = "https://coreegab.lovable.app",
+  url = "https://coregab.lovable.app",
   type = "website",
   noIndex = false,
 }) => {
-  const fullTitle = title.includes('COREEGAB') ? title : `${title} | COREEGAB`;
-  const fullUrl = url.startsWith('http') ? url : `https://coreegab.lovable.app${url}`;
-  const fullImage = image.startsWith('http') ? image : `https://coreegab.lovable.app${image}`;
+  const fullTitle = title.includes('COREGAB') ? title : `${title} | COREGAB`;
+  const fullUrl = url.startsWith('http') ? url : `https://coregab.lovable.app${url}`;
+  const fullImage = image.startsWith('http') ? image : `https://coregab.lovable.app${image}`;
 
   return (
     <Helmet>
@@ -30,7 +30,7 @@ export const SEO: React.FC<SEOProps> = ({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="author" content="COREEGAB" />
+      <meta name="author" content="COREGAB" />
       
       {/* Robots */}
       {noIndex && <meta name="robots" content="noindex,nofollow" />}
@@ -41,7 +41,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullImage} />
       <meta property="og:url" content={fullUrl} />
-      <meta property="og:site_name" content="COREEGAB" />
+      <meta property="og:site_name" content="COREGAB" />
       <meta property="og:locale" content="fr_FR" />
       
       {/* Twitter Card */}
@@ -67,12 +67,12 @@ export const SEO: React.FC<SEOProps> = ({
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "COREEGAB",
+          "name": "COREGAB",
           "description": description,
           "url": fullUrl,
           "logo": fullImage,
           "sameAs": [
-            "https://coreegab.lovable.app"
+            "https://coregab.lovable.app"
           ],
           "contactPoint": {
             "@type": "ContactPoint",
