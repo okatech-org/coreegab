@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Currency = 'XAF' | 'KRW' | 'EUR';
+export type Currency = 'XAF' | 'KRW' | 'EUR' | 'USD';
 
 interface ExchangeRates {
   XAF: number; // Base currency
   KRW: number; // Korean Won
   EUR: number; // Euro
+  USD: number; // US Dollar
 }
 
 interface CurrencyContextType {
@@ -36,6 +37,7 @@ const defaultExchangeRates: ExchangeRates = {
   XAF: 1, // Base currency
   KRW: 0.95, // 1 XAF = 0.95 KRW (approximate)
   EUR: 0.0015, // 1 XAF = 0.0015 EUR (approximate)
+  USD: 0.0016, // 1 XAF = 0.0016 USD (approximate)
 };
 
 export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) => {
@@ -98,6 +100,12 @@ export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }) 
       EUR: new Intl.NumberFormat('fr-FR', { 
         style: 'currency', 
         currency: 'EUR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }),
+      USD: new Intl.NumberFormat('en-US', { 
+        style: 'currency', 
+        currency: 'USD',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       })
