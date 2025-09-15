@@ -36,7 +36,7 @@ const productSchema = z.object({
   category: z.string().min(1, 'Catégorie requise'),
   image_url: z.string().url().optional().or(z.literal('')),
   stock_quantity: z.number().min(0).optional(),
-  is_active: z.boolean().optional(),
+  in_stock: z.boolean().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -68,7 +68,7 @@ export const ProductManagement: React.FC = () => {
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      is_active: true,
+      in_stock: true,
       stock_quantity: 0,
     },
   });
@@ -108,7 +108,7 @@ export const ProductManagement: React.FC = () => {
     setValue('category', product.category);
     setValue('image_url', product.image_url || '');
     setValue('stock_quantity', product.stock_quantity || 0);
-    setValue('is_active', product.is_active);
+    setValue('in_stock', product.in_stock);
     setActiveTab('form');
   };
 
@@ -256,8 +256,8 @@ export const ProductManagement: React.FC = () => {
                         <span className="text-muted-foreground">
                           Stock: {product.stock_quantity || 0}
                         </span>
-                        <Badge variant={product.is_active ? "default" : "secondary"}>
-                          {product.is_active ? 'Actif' : 'Inactif'}
+                        <Badge variant={product.in_stock ? "default" : "secondary"}>
+                          {product.in_stock ? 'En stock' : 'Rupture'}
                         </Badge>
                       </div>
                       
@@ -424,9 +424,9 @@ export const ProductManagement: React.FC = () => {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Produits actifs</p>
+                    <p className="text-sm text-muted-foreground">Produits en stock</p>
                     <p className="text-2xl font-bold">
-                      {products.filter(p => p.is_active).length}
+                      {products.filter(p => p.in_stock).length}
                     </p>
                   </div>
                   <CheckCircle className="h-8 w-8 text-green-500" />
