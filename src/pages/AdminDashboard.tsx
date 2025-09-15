@@ -19,10 +19,9 @@ import {
   Clock,
   Loader2
 } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { ProductManagement } from '@/components/admin/ProductManagement';
 import { useAllOrders, useOrderStats } from '@/hooks/useOrders';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useUnifiedProducts';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { SEO } from '@/components/SEO';
@@ -321,11 +320,7 @@ export default function AdminDashboard() {
       />
       
       <div className="min-h-screen w-full">
-        <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-          <NewVerticalMenu />
-        </div>
-          
-          <div className="flex-1 lg:pl-[340px]">
+          <div className="flex-1">
             {/* Header */}
             <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex h-14 items-center justify-between px-4">

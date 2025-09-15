@@ -1,4 +1,4 @@
-// Script d'import de véhicules coréens pour COREGAB
+// Script d'import de véhicules coréens pour COREEGAB
 // Sources: APIs publiques, données open source et web scraping légal
 
 const fetch = require('node-fetch');
@@ -471,7 +471,7 @@ class KoreanVehicleImporter {
     const priceKRW = vehicle.price_krw || 25000000;
     const priceFCFA = priceKRW * config.exchangeRate.KRW_TO_FCFA;
     
-    // Calcul selon la formule COREGAB
+    // Calcul selon la formule COREEGAB
     const transport = 2000000; // Transport maritime standard
     const customs = priceFCFA * 0.25; // Droits de douane
     const coregabMargin = priceFCFA * 0.35; // Marge 35%
@@ -545,7 +545,7 @@ class KoreanVehicleImporter {
     return `${vehicle.brand} ${vehicle.model} ${vehicle.year} - ${vehicle.category || 'Véhicule'} importé directement de Corée du Sud. ` +
            `${vehicle.specifications?.engine ? `Motorisation: ${vehicle.specifications.engine}. ` : ''}` +
            `${vehicle.features?.length ? `Équipements inclus: ${vehicle.features.slice(0, 3).join(', ')}.` : ''}` +
-           `Garantie constructeur internationale. Service après-vente COREGAB.`;
+           `Garantie constructeur internationale. Service après-vente COREEGAB.`;
   }
 
   // Export en JSON local

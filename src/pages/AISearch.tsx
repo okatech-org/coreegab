@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Sparkles, TrendingUp, Zap } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { AISearchResults } from '@/components/AISearchResults';
 import { aiService, AISearchResponse } from '@/services/aiService';
@@ -45,7 +44,6 @@ export default function AISearchPage() {
   return (
     <div className="min-h-screen w-full bg-background">
       <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
       </div>
       <div className="flex-1 lg:pl-[340px]">
         {/* Header */}

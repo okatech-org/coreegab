@@ -37,8 +37,7 @@ import {
   Award,
   ShoppingBag
 } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useUnifiedProducts';
 import { useUserOrders, useOrderStats } from '@/hooks/useOrders';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -779,7 +778,6 @@ export default function ClientDashboard() {
   return (
     <div className="min-h-screen w-full">
       <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
       </div>
       <div className="flex-1 lg:pl-[340px]">
         {/* Header amélioré */}

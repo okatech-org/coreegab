@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TrendingUp, Users, DollarSign, Calendar, Bell, LogOut, User } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -249,7 +248,6 @@ export default function CommercialDashboard() {
   return (
     <div className="min-h-screen w-full bg-background">
       <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
       </div>
       <div className="flex-1 lg:pl-[340px]">
         {/* Header */}

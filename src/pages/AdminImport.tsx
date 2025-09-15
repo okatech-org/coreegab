@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Upload, FileText, Zap, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AdminSidebar } from '@/components/AdminSidebar';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 
 export default function AdminImport() {
   const [importMethod, setImportMethod] = useState('manual');
@@ -68,7 +67,6 @@ export default function AdminImport() {
   return (
     <div className="min-h-screen bg-muted/30 w-full">
       <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
       </div>
         <div className="flex-1 lg:pl-[340px]">
           <header className="h-12 flex items-center border-b bg-background">

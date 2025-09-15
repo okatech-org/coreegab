@@ -5,8 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calculator, TrendingUp, DollarSign, Truck, Building } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
-import { DesktopHeader } from '@/components/DesktopHeader';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 
@@ -53,17 +51,12 @@ export default function CalculatorPage() {
 
   return (
     <div className="min-h-screen w-full bg-background">
-      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
-      </div>
-      <div className="flex-1 lg:pl-[340px]">
+      <div className="flex-1">
         {/* Header unifié */}
-        <DesktopHeader 
-          title="Calculateur de Prix" 
-          showNavigation={false}
-        >
-          <Calculator className="w-5 h-5 text-primary ml-2" />
-        </DesktopHeader>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Calculateur de Prix</h1>
+          <p className="text-muted-foreground">Estimez le coût total de vos importations</p>
+        </div>
 
         <main className="container mx-auto px-4 lg:px-6 py-8">
           <div className="max-w-4xl mx-auto">

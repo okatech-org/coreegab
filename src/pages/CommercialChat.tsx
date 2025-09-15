@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { MessageCircle, Send, Bot, User, ShoppingCart, Calculator, Package } from 'lucide-react';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { mockProducts } from '@/data/mockData';
 
@@ -116,10 +115,7 @@ export default function CommercialChatPage() {
 
   return (
     <div className="min-h-screen w-full bg-background">
-      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
-      </div>
-      <div className="flex-1 flex flex-col lg:pl-[340px]">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-card shadow-lg border-b border-border">
           <div className="container mx-auto px-4 lg:px-6 py-3">

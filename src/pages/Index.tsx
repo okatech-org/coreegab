@@ -6,7 +6,6 @@ import { ProcessTimeline } from '@/components/ProcessTimeline';
 import { ServicesSection } from '@/components/ServicesSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
-import { NewVerticalMenu } from '@/components/NewVerticalMenu';
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -76,18 +75,13 @@ const IndexContent = () => {
   // Structure desktop avec nouveau menu vertical
   return (
     <div className="min-h-screen w-full">
-      {/* Menu vertical flottant desktop */}
-      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
-      </div>
-      
       {/* Header flottant desktop */}
       <div className="fixed top-4 right-4 z-50 hidden lg:block">
         <DesktopFloatingHeader />
       </div>
       
       {/* Contenu principal desktop */}
-      <main className="min-h-screen pt-4 lg:pl-[340px] lg:pr-8">
+      <main className="min-h-screen pt-4 lg:pr-8">
           <HeroSection />
           <PriceCalculator />
           <CategoriesSection />

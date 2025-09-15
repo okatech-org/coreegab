@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Car, Settings, Smartphone, Home, ArrowRight } from 'lucide-react';
 import { mockProducts, getProductsByCategory } from '@/data/mockData';
 import { useNavigate } from 'react-router-dom';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useUnifiedProducts';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { useToast } from '@/hooks/use-toast';
 import { useMonitoring } from '@/lib/monitoring';

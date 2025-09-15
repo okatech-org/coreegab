@@ -24,7 +24,9 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react';
-import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useUnifiedProducts';
+// Note: Les hooks de création/modification/suppression ne sont pas encore implémentés dans useUnifiedProducts
+// import { useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useUnifiedProducts';
 import { useToast } from '@/hooks/use-toast';
 import { ProductGridSkeleton } from '@/components/SkeletonLoaders';
 import { LazyImage } from '@/components/LazyImage';
@@ -50,14 +52,15 @@ export const ProductManagement: React.FC = () => {
   const { toast } = useToast();
   
   // Hooks pour les opérations CRUD
-  const { data: productsResult, isLoading, refetch } = useProducts({
-    search: searchTerm || undefined,
+  const { products: productsResult, loading: isLoading, refetch } = useProducts({
+    search_query: searchTerm || undefined,
     category: selectedCategory !== 'all' ? selectedCategory : undefined,
   });
   
-  const createProduct = useCreateProduct();
-  const updateProduct = useUpdateProduct();
-  const deleteProduct = useDeleteProduct();
+  // TODO: Implémenter les hooks de création/modification/suppression dans useUnifiedProducts
+  // const createProduct = useCreateProduct();
+  // const updateProduct = useUpdateProduct();
+  // const deleteProduct = useDeleteProduct();
 
   const {
     register,
@@ -73,21 +76,27 @@ export const ProductManagement: React.FC = () => {
     },
   });
 
-  const products = productsResult?.data || [];
+  const products = productsResult || [];
 
   // Soumettre le formulaire de produit
   const onSubmitProduct = async (data: ProductFormData) => {
     try {
-      if (editingProduct) {
-        // Mise à jour
-        await updateProduct.mutateAsync({
-          id: editingProduct.id,
-          ...data,
-        });
-      } else {
-        // Création
-        await createProduct.mutateAsync(data);
-      }
+      // TODO: Implémenter avec les hooks unifiés
+      toast({
+        title: "Fonctionnalité en cours de développement",
+        description: "La gestion des produits sera bientôt disponible avec le service unifié",
+      });
+      
+      // if (editingProduct) {
+      //   // Mise à jour
+      //   await updateProduct.mutateAsync({
+      //     id: editingProduct.id,
+      //     ...data,
+      //   });
+      // } else {
+      //   // Création
+      //   await createProduct.mutateAsync(data);
+      // }
       
       reset();
       setEditingProduct(null);
@@ -115,8 +124,14 @@ export const ProductManagement: React.FC = () => {
   const handleDeleteProduct = async (productId: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
       try {
-        await deleteProduct.mutateAsync(productId);
-        refetch();
+        // TODO: Implémenter avec les hooks unifiés
+        toast({
+          title: "Fonctionnalité en cours de développement",
+          description: "La suppression de produits sera bientôt disponible avec le service unifié",
+        });
+        
+        // await deleteProduct.mutateAsync(productId);
+        // refetch();
       } catch (error) {
         console.error('Error deleting product:', error);
       }
@@ -390,12 +405,13 @@ export const ProductManagement: React.FC = () => {
                   </Button>
                   <Button 
                     type="submit" 
-                    disabled={createProduct.isPending || updateProduct.isPending}
+                    disabled={false} // TODO: Implémenter avec les hooks unifiés
                     className="flex-1"
                   >
-                    {(createProduct.isPending || updateProduct.isPending) && (
+                    {/* TODO: Implémenter avec les hooks unifiés */}
+                    {/* {(createProduct.isPending || updateProduct.isPending) && (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )}
+                    )} */}
                     {editingProduct ? 'Mettre à jour' : 'Créer le produit'}
                   </Button>
                 </div>
