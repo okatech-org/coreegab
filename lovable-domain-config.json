@@ -1,0 +1,30 @@
+{
+  "domain": {
+    "custom": "https://coreegab.com/",
+    "lovable": "https://coreegab.lovable.app/",
+    "primary": "https://coreegab.com/"
+  },
+  "deployment": {
+    "force": true,
+    "version": "1.0.3",
+    "timestamp": "2025-01-15T21:30:00Z",
+    "status": "READY_FOR_DEPLOYMENT"
+  },
+  "supabase": {
+    "configured": true,
+    "url": "https://vpxsyxbxbilqyikmyznf.supabase.co",
+    "database_ready": true
+  },
+  "architecture": {
+    "type": "unified",
+    "boutique": "simplified",
+    "services": "unified",
+    "performance": "maximized"
+  },
+  "features": {
+    "boutique": "stable",
+    "search": "functional",
+    "database": "supabase_connected",
+    "custom_domain": "enabled"
+  }
+}
