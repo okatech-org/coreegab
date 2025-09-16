@@ -53,12 +53,12 @@ export const useCreateOrder = () => {
   const { user } = useAuth();
 
   return useMutation({
-    mutationFn: (orderData: Omit<CreateOrderData, 'user_id'>) => {
+    mutationFn: (orderData: Omit<CreateOrderData, 'client_id'>) => {
       if (!user) throw new Error('User not authenticated');
       
       return orderService.createOrder({
         ...orderData,
-        user_id: user.id,
+        client_id: user.id,
       });
     },
     onSuccess: (result) => {

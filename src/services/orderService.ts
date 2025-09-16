@@ -2,16 +2,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { Order } from '@/types/database';
 
 export interface CreateOrderData {
-  user_id: string;
-  product_id: string;
-  quantity: number;
-  unit_price_krw: number;
-  total_price_krw: number;
-  shipping_cost_krw?: number;
-  customs_cost_krw?: number;
-  final_price_xaf: number;
+  client_id: string;
+  commercial_id?: string;
+  products: any;
+  supplier_price: number;
+  transport_cost: number;
+  customs_cost: number;
+  margin: number;
+  total_price: number;
   status?: 'pending' | 'confirmed' | 'shipping' | 'delivered';
-  notes?: string;
 }
 
 export interface UpdateOrderData extends Partial<CreateOrderData> {
@@ -28,19 +27,11 @@ export const orderService = {
     try {
       let query = supabase
         .from('orders')
-        .select(`
-          *,
-          products (
-            id,
-            name,
-            image_url,
-            category
-          )
-        `)
-        .eq('user_id', userId);
+        .select('*')
+        .eq('client_id', userId);
 
       if (filters?.status) {
-        query = query.eq('status', filters.status);
+        query = query.eq('status', filters.status as any);
       }
 
       if (filters?.limit) {
@@ -72,27 +63,14 @@ export const orderService = {
     try {
       let query = supabase
         .from('orders')
-        .select(`
-          *,
-          products (
-            id,
-            name,
-            image_url,
-            category
-          ),
-          profiles (
-            id,
-            name,
-            email
-          )
-        `);
+        .select('*');
 
       if (filters?.status) {
-        query = query.eq('status', filters.status);
+        query = query.eq('status', filters.status as any);
       }
 
       if (filters?.userId) {
-        query = query.eq('user_id', filters.userId);
+        query = query.eq('client_id', filters.userId);
       }
 
       if (filters?.limit) {
@@ -119,22 +97,7 @@ export const orderService = {
     try {
       const { data, error } = await supabase
         .from('orders')
-        .select(`
-          *,
-          products (
-            id,
-            name,
-            description,
-            image_url,
-            category,
-            specifications
-          ),
-          profiles (
-            id,
-            name,
-            email
-          )
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
@@ -252,10 +215,10 @@ export const orderService = {
     try {
       let query = supabase
         .from('orders')
-        .select('status, final_price_xaf, created_at');
+        .select('status, total_price, created_at');
 
       if (userId) {
-        query = query.eq('user_id', userId);
+        query = query.eq('client_id', userId);
       }
 
       const { data, error } = await query;
@@ -265,13 +228,13 @@ export const orderService = {
       // Calculer les statistiques
       const stats = {
         total: data.length,
-        pending: data.filter(order => order.status === 'pending').length,
-        confirmed: data.filter(order => order.status === 'confirmed').length,
-        shipping: data.filter(order => order.status === 'shipping').length,
-        delivered: data.filter(order => order.status === 'delivered').length,
-        totalValue: data.reduce((sum, order) => sum + (order.final_price_xaf || 0), 0),
+        pending: data.filter((order: any) => order.status === 'pending').length,
+        confirmed: data.filter((order: any) => order.status === 'confirmed').length,
+        shipping: data.filter((order: any) => order.status === 'shipping').length,
+        delivered: data.filter((order: any) => order.status === 'delivered').length,
+        totalValue: data.reduce((sum: number, order: any) => sum + (order.total_price || 0), 0),
         avgOrderValue: data.length > 0 ? 
-          data.reduce((sum, order) => sum + (order.final_price_xaf || 0), 0) / data.length : 0
+          data.reduce((sum: number, order: any) => sum + (order.total_price || 0), 0) / data.length : 0
       };
 
       return { data: stats, error: null };

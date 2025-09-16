@@ -24,9 +24,7 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react';
-import { useProducts } from '@/hooks/useUnifiedProducts';
-// Note: Les hooks de création/modification/suppression ne sont pas encore implémentés dans useUnifiedProducts
-// import { useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useUnifiedProducts';
+import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
 import { useToast } from '@/hooks/use-toast';
 import { ProductGridSkeleton } from '@/components/SkeletonLoaders';
 import { LazyImage } from '@/components/LazyImage';
@@ -38,7 +36,7 @@ const productSchema = z.object({
   category: z.string().min(1, 'Catégorie requise'),
   image_url: z.string().url().optional().or(z.literal('')),
   stock_quantity: z.number().min(0).optional(),
-  is_active: z.boolean().optional(),
+  in_stock: z.boolean().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -52,15 +50,14 @@ export const ProductManagement: React.FC = () => {
   const { toast } = useToast();
   
   // Hooks pour les opérations CRUD
-  const { products: productsResult, loading: isLoading, refetch } = useProducts({
-    search_query: searchTerm || undefined,
+  const { data: productsResult, isLoading, refetch } = useProducts({
+    search: searchTerm || undefined,
     category: selectedCategory !== 'all' ? selectedCategory : undefined,
   });
   
-  // TODO: Implémenter les hooks de création/modification/suppression dans useUnifiedProducts
-  // const createProduct = useCreateProduct();
-  // const updateProduct = useUpdateProduct();
-  // const deleteProduct = useDeleteProduct();
+  const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
+  const deleteProduct = useDeleteProduct();
 
   const {
     register,
@@ -71,32 +68,27 @@ export const ProductManagement: React.FC = () => {
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      is_active: true,
+      in_stock: true,
       stock_quantity: 0,
     },
   });
 
-  const products = productsResult || [];
+  const products = productsResult?.data || [];
 
   // Soumettre le formulaire de produit
   const onSubmitProduct = async (data: ProductFormData) => {
     try {
-      // TODO: Implémenter avec les hooks unifiés
-      toast({
-        title: "Fonctionnalité en cours de développement",
-        description: "La gestion des produits sera bientôt disponible avec le service unifié",
-      });
-      
-      // if (editingProduct) {
-      //   // Mise à jour
-      //   await updateProduct.mutateAsync({
-      //     id: editingProduct.id,
-      //     ...data,
-      //   });
-      // } else {
-      //   // Création
-      //   await createProduct.mutateAsync(data);
-      // }
+      if (editingProduct) {
+        // Mise à jour
+        await updateProduct.mutateAsync({
+          id: editingProduct.id,
+          ...data,
+          category: data.category as any,
+        });
+      } else {
+        // Création
+        await createProduct.mutateAsync(data as any);
+      }
       
       reset();
       setEditingProduct(null);
@@ -116,7 +108,7 @@ export const ProductManagement: React.FC = () => {
     setValue('category', product.category);
     setValue('image_url', product.image_url || '');
     setValue('stock_quantity', product.stock_quantity || 0);
-    setValue('is_active', product.is_active);
+    setValue('in_stock', product.in_stock);
     setActiveTab('form');
   };
 
@@ -124,14 +116,8 @@ export const ProductManagement: React.FC = () => {
   const handleDeleteProduct = async (productId: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
       try {
-        // TODO: Implémenter avec les hooks unifiés
-        toast({
-          title: "Fonctionnalité en cours de développement",
-          description: "La suppression de produits sera bientôt disponible avec le service unifié",
-        });
-        
-        // await deleteProduct.mutateAsync(productId);
-        // refetch();
+        await deleteProduct.mutateAsync(productId);
+        refetch();
       } catch (error) {
         console.error('Error deleting product:', error);
       }
@@ -270,8 +256,8 @@ export const ProductManagement: React.FC = () => {
                         <span className="text-muted-foreground">
                           Stock: {product.stock_quantity || 0}
                         </span>
-                        <Badge variant={product.is_active ? "default" : "secondary"}>
-                          {product.is_active ? 'Actif' : 'Inactif'}
+                        <Badge variant={product.in_stock ? "default" : "secondary"}>
+                          {product.in_stock ? 'En stock' : 'Rupture'}
                         </Badge>
                       </div>
                       
@@ -405,13 +391,12 @@ export const ProductManagement: React.FC = () => {
                   </Button>
                   <Button 
                     type="submit" 
-                    disabled={false} // TODO: Implémenter avec les hooks unifiés
+                    disabled={createProduct.isPending || updateProduct.isPending}
                     className="flex-1"
                   >
-                    {/* TODO: Implémenter avec les hooks unifiés */}
-                    {/* {(createProduct.isPending || updateProduct.isPending) && (
+                    {(createProduct.isPending || updateProduct.isPending) && (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    )} */}
+                    )}
                     {editingProduct ? 'Mettre à jour' : 'Créer le produit'}
                   </Button>
                 </div>
@@ -439,9 +424,9 @@ export const ProductManagement: React.FC = () => {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Produits actifs</p>
+                    <p className="text-sm text-muted-foreground">Produits en stock</p>
                     <p className="text-2xl font-bold">
-                      {products.filter(p => p.is_active).length}
+                      {products.filter(p => p.in_stock).length}
                     </p>
                   </div>
                   <CheckCircle className="h-8 w-8 text-green-500" />

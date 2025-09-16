@@ -72,16 +72,29 @@ export const OrderTracking: React.FC<OrderTrackingProps> = ({
 
       setOrder(orderData);
 
-      // Charger les mises à jour de suivi
-      const { data: trackingData, error: trackingError } = await supabase
-        .from('order_tracking')
-        .select('*')
-        .eq('order_id', orderId)
-        .order('created_at', { ascending: false });
+      // Simuler des mises à jour de suivi avec des données mock
+      const mockTrackingData: TrackingUpdate[] = [
+        {
+          id: 'track-1',
+          order_id: orderId,
+          status: 'delivered',
+          message: 'Commande livrée avec succès',
+          timestamp: '2024-01-15T14:30:00Z',
+          created_at: '2024-01-15T14:30:00Z',
+          location: 'Libreville, Gabon'
+        },
+        {
+          id: 'track-2',
+          order_id: orderId,
+          status: 'shipping',
+          message: 'En transit - Arrivée prévue demain',
+          timestamp: '2024-01-14T09:15:00Z',
+          created_at: '2024-01-14T09:15:00Z',
+          location: 'Douala, Cameroun'
+        }
+      ];
 
-      if (trackingError) throw trackingError;
-
-      setTrackingUpdates(trackingData || []);
+      setTrackingUpdates(mockTrackingData);
     } catch (error) {
       console.error('Error loading order data:', error);
       toast({

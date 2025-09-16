@@ -304,15 +304,13 @@ export const CheckoutFlow: React.FC<CheckoutFlowProps> = ({
           try {
             for (const item of cartItems) {
               await createOrder.mutateAsync({
-                product_id: item.id,
-                quantity: item.quantity,
-                unit_price_krw: item.price_krw,
-                total_price_krw: item.price_krw * item.quantity,
-                shipping_cost_krw: shippingCost,
-                customs_cost_krw: customsCost,
-                final_price_xaf: totalXaf,
-                status: 'confirmed',
-                notes: `Paiement: ${result.id || result.method}`,
+                products: { items: [{ id: item.id, quantity: item.quantity, name: item.name }] },
+                supplier_price: item.price_krw * item.quantity,
+                transport_cost: shippingCost,
+                customs_cost: customsCost,
+                margin: totalXaf - (item.price_krw * item.quantity + shippingCost + customsCost),
+                total_price: totalXaf,
+                status: 'confirmed' as any,
               });
             }
 
