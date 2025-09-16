@@ -49,7 +49,7 @@ export const CategoriesSection = () => {
   const [realProducts, setRealProducts] = useState<any[]>([]);
   
   // Récupérer les produits réels depuis Supabase
-  const { data: productsData, isLoading: productsLoading, error } = useProducts();
+  const { products: productsData, loading: productsLoading, error } = useProducts();
 
   useEffect(() => {
     if (productsData) {

@@ -6,12 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, ShoppingCart, Sparkles, Car, Smartphone, Home, Loader2, AlertCircle } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { useUnifiedProducts } from '@/hooks/useUnifiedProducts';
+import { useProducts, useCategories } from '@/hooks/useUnifiedProducts';
 import ProductCard from '@/components/ProductCard';
 import { ProductSegments } from '@/components/ProductSegments';
 import { DesktopFloatingHeader } from '@/components/DesktopFloatingHeader';
 import { useToast } from '@/hooks/use-toast';
-import Navigation from '@/components/Navigation';
+import { Navigation } from '@/components/Navigation';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCreateOrder } from '@/hooks/useOrders';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,23 +36,23 @@ export default function Boutique() {
   
   // Utiliser les hooks pour les données réelles
   const { 
-    data: productsResult, 
-    isLoading: productsLoading, 
+    products: productsResult, 
+    loading: productsLoading, 
     error: productsError 
   } = useProducts({
     category: activeCategory !== 'all' ? activeCategory : undefined,
-    search: searchQuery || undefined,
+    search_query: searchQuery || undefined,
     limit: 12,
     offset: currentPage * 12,
   });
   
-  const { data: categoriesResult, isLoading: categoriesLoading } = useCategories();
+  const { categories: categoriesResult, loading: categoriesLoading } = useCategories();
   const { cartItems, addToCart, removeFromCart, getCartCount } = useCart();
   const createOrder = useCreateOrder();
 
   // Extraire les données des résultats
-  const products = productsResult?.data || [];
-  const categories = categoriesResult?.data || {};
+  const products = productsResult || [];
+  const categories = categoriesResult || [];
 
   // Gérer l'ajout au panier
   const handleAddToCart = (product: any) => {
@@ -111,9 +111,7 @@ export default function Boutique() {
   if (productsLoading) {
     return (
       <div className="min-h-screen w-full">
-        <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-          <NewVerticalMenu />
-        </div>
+        <Navigation />
         <div className="flex items-center justify-center min-h-screen lg:pl-[340px]">
           <div className="text-center space-y-4">
             <Loader2 className="h-8 w-8 animate-spin mx-auto" />
@@ -128,9 +126,7 @@ export default function Boutique() {
   if (productsError) {
     return (
       <div className="min-h-screen w-full">
-        <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-          <NewVerticalMenu />
-        </div>
+        <Navigation />
         <div className="flex items-center justify-center min-h-screen lg:pl-[340px]">
           <div className="text-center space-y-4">
             <AlertCircle className="h-8 w-8 text-destructive mx-auto" />
@@ -146,29 +142,25 @@ export default function Boutique() {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="fixed top-4 left-4 bottom-4 z-50 hidden lg:block">
-        <NewVerticalMenu />
-      </div>
-      <div className="flex-1 lg:pl-[340px]">
-        {/* Header desktop avec navigation complète */}
-        <DesktopHeader 
-          title="Boutique" 
-          showNavigation={false}
-          rightContent={
-            <Button variant="outline" size="sm" className="relative">
-              <ShoppingCart className="h-4 w-4" />
-              {getCartCount() > 0 && (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs">
-                  {getCartCount()}
-                </Badge>
-              )}
-            </Button>
-          }
-        >
-          <Badge variant="secondary" className="ml-2">
-            {products.length} produits
-          </Badge>
-        </DesktopHeader>
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
+        {/* Header avec panier */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold">Boutique</h1>
+            <Badge variant="secondary" className="mt-2">
+              {products.length} produits
+            </Badge>
+          </div>
+          <Button variant="outline" size="sm" className="relative">
+            <ShoppingCart className="h-4 w-4" />
+            {getCartCount() > 0 && (
+              <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs">
+                {getCartCount()}
+              </Badge>
+            )}
+          </Button>
+        </div>
 
         {/* Segments de produits */}
         <ProductSegments 
@@ -176,7 +168,7 @@ export default function Boutique() {
           activeCategory={activeCategory}
         />
 
-        <div className="p-6 space-y-6">
+        <div className="space-y-6">
           {/* Barre de recherche et filtres */}
           <div className="flex flex-col sm:flex-row gap-4">
             <form onSubmit={handleSearch} className="flex-1 flex gap-2">
@@ -200,14 +192,14 @@ export default function Boutique() {
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="Toutes catégories" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Toutes catégories</SelectItem>
-                  {Object.entries(categories).map(([category, count]) => (
-                    <SelectItem key={category} value={category}>
-                      {category} ({String(count)})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+                  <SelectContent>
+                    <SelectItem value="all">Toutes catégories</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.category} value={cat.category}>
+                        {cat.category} ({cat.count})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
               </Select>
               
               <Button
@@ -226,9 +218,9 @@ export default function Boutique() {
               <Card key={product.id} className="group hover:shadow-lg transition-shadow">
                 <CardContent className="p-4">
                   <div className="aspect-square bg-muted rounded-lg mb-4 overflow-hidden">
-                    {product.image_url ? (
+                    {product.thumbnail_url ? (
                       <img
-                        src={product.image_url}
+                        src={product.thumbnail_url}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />

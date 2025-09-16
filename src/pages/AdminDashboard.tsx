@@ -37,12 +37,12 @@ export default function AdminDashboard() {
 
   // Hooks pour les données
   const { data: ordersResult, isLoading: ordersLoading } = useAllOrders({ limit: 10 });
-  const { data: productsResult, isLoading: productsLoading } = useProducts({ limit: 5 });
+  const { products: productsResult, loading: productsLoading } = useProducts({ limit: 5 });
   const { data: statsResult, isLoading: statsLoading } = useOrderStats();
 
   // Extraire les données
   const orders = ordersResult?.data || [];
-  const products = productsResult?.data || [];
+  const products = productsResult || [];
   const stats = statsResult?.data || {
     total: 0,
     pending: 0,

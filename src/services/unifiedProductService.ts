@@ -588,5 +588,23 @@ class UnifiedProductService {
 // Exporter une instance unique du service
 export const unifiedProductService = new UnifiedProductService();
 
+// Exports pour les types
+export {
+  UnifiedProduct,
+  ProductFilters,
+  ProductSearchResult,
+  PaginationOptions,
+  PaginatedResult,
+  VehicleProduct,
+  PartProduct,
+  ElectronicsProduct,
+  ProductType,
+  SortOption,
+  ProductStatistics,
+  ImportProductData,
+  ImportMetadata,
+  ProductServiceError
+} from '@/types/unifiedProducts';
+
 // Exporter également la classe pour les tests ou l'extension
 export default UnifiedProductService;

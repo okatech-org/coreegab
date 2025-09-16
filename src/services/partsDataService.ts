@@ -3,6 +3,9 @@
 
 import { OPEN_SOURCE_PARTS, getCategories, getBrands, filterParts, type OpenSourcePart } from './openSourcePartsData';
 
+// Export OpenSourcePart type for external use
+export type { OpenSourcePart };
+
 export interface VehicleSpec {
   make: string;
   model: string;

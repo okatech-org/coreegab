@@ -60,12 +60,12 @@ export default function ClientDashboard() {
   const [activeView, setActiveView] = useState(searchParams.get('view') || 'dashboard');
 
   // Hooks pour les données réelles
-  const { data: productsResult, isLoading: productsLoading } = useProducts({ limit: 6 });
+  const { products: productsResult, loading: productsLoading } = useProducts({ limit: 6 });
   const { data: ordersResult, isLoading: ordersLoading } = useUserOrders({ limit: 5 });
   const { data: statsResult, isLoading: statsLoading } = useOrderStats();
 
   // Extraire les données
-  const products = productsResult?.data || [];
+  const products = productsResult || [];
   const orders = ordersResult?.data || [];
   const stats = statsResult?.data || { 
     total: 0, 
