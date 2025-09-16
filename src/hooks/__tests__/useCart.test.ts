@@ -16,9 +16,9 @@ describe('useCart Hook', () => {
   it('initializes with empty cart', () => {
     const { result } = renderHook(() => useCart());
     
-    expect(result.current.items).toEqual([]);
-    expect(result.current.totalItems).toBe(0);
-    expect(result.current.totalPrice).toBe(0);
+    expect(result.current.cartItems).toEqual([]);
+    expect(result.current.getCartCount()).toBe(0);
+    expect(result.current.getCartTotal()).toBe(0);
   });
 
   it('adds item to cart', () => {
@@ -28,16 +28,17 @@ describe('useCart Hook', () => {
       id: '1',
       name: 'Test Product',
       price_krw: 100000,
-      weight: 1,
+      category: 'test',
     };
 
     act(() => {
-      result.current.addItem(product, 2);
+      result.current.addToCart(product);
+      result.current.addToCart(product);
     });
 
-    expect(result.current.items).toHaveLength(1);
-    expect(result.current.totalItems).toBe(2);
-    expect(result.current.items[0].quantity).toBe(2);
+    expect(result.current.cartItems).toHaveLength(1);
+    expect(result.current.getCartCount()).toBe(2);
+    expect(result.current.cartItems[0].quantity).toBe(2);
   });
 
   it('removes item from cart', () => {
@@ -47,16 +48,17 @@ describe('useCart Hook', () => {
       id: '1',
       name: 'Test Product',
       price_krw: 100000,
-      weight: 1,
+      category: 'test',
     };
 
     act(() => {
-      result.current.addItem(product, 2);
-      result.current.removeItem('1');
+      result.current.addToCart(product);
+      result.current.addToCart(product);
+      result.current.removeFromCart('1');
     });
 
-    expect(result.current.items).toHaveLength(0);
-    expect(result.current.totalItems).toBe(0);
+    expect(result.current.cartItems).toHaveLength(0);
+    expect(result.current.getCartCount()).toBe(0);
   });
 
   it('clears cart', () => {
@@ -66,15 +68,16 @@ describe('useCart Hook', () => {
       id: '1',
       name: 'Test Product',
       price_krw: 100000,
-      weight: 1,
+      category: 'test',
     };
 
     act(() => {
-      result.current.addItem(product, 2);
+      result.current.addToCart(product);
+      result.current.addToCart(product);
       result.current.clearCart();
     });
 
-    expect(result.current.items).toHaveLength(0);
-    expect(result.current.totalItems).toBe(0);
+    expect(result.current.cartItems).toHaveLength(0);
+    expect(result.current.getCartCount()).toBe(0);
   });
 });

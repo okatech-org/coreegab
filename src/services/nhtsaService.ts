@@ -62,7 +62,8 @@ export class NHTSAService {
         ?.filter((year: number) => year >= 2000) // Filtrer les années récentes
         ?.sort((a: number, b: number) => b - a) || [];
       
-      return [...new Set(years)]; // Supprimer les doublons
+      const validYears: number[] = years.map(Number).filter(year => !isNaN(year));
+      return [...new Set(validYears)]; // Supprimer les doublons
     } catch (error) {
       console.error('Error fetching years from NHTSA:', error);
       return [];

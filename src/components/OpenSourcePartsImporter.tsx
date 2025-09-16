@@ -18,7 +18,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useOpenSourceParts, useImportOpenSourceParts, useNHTSAData, useSyncNHTSAData } from '@/hooks/useOpenSourceParts';
-import { useVehicles } from '@/hooks/useUnifiedProducts';
+import { useProducts, useVehicles } from '@/hooks/useUnifiedProducts';
 import { useToast } from '@/hooks/use-toast';
 
 export const OpenSourcePartsImporter: React.FC = () => {
