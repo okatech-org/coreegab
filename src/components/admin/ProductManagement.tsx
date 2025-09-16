@@ -24,7 +24,7 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react';
-import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
+import { useUnifiedProducts } from '@/hooks/useUnifiedProducts';
 import { useToast } from '@/hooks/use-toast';
 import { ProductGridSkeleton } from '@/components/SkeletonLoaders';
 import { LazyImage } from '@/components/LazyImage';
